@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rera's Treat — Finger Foods, Made to Share</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+  .hero{padding:5rem 1.5rem 3rem;text-align:center;position:relative;overflow:hidden}
+  .hero::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 30% 20%,var(--pale-o) 0%,transparent 55%),radial-gradient(circle at 80% 70%,var(--pale-g) 0%,transparent 50%);z-index:-1}
+  .hero-title{font-size:clamp(40px,7vw,72px);font-weight:700;color:var(--green);line-height:1.05;max-width:800px;margin:1rem auto}
+  .hero-title em{font-style:italic;color:var(--orange)}
+  .hero-sub{max-width:480px;margin:1.25rem auto 2rem;color:var(--muted);font-size:15px;font-weight:300}
+  .hero-ctas{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+
+  /* Hero image grid — swap the background-image url()s for real photography */
+  .hero-gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;max-width:900px;margin:3rem auto 0}
+  .hero-shot{aspect-ratio:1/1.1;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;position:relative;overflow:hidden;box-shadow:0 10px 30px -12px rgba(43,36,32,.25);background-size:cover;background-position:center}
+  .hero-shot:nth-child(1){background:linear-gradient(160deg,var(--pale-o),#f7c9a0)}
+  .hero-shot:nth-child(2){background:linear-gradient(160deg,var(--pale-g),var(--leaf))}
+  .hero-shot:nth-child(3){background:linear-gradient(160deg,#fff2df,var(--pale-o))}
+  .hero-shot:nth-child(4){background:linear-gradient(160deg,var(--leaf),var(--pale-g))}
+  .hero-shot::before{content:attr(data-emoji);font-size:38px}
+  .hero-shot span{background:rgba(43,36,32,.72);color:#fff;font-size:10px;letter-spacing:.05em;padding:5px 9px;border-radius:6px}
+  @media(max-width:720px){.hero-gallery{grid-template-columns:repeat(2,1fr)}}
+
+  .teaser-row{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;max-width:1100px;margin:0 auto}
+  .teaser-visual{background:linear-gradient(160deg,var(--pale-g),var(--leaf));border-radius:20px;height:300px}
+  .teaser-title{font-size:28px;color:var(--green);font-weight:600;margin-bottom:1rem}
+  .teaser-body{color:var(--muted);font-size:14px;margin-bottom:1.5rem}
+  @media(max-width:720px){.teaser-row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="logo">Rera's <span>Treat</span></div>
+    <div class="nav-links">
+      <a href="index.html" class="active">Home</a>
+      <a href="menu.html">Menu</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <a href="menu.html" class="btn btn-primary" style="padding:10px 18px">Order Now</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="eyebrow">Ogijo, Ogun State</div>
+  <h1 class="hero-title">Small bites. <em>Big cravings.</em></h1>
+  <p class="hero-sub">Handmade finger foods for your parties, cravings, and everything in between — pick what you want, we'll take it from there on WhatsApp.</p>
+  <div class="hero-ctas">
+    <a href="menu.html" class="btn btn-primary">Explore the Menu</a>
+    <a href="contact.html" class="btn btn-outline">Find Us</a>
+  </div>
+
+  <!-- Colorful placeholders for now — once you add a matching photo to /images,
+       it'll automatically replace the gradient (see script at bottom of page) -->
+  <div class="hero-gallery">
+    <div class="hero-shot" data-photo="images/smallchops-platter.jpg" data-emoji="🍢"><span>Smallchops Platter</span></div>
+    <div class="hero-shot" data-photo="images/grilled-turkey.jpg" data-emoji="🍗"><span>Grilled Turkey</span></div>
+    <div class="hero-shot" data-photo="images/fries.jpg" data-emoji="🍟"><span>Fries</span></div>
+    <div class="hero-shot" data-photo="images/smallchops-mix.jpg" data-emoji="🥟"><span>Assorted Smallchops</span></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="teaser-row">
+    <div class="teaser-visual"></div>
+    <div>
+      <span class="eyebrow">Our Story</span>
+      <h3 class="teaser-title">Made fresh, shared warm</h3>
+      <p class="teaser-body">Every tray, wrap, and platter starts in our Ogijo kitchen — made the day you order, never sitting around waiting. Read the full story behind Rera's Treat.</p>
+      <a href="about.html" class="btn btn-outline">Read Our Story</a>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background:#fff">
+  <div class="section-head">
+    <div class="eyebrow">Ready When You Are</div>
+    <h2 class="section-title">Hungry already?</h2>
+    <p style="color:var(--muted);font-size:14px;margin-top:.75rem">Browse the full menu and send your order straight to us on WhatsApp — no calls, no waiting on hold.</p>
+    <div style="margin-top:1.5rem">
+      <a href="menu.html" class="btn btn-primary">Go to Menu</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">Rera's <span style="color:var(--orange)">Treat</span></div>
+      <div class="footer-slogan">Made with the love of a mother's kitchen.</div>
+      <div class="footer-socials">
+        <a class="footer-social-btn" href="https://www.instagram.com/rerastreats" target="_blank" title="Instagram">IG</a>
+        <a class="footer-social-btn" href="https://wa.me/2349124800610" target="_blank" title="WhatsApp">WA</a>
+        <a class="footer-social-btn" href="https://www.tiktok.com/@fingerfoodinogijo" target="_blank" title="TikTok">TT</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Contact</div>
+      <div class="footer-line">0912 480 0610</div>
+      <div class="footer-line">rerastreat@gmail.com</div>
+    </div>
+    <div>
+      <div class="footer-col-title">Find Us</div>
+      <div class="footer-line">Ogijo-Redemption Camp Road, Limelight School, Ajipon Bus-stop</div>
+      <div class="footer-line">Ogijo, Ogun State, Nigeria</div>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2026 Rera's Treat. All rights reserved.</div>
+</footer>
+
+<script>
+  // Auto-swap gradient placeholders for real photos once you add matching
+  // filenames to the /images folder (e.g. images/smallchops-platter.jpg)
+  document.querySelectorAll('.hero-shot[data-photo]').forEach(el => {
+    const img = new Image();
+    img.onload = () => {
+      el.style.backgroundImage = `url('${el.dataset.photo}')`;
+      el.style.backgroundSize = 'cover';
+      el.style.backgroundPosition = 'center';
+    };
+    img.src = el.dataset.photo;
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Menu — Rera's Treat</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+  .menu-hero{padding:4rem 1.5rem 1rem;text-align:center}
+  .menu-hero-title{font-size:clamp(36px,6vw,56px);font-weight:700;color:var(--green)}
+
+  .menu-filter{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;max-width:1100px;margin:0 auto;padding:2rem 1.5rem 0}
+  .filter-pill{padding:9px 20px;border-radius:999px;border:1.5px solid var(--border);background:#fff;font-family:'Jost',sans-serif;font-size:12px;font-weight:500;color:var(--muted);cursor:pointer;transition:.15s}
+  .filter-pill:hover{border-color:var(--orange)}
+  .filter-pill.active{background:var(--orange);border-color:var(--orange);color:#fff}
+
+  .category-section{max-width:1100px;margin:0 auto;padding:2.25rem 1.5rem 0}
+  .category-section:last-of-type{padding-bottom:6rem}
+  .category-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;color:var(--green);margin-bottom:1.25rem}
+  .menu-slider-wrap{position:relative}
+  .menu-grid{display:flex;gap:1.25rem;overflow-x:auto;scroll-snap-type:x proximity;scroll-behavior:smooth;padding:4px 2px 14px;-webkit-overflow-scrolling:touch}
+  .menu-grid::-webkit-scrollbar{height:6px}
+  .menu-grid::-webkit-scrollbar-track{background:transparent}
+  .menu-grid::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+  .slider-arrow{position:absolute;top:calc(50% - 20px);transform:translateY(-50%);width:36px;height:36px;border-radius:50%;border:1px solid var(--border);background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 6px 16px -6px rgba(0,0,0,.25);z-index:5;font-size:16px;line-height:1;color:var(--green);transition:.15s}
+  .slider-arrow:hover{border-color:var(--orange);color:var(--orange)}
+  .slider-arrow-left{left:-8px}
+  .slider-arrow-right{right:-8px}
+  @media (max-width:640px){ .slider-arrow{display:none} }
+  .menu-card{border:1px solid var(--border);border-radius:14px;padding:1.25rem;position:relative;cursor:pointer;transition:.2s;background:#fff;flex:0 0 230px;scroll-snap-align:start}
+  .menu-card:hover{border-color:var(--orange);transform:translateY(-3px)}
+  .menu-card.selected{border-color:var(--orange);background:var(--pale-o)}
+  .menu-thumb{width:100%;height:130px;border-radius:10px;margin-bottom:1rem;background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;font-size:36px}
+  .menu-card:nth-child(6n+1) .menu-thumb{background:linear-gradient(135deg,var(--pale-g),var(--leaf))}
+  .menu-card:nth-child(6n+2) .menu-thumb{background:linear-gradient(135deg,var(--pale-o),#f7c9a0)}
+  .menu-card:nth-child(6n+3) .menu-thumb{background:linear-gradient(135deg,#fff2df,var(--pale-o))}
+  .menu-card:nth-child(6n+4) .menu-thumb{background:linear-gradient(135deg,var(--leaf),var(--pale-g))}
+  .menu-card:nth-child(6n+5) .menu-thumb{background:linear-gradient(135deg,var(--pale-o),var(--leaf))}
+  .menu-card:nth-child(6n+6) .menu-thumb{background:linear-gradient(135deg,var(--leaf),#f7c9a0)}
+  .menu-name{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:600;color:var(--green)}
+  .menu-desc{font-size:12px;color:var(--muted);margin:6px 0 10px;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden}
+  .menu-foot{display:flex;justify-content:space-between;align-items:center}
+  .menu-price{font-size:14px;font-weight:500;color:var(--black)}
+  .check{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--muted);display:flex;align-items:center;justify-content:center;font-size:12px;color:transparent;transition:.2s}
+  .menu-card.selected .check{display:none}
+  .qty-stepper{display:none;align-items:center;gap:10px}
+  .menu-card.selected .qty-stepper{display:flex}
+  .qty-btn{width:24px;height:24px;border-radius:50%;border:1.5px solid var(--orange);background:#fff;color:var(--orange);font-size:14px;font-weight:600;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.15s}
+  .qty-btn:hover{background:var(--orange);color:#fff}
+  .qty-value{font-size:13px;font-weight:600;color:var(--green);min-width:14px;text-align:center}
+
+  .tray{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(120%);width:min(92%,480px);background:var(--green);border-radius:16px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 16px 40px -12px rgba(31,59,46,.5);transition:transform .3s ease;z-index:60}
+  .tray.show{transform:translateX(-50%) translateY(0)}
+  .tray-info{color:#fff}
+  .tray-count{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600}
+  .tray-count span{color:var(--leaf)}
+  .tray-sub{font-size:11px;color:var(--leaf);letter-spacing:.05em}
+  .tray-btn{background:var(--orange);color:#fff;border:none;padding:12px 20px;border-radius:10px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:500;cursor:pointer;transition:.2s}
+  .tray-btn:hover{background:var(--orange-dark)}
+  .tray-btn:disabled{opacity:.6;cursor:not-allowed}
+
+  .checkout-overlay{position:fixed;inset:0;background:rgba(31,26,20,.55);display:none;align-items:center;justify-content:center;z-index:100;padding:1.5rem}
+  .checkout-overlay.show{display:flex}
+  .checkout-modal{background:#fff;border-radius:16px;padding:2rem;width:min(92%,420px);max-height:88vh;overflow-y:auto;position:relative}
+  .checkout-close{position:absolute;top:14px;right:16px;background:none;border:none;font-size:20px;color:var(--muted);cursor:pointer;line-height:1}
+  .checkout-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;color:var(--green);margin-bottom:1.25rem}
+  .checkout-sub{font-size:12px;color:var(--muted);margin:-.75rem 0 1.25rem}
+
+  .order-type-options{display:flex;gap:12px;margin-bottom:1.5rem}
+  .order-type-btn{flex:1;padding:1.1rem .75rem;border:1.5px solid var(--border);border-radius:10px;background:#fff;font-family:'Jost',sans-serif;font-size:13px;font-weight:500;color:var(--black);cursor:pointer;transition:.15s;text-align:center}
+  .order-type-btn:hover{border-color:var(--orange)}
+  .order-type-btn.selected{border-color:var(--orange);background:var(--pale-o);color:var(--orange-dark)}
+
+  .checkout-form-group{margin-bottom:1.1rem}
+  .checkout-label{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:6px}
+  .checkout-input{width:100%;background:#fff;border:1px solid var(--border);border-radius:8px;padding:11px 14px;font-family:'Jost',sans-serif;font-size:13px;color:var(--black);outline:none;transition:border-color .2s}
+  .checkout-input:focus{border-color:var(--orange)}
+
+  .checkout-next-btn{width:100%;background:var(--orange);color:#fff;border:none;border-radius:8px;padding:14px;font-family:'Jost',sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;cursor:pointer;transition:.2s;margin-top:.5rem}
+  .checkout-next-btn:hover{background:var(--orange-dark)}
+  .checkout-next-btn:disabled{opacity:.6;cursor:not-allowed}
+  .checkout-back-btn{width:100%;background:none;border:none;color:var(--muted);font-size:12px;padding:10px;cursor:pointer;text-align:center}
+
+  .checkout-error{background:#FCEAEA;border:1px solid #E7A9A9;color:#A23B3B;font-size:12px;border-radius:8px;padding:10px 12px;margin-bottom:1rem;display:none}
+  .checkout-error.show{display:block}
+
+  .payment-box{background:var(--pale-g);border-radius:12px;padding:1.1rem;margin-bottom:1rem}
+  .payment-row{display:flex;justify-content:space-between;font-size:13px;padding:6px 0;color:var(--black)}
+  .payment-row span{color:var(--muted)}
+  .payment-row strong{font-weight:600;color:var(--green)}
+  .payment-amount{border-top:1px solid var(--border);margin-top:4px;padding-top:10px}
+  .payment-amount strong{color:var(--orange-dark);font-size:16px}
+  .payment-note{font-size:12px;color:var(--muted);margin-bottom:1rem;line-height:1.6}
+
+  .checkout-success-icon{width:52px;height:52px;border-radius:50%;background:var(--pale-g);color:var(--green);font-size:24px;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem}
+  #stepDone .checkout-title{text-align:center}
+  #ackMessage{font-size:13px;color:var(--muted);text-align:center;margin-bottom:1.5rem;line-height:1.7}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="logo">Rera's <span>Treat</span></div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="menu.html" class="active">Menu</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <a href="menu.html" class="btn btn-primary" style="padding:10px 18px">Order Now</a>
+  </div>
+</nav>
+
+<section class="menu-hero">
+  <div class="eyebrow">The Menu</div>
+  <h1 class="menu-hero-title">Pick what you're craving</h1>
+  <p style="color:var(--muted);font-size:14px;margin-top:.75rem">Select one or more, then checkout — dine in or pickup, your choice.</p>
+</section>
+
+<div class="menu-filter" id="menuFilter"></div>
+<div id="menuSections"></div>
+
+<div class="tray" id="tray">
+  <div class="tray-info">
+    <div class="tray-count"><span id="trayCount">0</span> items selected</div>
+    <div class="tray-sub" id="trayTotal">₦0</div>
+  </div>
+  <button class="tray-btn" id="trayBtn">Checkout →</button>
+</div>
+
+<div class="checkout-overlay" id="checkoutOverlay">
+  <div class="checkout-modal">
+    <button class="checkout-close" id="checkoutClose" aria-label="Close">×</button>
+
+    <div class="checkout-step" id="stepOrderType">
+      <h3 class="checkout-title">Dine In or Pickup?</h3>
+      <div class="order-type-options">
+        <button class="order-type-btn" type="button" data-type="DINE_IN">Dine In</button>
+        <button class="order-type-btn" type="button" data-type="PICKUP">Pickup</button>
+      </div>
+      <button class="checkout-next-btn" id="orderTypeNext" disabled>Continue →</button>
+    </div>
+
+    <div class="checkout-step" id="stepDetails" style="display:none">
+      <h3 class="checkout-title">Your Details</h3>
+      <div class="checkout-error" id="detailsError"></div>
+      <div class="checkout-form-group">
+        <label class="checkout-label">Name</label>
+        <input class="checkout-input" id="checkoutName" type="text" autocomplete="name">
+      </div>
+      <div class="checkout-form-group">
+        <label class="checkout-label">Phone Number</label>
+        <input class="checkout-input" id="checkoutPhone" type="tel" autocomplete="tel" placeholder="0912 345 6789">
+      </div>
+      <button class="checkout-next-btn" id="detailsNext">Continue →</button>
+      <button class="checkout-back-btn" id="detailsBack" type="button">← Back</button>
+    </div>
+
+    <div class="checkout-step" id="stepPayment" style="display:none">
+      <h3 class="checkout-title">Complete Payment</h3>
+      <div class="checkout-error" id="paymentError"></div>
+      <div class="payment-box">
+        <div class="payment-row"><span>Bank</span><strong id="payBank"></strong></div>
+        <div class="payment-row"><span>Account Name</span><strong id="payAccountName"></strong></div>
+        <div class="payment-row"><span>Account Number</span><strong id="payAccountNumber"></strong></div>
+        <div class="payment-row payment-amount"><span>Amount</span><strong id="payAmount"></strong></div>
+      </div>
+      <p class="payment-note">Transfer the exact amount above, then tap the button once you're done. We'll confirm your order shortly after.</p>
+      <button class="checkout-next-btn" id="paidBtn">I Have Paid</button>
+    </div>
+
+    <div class="checkout-step" id="stepDone" style="display:none">
+      <div class="checkout-success-icon">✓</div>
+      <h3 class="checkout-title">Order Received!</h3>
+      <p id="ackMessage"></p>
+      <button class="checkout-next-btn" id="checkoutFinish">Done</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">Rera's <span style="color:var(--orange)">Treat</span></div>
+      <div class="footer-slogan">Made with the love of a mother's kitchen.</div>
+      <div class="footer-socials">
+        <a class="footer-social-btn" href="https://www.instagram.com/rerastreats" target="_blank" title="Instagram">IG</a>
+        <a class="footer-social-btn" href="https://wa.me/2349124800610" target="_blank" title="WhatsApp">WA</a>
+        <a class="footer-social-btn" href="https://www.tiktok.com/@fingerfoodinogijo" target="_blank" title="TikTok">TT</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Contact</div>
+      <div class="footer-line">0912 480 0610</div>
+      <div class="footer-line">rerastreat@gmail.com</div>
+    </div>
+    <div>
+      <div class="footer-col-title">Find Us</div>
+      <div class="footer-line">Ogijo-Redemption Camp Road, Limelight School, Ajipon Bus-stop</div>
+      <div class="footer-line">Ogijo, Ogun State, Nigeria</div>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2026 Rera's Treat. All rights reserved.</div>
+</footer>
+
+<script>
+  const API_ORIGIN = 'https://reraos-develop.up.railway.app';
+  const MENU_API_URL = `${API_ORIGIN}/whatsapp-sessions/menu`;
+
+  function resolveImageUrl(path){
+    if (!path) return null;
+    return path.startsWith('http') ? path : `${API_ORIGIN}${path}`;
+  }
+
+  const menuFilter = document.getElementById('menuFilter');
+  const menuSections = document.getElementById('menuSections');
+  const selected = new Map();
+
+  let allItems = [];
+  let categories = [];
+  let activeCategoryId = 'ALL';
+
+  function fmt(n){ return '₦' + n.toLocaleString(); }
+
+  function buildCard(item){
+    const card = document.createElement('div');
+    card.className = 'menu-card';
+    card.dataset.id = item.id;
+    card.innerHTML = `
+      <div class="menu-thumb">${item.image ? '' : '🍽️'}</div>
+      <div class="menu-name">${item.name}</div>
+      <div class="menu-desc">${item.desc}</div>
+      <div class="menu-foot">
+        <div class="menu-price">${fmt(item.price)}</div>
+        <div class="check">✓</div>
+        <div class="qty-stepper">
+          <button class="qty-btn" type="button" data-action="dec">−</button>
+          <span class="qty-value">1</span>
+          <button class="qty-btn" type="button" data-action="inc">+</button>
+        </div>
+      </div>
+    `;
+    if (item.image) {
+      const thumb = card.querySelector('.menu-thumb');
+      thumb.style.backgroundImage = `url('${item.image}')`;
+    }
+
+    const qtyValue = card.querySelector('.qty-value');
+
+    if (selected.has(item.id)) {
+      card.classList.add('selected');
+      qtyValue.textContent = selected.get(item.id).qty;
+    }
+
+    function select(qty){
+      selected.set(item.id, { ...item, qty });
+      card.classList.add('selected');
+      qtyValue.textContent = qty;
+      updateTray();
+    }
+
+    function deselect(){
+      selected.delete(item.id);
+      card.classList.remove('selected');
+      qtyValue.textContent = 1;
+      updateTray();
+    }
+
+    card.addEventListener('click', () => {
+      if (selected.has(item.id)) {
+        deselect();
+      } else {
+        select(1);
+      }
+    });
+
+    card.querySelector('[data-action="inc"]').addEventListener('click', (e) => {
+      e.stopPropagation();
+      const current = selected.get(item.id);
+      select(current.qty + 1);
+    });
+
+    card.querySelector('[data-action="dec"]').addEventListener('click', (e) => {
+      e.stopPropagation();
+      const current = selected.get(item.id);
+      if (current.qty <= 1) {
+        deselect();
+      } else {
+        select(current.qty - 1);
+      }
+    });
+
+    return card;
+  }
+
+  function renderFilterPills(){
+    menuFilter.innerHTML = '';
+
+    const allPill = document.createElement('button');
+    allPill.className = 'filter-pill' + (activeCategoryId === 'ALL' ? ' active' : '');
+    allPill.type = 'button';
+    allPill.textContent = 'All';
+    allPill.addEventListener('click', () => { activeCategoryId = 'ALL'; renderMenu(); });
+    menuFilter.appendChild(allPill);
+
+    categories.forEach(cat => {
+      const pill = document.createElement('button');
+      pill.className = 'filter-pill' + (activeCategoryId === cat.id ? ' active' : '');
+      pill.type = 'button';
+      pill.textContent = cat.name;
+      pill.addEventListener('click', () => { activeCategoryId = cat.id; renderMenu(); });
+      menuFilter.appendChild(pill);
+    });
+  }
+
+  function renderMenu(){
+    renderFilterPills();
+    menuSections.innerHTML = '';
+
+    const categoriesToShow = activeCategoryId === 'ALL'
+      ? categories
+      : categories.filter(c => c.id === activeCategoryId);
+
+    categoriesToShow.forEach(cat => {
+      const items = allItems.filter(i => i.categoryId === cat.id);
+      if (items.length === 0) return;
+
+      const section = document.createElement('section');
+      section.className = 'category-section';
+      section.innerHTML = `<h2 class="category-title">${cat.name}</h2>`;
+
+      const sliderWrap = document.createElement('div');
+      sliderWrap.className = 'menu-slider-wrap';
+
+      const grid = document.createElement('div');
+      grid.className = 'menu-grid';
+      items.forEach(item => grid.appendChild(buildCard(item)));
+      sliderWrap.appendChild(grid);
+
+      if (items.length > 4) {
+        const prevBtn = document.createElement('button');
+        prevBtn.type = 'button';
+        prevBtn.className = 'slider-arrow slider-arrow-left';
+        prevBtn.setAttribute('aria-label', `Scroll ${cat.name} left`);
+        prevBtn.textContent = '‹';
+        prevBtn.addEventListener('click', () => grid.scrollBy({ left: -280, behavior: 'smooth' }));
+
+        const nextBtn = document.createElement('button');
+        nextBtn.type = 'button';
+        nextBtn.className = 'slider-arrow slider-arrow-right';
+        nextBtn.setAttribute('aria-label', `Scroll ${cat.name} right`);
+        nextBtn.textContent = '›';
+        nextBtn.addEventListener('click', () => grid.scrollBy({ left: 280, behavior: 'smooth' }));
+
+        sliderWrap.appendChild(prevBtn);
+        sliderWrap.appendChild(nextBtn);
+      }
+
+      section.appendChild(sliderWrap);
+      menuSections.appendChild(section);
+    });
+  }
+
+  async function loadMenu(){
+    try {
+      const res = await fetch(MENU_API_URL);
+      if (!res.ok) throw new Error(`Menu request failed: ${res.status}`);
+      const data = await res.json();
+      const products = Array.isArray(data) ? data : (data.data || data.items || []);
+
+      const seenCategories = new Map();
+      const UNCATEGORIZED = { id: 'uncategorized', name: 'Other' };
+
+      allItems = products
+        .filter(p => p.status === 'ACTIVE' && p.isAvailable)
+        .map(p => {
+          const category = p.category || UNCATEGORIZED;
+          if (!seenCategories.has(category.id)) {
+            seenCategories.set(category.id, { id: category.id, name: category.name });
+          }
+          return {
+            id: p.id,
+            name: p.name,
+            desc: p.description || '',
+            price: Number(p.price),
+            image: resolveImageUrl(Array.isArray(p.images) && p.images.length ? p.images[0] : null),
+            categoryId: category.id,
+          };
+        });
+
+      categories = [...seenCategories.values()];
+
+      renderMenu();
+    } catch (err) {
+      console.error('Could not load menu from ReraOS:', err);
+      menuFilter.innerHTML = '';
+      menuSections.innerHTML = '<p style="text-align:center;color:var(--muted);padding:2rem 1.5rem 6rem">Menu is temporarily unavailable. Please check back soon.</p>';
+    }
+  }
+
+  loadMenu();
+
+  const tray = document.getElementById('tray');
+  const trayCount = document.getElementById('trayCount');
+  const trayTotal = document.getElementById('trayTotal');
+  const trayBtn = document.getElementById('trayBtn');
+
+  function updateTray(){
+    const count = [...selected.values()].reduce((s,i)=>s+i.qty,0);
+    trayCount.textContent = count;
+    const total = [...selected.values()].reduce((s,i)=>s+i.price*i.qty,0);
+    trayTotal.textContent = fmt(total);
+    tray.classList.toggle('show', count > 0);
+  }
+
+  // --- Checkout flow: order type -> name/phone -> payment -> acknowledgement ---
+  const checkoutOverlay = document.getElementById('checkoutOverlay');
+  const checkoutClose = document.getElementById('checkoutClose');
+  const stepOrderType = document.getElementById('stepOrderType');
+  const stepDetails = document.getElementById('stepDetails');
+  const stepPayment = document.getElementById('stepPayment');
+  const stepDone = document.getElementById('stepDone');
+  const orderTypeNext = document.getElementById('orderTypeNext');
+  const detailsNext = document.getElementById('detailsNext');
+  const detailsBack = document.getElementById('detailsBack');
+  const detailsError = document.getElementById('detailsError');
+  const paidBtn = document.getElementById('paidBtn');
+  const paymentError = document.getElementById('paymentError');
+  const checkoutFinish = document.getElementById('checkoutFinish');
+  const checkoutName = document.getElementById('checkoutName');
+  const checkoutPhone = document.getElementById('checkoutPhone');
+
+  let checkoutOrderType = null;
+  let checkoutSessionId = null;
+
+  function showStep(step){
+    [stepOrderType, stepDetails, stepPayment, stepDone].forEach(s => s.style.display = 'none');
+    step.style.display = 'block';
+  }
+
+  function showError(el, message){
+    el.textContent = message;
+    el.classList.add('show');
+  }
+
+  function clearError(el){
+    el.textContent = '';
+    el.classList.remove('show');
+  }
+
+  function openCheckout(){
+    checkoutOrderType = null;
+    checkoutSessionId = null;
+    orderTypeNext.disabled = true;
+    document.querySelectorAll('.order-type-btn').forEach(b => b.classList.remove('selected'));
+    checkoutName.value = '';
+    checkoutPhone.value = '';
+    clearError(detailsError);
+    clearError(paymentError);
+    showStep(stepOrderType);
+    checkoutOverlay.classList.add('show');
+  }
+
+  function closeCheckout(){
+    checkoutOverlay.classList.remove('show');
+  }
+
+  trayBtn.addEventListener('click', openCheckout);
+  checkoutClose.addEventListener('click', closeCheckout);
+  detailsBack.addEventListener('click', () => showStep(stepOrderType));
+
+  document.querySelectorAll('.order-type-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.order-type-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      checkoutOrderType = btn.dataset.type;
+      orderTypeNext.disabled = false;
+    });
+  });
+
+  orderTypeNext.addEventListener('click', () => showStep(stepDetails));
+
+  detailsNext.addEventListener('click', async () => {
+    clearError(detailsError);
+    const name = checkoutName.value.trim();
+    const phone = checkoutPhone.value.trim();
+
+    if (!name || !phone) {
+      showError(detailsError, 'Please enter your name and phone number.');
+      return;
+    }
+
+    detailsNext.disabled = true;
+    detailsNext.textContent = 'Please wait…';
+
+    try {
+      const cartItems = [...selected.values()].map(i => ({ productId: i.id, quantity: i.qty }));
+
+      const sessionRes = await fetch(`${API_ORIGIN}/whatsapp-sessions`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ customerPhone: phone, customerName: name }),
+      });
+      if (!sessionRes.ok) throw new Error('Could not start your order session.');
+      const session = await sessionRes.json();
+
+      const updateRes = await fetch(`${API_ORIGIN}/whatsapp-sessions/${session.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ customerName: name, orderType: checkoutOrderType, cartItems }),
+      });
+      if (!updateRes.ok) throw new Error('Could not update your cart.');
+
+      const checkoutRes = await fetch(`${API_ORIGIN}/whatsapp-sessions/${session.id}/checkout`, {
+        method: 'POST',
+      });
+      if (!checkoutRes.ok) {
+        const body = await checkoutRes.json().catch(() => null);
+        throw new Error(body?.message || 'Could not place your order.');
+      }
+      const { order, paymentAccount } = await checkoutRes.json();
+
+      checkoutSessionId = session.id;
+      document.getElementById('payBank').textContent = paymentAccount.bankName;
+      document.getElementById('payAccountName').textContent = paymentAccount.accountName;
+      document.getElementById('payAccountNumber').textContent = paymentAccount.accountNumber;
+      document.getElementById('payAmount').textContent = fmt(Number(order.totalAmount));
+
+      showStep(stepPayment);
+    } catch (err) {
+      console.error(err);
+      showError(detailsError, err.message || 'Something went wrong. Please try again.');
+    } finally {
+      detailsNext.disabled = false;
+      detailsNext.textContent = 'Continue →';
+    }
+  });
+
+  paidBtn.addEventListener('click', async () => {
+    clearError(paymentError);
+    paidBtn.disabled = true;
+    paidBtn.textContent = 'Please wait…';
+
+    try {
+      const res = await fetch(`${API_ORIGIN}/whatsapp-sessions/${checkoutSessionId}/mark-paid`, {
+        method: 'POST',
+      });
+      if (!res.ok) throw new Error('Could not confirm your payment. Please try again.');
+      const order = await res.json();
+
+      document.getElementById('ackMessage').textContent =
+        `Thanks! We've received your order (${order.orderNumber}) and you'll be notified once your payment is confirmed.`;
+
+      selected.clear();
+      document.querySelectorAll('.menu-card.selected').forEach(c => c.classList.remove('selected'));
+      updateTray();
+
+      showStep(stepDone);
+    } catch (err) {
+      console.error(err);
+      showError(paymentError, err.message || 'Something went wrong. Please try again.');
+    } finally {
+      paidBtn.disabled = false;
+      paidBtn.textContent = 'I Have Paid';
+    }
+  });
+
+  checkoutFinish.addEventListener('click', closeCheckout);
+</script>
+
+</body>
+</html>

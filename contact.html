@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — Rera's Treat</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+  .contact-hero{background:var(--green);padding:3.5rem 1.5rem 2.5rem;text-align:center}
+  .contact-hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(34px,6vw,54px);font-weight:600;color:var(--orange)}
+  .contact-hero-sub{font-size:13px;color:var(--leaf);margin-top:8px;font-weight:300;font-style:italic}
+
+  .contact-body{max-width:900px;margin:0 auto;padding:4rem 2rem;display:grid;grid-template-columns:1fr 1fr;gap:4rem}
+  .form-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;color:var(--green);margin-bottom:1.5rem}
+  .form-group{margin-bottom:1.1rem}
+  .form-label{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:6px}
+  .form-input,.form-textarea{width:100%;background:#fff;border:1px solid var(--border);border-radius:8px;padding:11px 14px;font-family:'Jost',sans-serif;font-size:13px;color:var(--black);transition:border-color .2s;outline:none}
+  .form-input:focus,.form-textarea:focus{border-color:var(--orange)}
+  .form-textarea{resize:vertical;min-height:110px}
+  .form-btn{width:100%;background:var(--orange);color:#fff;border:none;border-radius:8px;padding:14px;font-family:'Jost',sans-serif;font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:500;cursor:pointer;transition:background .2s,transform .2s;margin-top:.5rem}
+  .form-btn:hover{background:#d05518;transform:translateY(-1px)}
+  .form-success{display:none;background:var(--pale-g);border:1px solid var(--leaf);border-radius:8px;padding:1rem;margin-top:1rem;font-size:13px;color:var(--green);text-align:center}
+
+  .info-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;color:var(--green);margin-bottom:1.5rem}
+  .info-block{margin-bottom:1.75rem}
+  .info-block-label{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--orange);font-weight:500;margin-bottom:6px}
+  .info-block-text{font-size:13px;color:var(--muted);line-height:1.7}
+
+  .social-grid{display:flex;gap:12px;margin-top:.5rem;flex-wrap:wrap}
+  .social-icon-btn{width:44px;height:44px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--green);transition:.2s;background:#fff}
+  .social-icon-btn:hover{background:var(--green);color:#fff;border-color:var(--green)}
+
+  .order-hours{background:var(--pale-o);border-radius:12px;padding:1.25rem;border-left:3px solid var(--orange)}
+  .order-hours-title{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:600;color:var(--green);margin-bottom:8px}
+  .order-hours-text{font-size:12px;color:var(--muted);line-height:1.8}
+
+  @media(max-width:720px){.contact-body{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="logo">Rera's <span>Treat</span></div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="menu.html">Menu</a>
+      <a href="about.html">About</a>
+      <a href="contact.html" class="active">Contact</a>
+    </div>
+    <a href="menu.html" class="btn btn-primary" style="padding:10px 18px">Order Now</a>
+  </div>
+</nav>
+
+<section class="contact-hero">
+  <h1 class="contact-hero-title">Let's Talk</h1>
+  <p class="contact-hero-sub">Orders go through WhatsApp — this page is for everything else.</p>
+</section>
+
+<section class="contact-body">
+  <div class="contact-form-wrap">
+    <h2 class="form-title">Give Feedback</h2>
+    <form id="feedbackForm" name="feedback" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+      <input type="hidden" name="form-name" value="feedback">
+      <p style="display:none">
+        <label>Don't fill this out if you're human: <input name="bot-field"></label>
+      </p>
+      <div class="form-group">
+        <label class="form-label">Name</label>
+        <input class="form-input" type="text" id="fbName" name="name" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Phone Number (optional)</label>
+        <input class="form-input" type="tel" id="fbPhone" name="phone">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Feedback Details</label>
+        <textarea class="form-textarea" id="fbDetails" name="details" placeholder="Tell us about your experience..." required></textarea>
+      </div>
+      <button class="form-btn" type="submit">Send Feedback</button>
+    </form>
+    <div class="form-success" id="fbSuccess">Thank you for your feedback — we really appreciate it.</div>
+  </div>
+
+  <div class="contact-info-wrap">
+    <h2 class="info-title">Find Us</h2>
+
+    <div class="info-block">
+      <div class="info-block-label">Address</div>
+      <div class="info-block-text">Ogijo-Redemption Camp Road, Limelight School, Ajipon Bus-stop<br>Ogijo, Ogun State, Nigeria</div>
+    </div>
+
+    <div class="info-block">
+      <div class="info-block-label">Phone / WhatsApp</div>
+      <div class="info-block-text"><a href="https://wa.me/2349124800610" target="_blank">0912 480 0610</a></div>
+    </div>
+
+    <div class="info-block">
+      <div class="info-block-label">Follow Us</div>
+      <div class="social-grid">
+        <a class="social-icon-btn" href="https://www.instagram.com/rerastreats" target="_blank" title="Instagram">IG</a>
+        <a class="social-icon-btn" href="https://wa.me/2349124800610" target="_blank" title="WhatsApp">WA</a>
+        <a class="social-icon-btn" href="https://www.tiktok.com/@fingerfoodinogijo" target="_blank" title="TikTok">TT</a>
+      </div>
+    </div>
+
+    <div class="order-hours">
+      <div class="order-hours-title">Order Hours</div>
+      <div class="order-hours-text">Open daily, Sunday – Saturday<br>9:00 AM – 8:00 PM</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">Rera's <span style="color:var(--orange)">Treat</span></div>
+      <div class="footer-slogan">Made with the love of a mother's kitchen.</div>
+      <div class="footer-socials">
+        <a class="footer-social-btn" href="https://www.instagram.com/rerastreats" target="_blank" title="Instagram">IG</a>
+        <a class="footer-social-btn" href="https://wa.me/2349124800610" target="_blank" title="WhatsApp">WA</a>
+        <a class="footer-social-btn" href="https://www.tiktok.com/@fingerfoodinogijo" target="_blank" title="TikTok">TT</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Contact</div>
+      <div class="footer-line">0912 480 0610</div>
+      <div class="footer-line">rerastreat@gmail.com</div>
+    </div>
+    <div>
+      <div class="footer-col-title">Find Us</div>
+      <div class="footer-line">Ogijo-Redemption Camp Road, Limelight School, Ajipon Bus-stop</div>
+      <div class="footer-line">Ogijo, Ogun State, Nigeria</div>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2026 Rera's Treat. All rights reserved.</div>
+</footer>
+
+<script>
+  // Submits via Netlify Forms (data-netlify="true" above) — Netlify emails
+  // rerastreat@gmail.com once "Form notifications" is set up in the site's
+  // dashboard (Site settings → Forms → Form notifications → Email notification).
+  function encodeForm(data){
+    return Object.keys(data).map(k => encodeURIComponent(k) + '=' + encodeURIComponent(data[k])).join('&');
+  }
+
+  const feedbackForm = document.getElementById('feedbackForm');
+  feedbackForm.addEventListener('submit', function(e){
+    e.preventDefault();
+    fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: encodeForm({
+        'form-name': feedbackForm.getAttribute('name'),
+        name: document.getElementById('fbName').value,
+        phone: document.getElementById('fbPhone').value,
+        details: document.getElementById('fbDetails').value,
+      }),
+    })
+      .then(() => {
+        document.getElementById('fbSuccess').style.display = 'block';
+        feedbackForm.reset();
+      })
+      .catch(() => {
+        alert("Sorry, we couldn't send your feedback right now. Please try again or reach us on WhatsApp.");
+      });
+  });
+</script>
+
+</body>
+</html>
