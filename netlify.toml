@@ -1,0 +1,5 @@
+[[redirects]]
+  from = "/admin/*"
+  to = "https://admin-web-production-89b5.up.railway.app/admin/:splat"
+  status = 200
+  force = true
