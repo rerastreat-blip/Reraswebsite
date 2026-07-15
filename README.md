@@ -82,6 +82,6 @@ itself. Hosting stays free.
 - The Contact page's feedback form now submits via **Netlify Forms** —
   no backend needed. After deploying to Netlify, go to
   **Site settings → Forms → Form notifications → Add notification →
-  Email notification**, and set the email to `rerastreat@gmail.com`.
+  Email notification**, and set the email to `orders@rerastreat.com.ng`.
   Until that's set up, submissions are still captured under
   **Forms** in the Netlify dashboard, just not emailed anywhere.
