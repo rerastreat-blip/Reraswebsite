@@ -154,6 +154,10 @@
         <label class="checkout-label">Phone Number</label>
         <input class="checkout-input" id="checkoutPhone" type="tel" autocomplete="tel" placeholder="0912 345 6789">
       </div>
+      <div class="checkout-form-group" id="tableNumberGroup" style="display:none">
+        <label class="checkout-label">Table Number</label>
+        <input class="checkout-input" id="checkoutTableNumber" type="text" placeholder="e.g. 4">
+      </div>
       <button class="checkout-next-btn" id="detailsNext">Continue →</button>
       <button class="checkout-back-btn" id="detailsBack" type="button">← Back</button>
     </div>
@@ -431,6 +435,8 @@
   const checkoutFinish = document.getElementById('checkoutFinish');
   const checkoutName = document.getElementById('checkoutName');
   const checkoutPhone = document.getElementById('checkoutPhone');
+  const tableNumberGroup = document.getElementById('tableNumberGroup');
+  const checkoutTableNumber = document.getElementById('checkoutTableNumber');
 
   let checkoutOrderType = null;
   let checkoutSessionId = null;
@@ -457,6 +463,8 @@
     document.querySelectorAll('.order-type-btn').forEach(b => b.classList.remove('selected'));
     checkoutName.value = '';
     checkoutPhone.value = '';
+    checkoutTableNumber.value = '';
+    tableNumberGroup.style.display = 'none';
     clearError(detailsError);
     clearError(paymentError);
     showStep(stepOrderType);
@@ -480,15 +488,24 @@
     });
   });
 
-  orderTypeNext.addEventListener('click', () => showStep(stepDetails));
+  orderTypeNext.addEventListener('click', () => {
+    tableNumberGroup.style.display = checkoutOrderType === 'DINE_IN' ? 'block' : 'none';
+    showStep(stepDetails);
+  });
 
   detailsNext.addEventListener('click', async () => {
     clearError(detailsError);
     const name = checkoutName.value.trim();
     const phone = checkoutPhone.value.trim();
+    const tableNumber = checkoutTableNumber.value.trim();
 
     if (!name || !phone) {
       showError(detailsError, 'Please enter your name and phone number.');
+      return;
+    }
+
+    if (checkoutOrderType === 'DINE_IN' && !tableNumber) {
+      showError(detailsError, 'Please enter your table number.');
       return;
     }
 
@@ -509,7 +526,12 @@
       const updateRes = await fetch(`${API_ORIGIN}/whatsapp-sessions/${session.id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ customerName: name, orderType: checkoutOrderType, cartItems }),
+        body: JSON.stringify({
+          customerName: name,
+          orderType: checkoutOrderType,
+          cartItems,
+          ...(checkoutOrderType === 'DINE_IN' ? { tableNumber } : {}),
+        }),
       });
       if (!updateRes.ok) throw new Error('Could not update your cart.');
 
