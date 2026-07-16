@@ -459,17 +459,17 @@
   }
 
   function openCheckout(){
-    checkoutOrderType = null;
+    // Pickup is the only order type for now (Dine In disabled above) —
+    // skip the order-type step and go straight to details.
+    checkoutOrderType = 'PICKUP';
     checkoutSessionId = null;
-    orderTypeNext.disabled = true;
-    document.querySelectorAll('.order-type-btn').forEach(b => b.classList.remove('selected'));
     checkoutName.value = '';
     checkoutPhone.value = '';
     checkoutTableNumber.value = '';
     tableNumberGroup.style.display = 'none';
     clearError(detailsError);
     clearError(paymentError);
-    showStep(stepOrderType);
+    showStep(stepDetails);
     checkoutOverlay.classList.add('show');
   }
 
@@ -479,7 +479,7 @@
 
   trayBtn.addEventListener('click', openCheckout);
   checkoutClose.addEventListener('click', closeCheckout);
-  detailsBack.addEventListener('click', () => showStep(stepOrderType));
+  detailsBack.addEventListener('click', closeCheckout);
 
   document.querySelectorAll('.order-type-btn').forEach(btn => {
     btn.addEventListener('click', () => {
