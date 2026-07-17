@@ -129,7 +129,227 @@
 
 <div class="menu-filter" id="menuFilter"></div>
 <div id="menuSections">
-  <p style="text-align:center;color:var(--muted);padding:3rem 1.5rem;font-size:14px;">Loading menu…</p>
+  <!-- Static fallback so dish names/prices are visible in the raw HTML for
+       search engines and no-JS clients. Overwritten by loadMenu() below once
+       JS runs, so real visitors always see the live, interactive menu.
+       Regenerate this block whenever the menu changes meaningfully. -->
+  <section class="category-section">
+    <h2 class="category-title">Packs</h2>
+    <div class="menu-grid">
+      <div class="menu-card">
+        <div class="menu-thumb"></div>
+        <div class="menu-name">Ajeyo Box</div>
+        <div class="menu-desc">For 4 — 20 puff puff, 12 mosas, 4 spring rolls, 4 samosas, 4 chicken, 4 gizzard &amp; 1 turkey</div>
+        <div class="menu-foot"><div class="menu-price">&#8358;17,000</div></div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-thumb"></div>
+        <div class="menu-name">Grand Box</div>
+        <div class="menu-desc">The Works — For 10 — 40 puff puff, 30 mosas, 10 samosas, 10 spring rolls, 10 chicken, 10 gizzards &amp; 10 snails</div>
+        <div class="menu-foot"><div class="menu-price">&#8358;38,000</div></div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-thumb"></div>
+        <div class="menu-name">Igbadun Box</div>
+        <div class="menu-desc">For 4 — 16 puff puff, 12 mosas, 4 samosas, 4 spring rolls, 4 chicken &amp; 4 gizzards</div>
+        <div class="menu-foot"><div class="menu-price">&#8358;13,000</div></div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-thumb"></div>
+        <div class="menu-name">Jolly Box</div>
+        <div class="menu-desc">For 10 — 40 puff puff, 30 mosas, 10 samosas, 10 spring rolls &amp; 10 gizzards</div>
+        <div class="menu-foot"><div class="menu-price">&#8358;21,000</div></div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-thumb"></div>
+        <div class="menu-name">Love for All</div>
+        <div class="menu-desc">Fan Favourite — For 10 — 40 puff puff, 30 mosas, 10 samosas, 10 spring rolls, 10 chicken &amp; 10 gizzards</div>
+        <div class="menu-foot"><div class="menu-price">&#8358;29,500</div></div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-thumb"></div>
+        <div class="menu-name">Sempe Box</div>
+        <div class="menu-desc">For 4 — 16 puff puff, 12 mosas, 4 samosas, 4 spring rolls &amp; 4 gizzards</div>
+        <div class="menu-foot"><div class="menu-price">&#8358;9,500</div></div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-thumb"></div>
+        <div class="menu-name">Share Box of 2</div>
+        <div class="menu-desc">For 10 — 40 puff puff, 30 mosas, 10 samosas, 10 spring rolls &amp; 10 chicken</div>
+        <div class="menu-foot"><div class="menu-price">&#8358;25,500</div></div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-thumb"></div>
+        <div class="menu-name">Solo Pack</div>
+        <div class="menu-desc">8 puff puff, 6 mosas, 2 samosas, 2 spring rolls &amp; 1 turkey</div>
+        <div class="menu-foot"><div class="menu-price">&#8358;6,500</div></div>
+      </div>
+    </div>
+  </section>
+  <section class="category-section">
+    <h2 class="category-title">Platters</h2>
+    <div class="menu-grid">
+      <div class="menu-card">
+        <div class="menu-thumb"></div>
+        <div class="menu-name">Asun — Full Goat</div>
+        <div class="menu-desc">Peppered smoked goat, full portion</div>
+        <div class="menu-foot"><div class="menu-price">&#8358;110,000</div></div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-thumb"></div>
+        <div class="menu-name">Asun — Half Goat</div>
+        <div class="menu-desc">Peppered smoked goat, half portion</div>
+        <div class="menu-foot"><div class="menu-price">&#8358;70,000</div></div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-thumb"></div>
+        <div class="menu-name">BBQ &amp; Fries</div>
+        <div class="menu-desc">Grilled goodness with crispy fries.</div>
+        <div class="menu-foot"><div class="menu-price">&#8358;6,500</div></div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-thumb"></div>
+        <div class="menu-name">Catfish &amp; Chips</div>
+        <div class="menu-desc">Tender catfish served with chips</div>
+        <div class="menu-foot"><div class="menu-price">&#8358;20,000</div></div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-thumb"></div>
+        <div class="menu-name">Croaker &amp; Chips</div>
+        <div class="menu-desc">Whole croaker fish with seasoned chips</div>
+        <div class="menu-foot"><div class="menu-price">&#8358;15,000</div></div>
+      </div>
+    </div>
+  </section>
+  <section class="category-section">
+    <h2 class="category-title">Specials</h2>
+    <div class="menu-grid">
+      <div class="menu-card">
+        <div class="menu-thumb"></div>
+        <div class="menu-name">Beef Kebab</div>
+        <div class="menu-foot"><div class="menu-price">&#8358;800</div></div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-thumb"></div>
+        <div class="menu-name">Chicken (1 piece)</div>
+        <div class="menu-foot"><div class="menu-price">&#8358;850</div></div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-thumb"></div>
+        <div class="menu-name">Chicken Spring Roll</div>
+        <div class="menu-foot"><div class="menu-price">&#8358;1,500</div></div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-thumb"></div>
+        <div class="menu-name">Corn Dog</div>
+        <div class="menu-foot"><div class="menu-price">&#8358;650</div></div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-thumb"></div>
+        <div class="menu-name">Crispy Prawn</div>
+        <div class="menu-foot"><div class="menu-price">&#8358;2,000</div></div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-thumb"></div>
+        <div class="menu-name">Extra Box / Packaging</div>
+        <div class="menu-desc">Additional box or packaging for your order</div>
+        <div class="menu-foot"><div class="menu-price">&#8358;1,000</div></div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-thumb"></div>
+        <div class="menu-name">Gizzard (1 piece)</div>
+        <div class="menu-foot"><div class="menu-price">&#8358;400</div></div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-thumb"></div>
+        <div class="menu-name">Money Bags</div>
+        <div class="menu-foot"><div class="menu-price">&#8358;750</div></div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-thumb"></div>
+        <div class="menu-name">Mosa (10 pieces)</div>
+        <div class="menu-foot"><div class="menu-price">&#8358;2,500</div></div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-thumb"></div>
+        <div class="menu-name">Prawns &amp; Mayo Roll</div>
+        <div class="menu-foot"><div class="menu-price">&#8358;2,000</div></div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-thumb"></div>
+        <div class="menu-name">Puff Puff (10 pieces)</div>
+        <div class="menu-foot"><div class="menu-price">&#8358;2,500</div></div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-thumb"></div>
+        <div class="menu-name">Puffpuff</div>
+        <div class="menu-desc">A spicy puffpuff</div>
+        <div class="menu-foot"><div class="menu-price">&#8358;500</div></div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-thumb"></div>
+        <div class="menu-name">Samosa</div>
+        <div class="menu-foot"><div class="menu-price">&#8358;350</div></div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-thumb"></div>
+        <div class="menu-name">Snails</div>
+        <div class="menu-foot"><div class="menu-price">&#8358;1,500</div></div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-thumb"></div>
+        <div class="menu-name">Spring Roll</div>
+        <div class="menu-foot"><div class="menu-price">&#8358;350</div></div>
+      </div>
+    </div>
+  </section>
+  <section class="category-section">
+    <h2 class="category-title">Whole Meals</h2>
+    <div class="menu-grid">
+      <div class="menu-card">
+        <div class="menu-thumb"></div>
+        <div class="menu-name">Regular Box — Chicken &amp; Gizzard Combo</div>
+        <div class="menu-desc">4 puff puff, 3 mosas, 1 samosa, 1 spring roll, 1 chicken &amp; 1 gizzard</div>
+        <div class="menu-foot"><div class="menu-price">&#8358;2,900</div></div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-thumb"></div>
+        <div class="menu-name">Regular Box — Chicken &amp; Sausage Combo</div>
+        <div class="menu-desc">4 puff puff, 3 mosas, 1 samosa, 1 spring roll, 1 chicken &amp; 1 sausage</div>
+        <div class="menu-foot"><div class="menu-price">&#8358;2,900</div></div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-thumb"></div>
+        <div class="menu-name">Regular Box — Chicken, Gizzard &amp; Sausage Combo</div>
+        <div class="menu-desc">4 puff puff, 3 mosas, 1 samosa, 1 spring roll, 1 chicken, 1 gizzard &amp; 1 sausage</div>
+        <div class="menu-foot"><div class="menu-price">&#8358;3,100</div></div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-thumb"></div>
+        <div class="menu-name">Regular Box — Chicken, Gizzard &amp; Snail Combo</div>
+        <div class="menu-desc">4 puff puff, 3 mosas, 1 samosa, 1 spring roll, 1 chicken, 1 gizzard &amp; 1 snail</div>
+        <div class="menu-foot"><div class="menu-price">&#8358;3,600</div></div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-thumb"></div>
+        <div class="menu-name">Regular Box — Prawn &amp; Gizzard Combo</div>
+        <div class="menu-desc">4 puff puff, 3 mosas, 1 samosa, 1 spring roll, prawn/crispy prawn &amp; 1 gizzard</div>
+        <div class="menu-foot"><div class="menu-price">&#8358;3,750</div></div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-thumb"></div>
+        <div class="menu-name">Regular Box — Puff Puff, Mosa, Samosa, Spring Roll &amp; Chicken</div>
+        <div class="menu-desc">4 puff puff, 3 mosas, 1 samosa, 1 spring roll &amp; 1 chicken</div>
+        <div class="menu-foot"><div class="menu-price">&#8358;2,500</div></div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-thumb"></div>
+        <div class="menu-name">Regular Box — Puff Puff, Mosa, Samosa, Spring Roll &amp; Gizzard</div>
+        <div class="menu-desc">4 puff puff, 3 mosas, 1 samosa, 1 spring roll &amp; 1 gizzard</div>
+        <div class="menu-foot"><div class="menu-price">&#8358;2,250</div></div>
+      </div>
+    </div>
+  </section>
 </div>
 
 <div class="tray" id="tray">
