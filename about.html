@@ -26,6 +26,24 @@
   .stat-row{display:flex;gap:2.5rem;justify-content:center;margin-top:2.5rem}
   .stat-num{font-family:'Cormorant Garamond',serif;font-size:30px;color:var(--orange);font-weight:700;text-align:center}
   .stat-label{font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;text-align:center}
+
+  /* Community modal */
+  .community-overlay{position:fixed;inset:0;background:rgba(31,26,20,.55);display:none;align-items:center;justify-content:center;z-index:100;padding:1.5rem}
+  .community-overlay.show{display:flex}
+  .community-modal{background:#fff;border-radius:16px;padding:2rem;width:min(92%,460px);max-height:88vh;overflow-y:auto;position:relative}
+  .community-close{position:absolute;top:14px;right:16px;background:none;border:none;font-size:20px;color:var(--muted);cursor:pointer;line-height:1}
+  .community-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;color:var(--green);margin-bottom:.75rem}
+  .community-intro{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:1.5rem}
+  .community-error{background:#FCEAEA;border:1px solid #E7A9A9;color:#A23B3B;font-size:12px;border-radius:8px;padding:10px 12px;margin-bottom:1rem;display:none}
+  .community-error.show{display:block}
+  .community-success-icon{width:52px;height:52px;border-radius:50%;background:var(--pale-g);color:var(--green);font-size:24px;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem}
+  .community-form-group{margin-bottom:1.1rem}
+  .community-label{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:6px}
+  .community-input{width:100%;background:#fff;border:1px solid var(--border);border-radius:8px;padding:11px 14px;font-family:'Jost',sans-serif;font-size:13px;color:var(--black);transition:border-color .2s;outline:none}
+  .community-input:focus{border-color:var(--orange)}
+  .community-btn{width:100%;background:var(--orange);color:#fff;border:none;border-radius:8px;padding:14px;font-family:'Jost',sans-serif;font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:500;cursor:pointer;transition:background .2s,transform .2s;margin-top:.5rem}
+  .community-btn:hover{background:#d05518;transform:translateY(-1px)}
+  .community-btn:disabled{opacity:.6;cursor:not-allowed}
 </style>
 </head>
 <body>
@@ -46,6 +64,7 @@
       <a href="about.html" class="active">About</a>
       <a href="contact.html">Contact</a>
     </div>
+    <button type="button" class="btn btn-outline" style="padding:10px 18px" data-open-community>Join Community</button>
     <a href="menu.html" class="btn btn-primary" style="padding:10px 18px">Order Now</a>
   </div>
 </nav>
@@ -99,6 +118,126 @@
   </div>
   <div class="footer-bottom">© 2026 Rera's Treat. All rights reserved.</div>
 </footer>
+
+<div class="community-overlay" id="communityOverlay">
+  <div class="community-modal">
+    <button class="community-close" id="communityClose" aria-label="Close">×</button>
+    <h3 class="community-title">Join the Rera's Treat Community</h3>
+    <p class="community-intro">We're building something for Ogijo — and honestly, it's better built with you than without you. Join the community and be the first to know when we open, get early perks, and help shape what's on the menu.</p>
+
+    <div class="community-error" id="communityError"></div>
+
+    <div id="communitySuccessState" style="display:none;text-align:center">
+      <div class="community-success-icon">✓</div>
+      <p style="font-size:13px;color:var(--muted)">You're in! Keep an eye on your phone/email — a welcome message is on its way.</p>
+    </div>
+
+    <form id="communityForm">
+      <div class="community-form-group">
+        <label class="community-label">Name</label>
+        <input class="community-input" type="text" id="communityName" required>
+      </div>
+      <div class="community-form-group">
+        <label class="community-label">Phone (WhatsApp) or Email</label>
+        <input class="community-input" type="text" id="communityContact" placeholder="0912 345 6789 or you@email.com" required>
+      </div>
+      <div class="community-form-group">
+        <label class="community-label">Town</label>
+        <select class="community-input" id="communityTown" required>
+          <option value="">Select your town</option>
+          <option value="OGIJO">Ogijo</option>
+          <option value="ITAOLUWO">Itaoluwo</option>
+          <option value="SHIMAWA">Shimawa</option>
+          <option value="ODONGUYAN">Odonguyan</option>
+          <option value="LUKOSI">Lukosi</option>
+        </select>
+      </div>
+      <div class="community-form-group">
+        <label class="community-label">What are you most excited to try? (optional)</label>
+        <select class="community-input" id="communityMenuInterest">
+          <option value="">No preference</option>
+          <option value="SMALL_CHOPS">Small chops</option>
+          <option value="FINGER_FOODS">Finger foods</option>
+          <option value="PASTA">Pasta</option>
+          <option value="DRINKS">Drinks</option>
+        </select>
+      </div>
+      <button type="submit" class="community-btn" id="communitySubmit">Join the Community</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  const COMMUNITY_API_ORIGIN = 'https://reraos-api-production.up.railway.app';
+
+  const communityOverlay = document.getElementById('communityOverlay');
+  const communityClose = document.getElementById('communityClose');
+  const communityForm = document.getElementById('communityForm');
+  const communityError = document.getElementById('communityError');
+  const communitySuccessState = document.getElementById('communitySuccessState');
+  const communitySubmit = document.getElementById('communitySubmit');
+
+  document.querySelectorAll('[data-open-community]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      communityOverlay.classList.add('show');
+    });
+  });
+
+  communityClose.addEventListener('click', () => {
+    communityOverlay.classList.remove('show');
+  });
+
+  communityOverlay.addEventListener('click', (e) => {
+    if (e.target === communityOverlay) communityOverlay.classList.remove('show');
+  });
+
+  communityForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    communityError.textContent = '';
+    communityError.classList.remove('show');
+
+    const name = document.getElementById('communityName').value.trim();
+    const contact = document.getElementById('communityContact').value.trim();
+    const town = document.getElementById('communityTown').value;
+    const menuInterest = document.getElementById('communityMenuInterest').value;
+
+    if (!name || !contact || !town) {
+      communityError.textContent = 'Please fill in your name, contact, and town.';
+      communityError.classList.add('show');
+      return;
+    }
+
+    communitySubmit.disabled = true;
+    communitySubmit.textContent = 'Joining…';
+
+    try {
+      const res = await fetch(`${COMMUNITY_API_ORIGIN}/community`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          contact,
+          town,
+          menuInterest: menuInterest || undefined,
+        }),
+      });
+
+      if (!res.ok) {
+        const body = await res.json().catch(() => null);
+        throw new Error(body?.message || 'Something went wrong. Please try again.');
+      }
+
+      communityForm.style.display = 'none';
+      communitySuccessState.style.display = 'block';
+    } catch (err) {
+      communityError.textContent = err.message || 'Something went wrong. Please try again.';
+      communityError.classList.add('show');
+    } finally {
+      communitySubmit.disabled = false;
+      communitySubmit.textContent = 'Join the Community';
+    }
+  });
+</script>
 
 </body>
 </html>
