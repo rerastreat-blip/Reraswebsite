@@ -1,5 +1,10 @@
 [[redirects]]
   from = "/admin/*"
-  to = "https://admin-web-production-89b5.up.railway.app/admin/:splat"
+  to = "https://rera-os-admin-web-rerastreat.vercel.app/admin/:splat"
   status = 200
   force = true
+
+[[redirects]]
+  from = "/events/*"
+  to = "/events.html"
+  status = 200

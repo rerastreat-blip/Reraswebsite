@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MVVD33NMMS"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-MVVD33NMMS');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="pageTitle">Rera's Treat — Events</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+  .event-hero{padding:4rem 1.5rem 1rem;text-align:center}
+  .event-hero-title{font-size:clamp(32px,5vw,48px);font-weight:700;color:var(--green)}
+  .event-hero-meta{font-size:13px;color:var(--muted);margin-top:.5rem}
+  .event-wrap{max-width:540px;margin:0 auto;padding:2rem 1.5rem 6rem}
+
+  .event-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:2rem}
+  .event-intro{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:1.5rem;text-align:center}
+  .event-body{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:1.5rem}
+
+  .checkout-form-group{margin-bottom:1.1rem}
+  .checkout-label{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:6px}
+  .checkout-input{width:100%;background:#fff;border:1px solid var(--border);border-radius:8px;padding:11px 14px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--black);outline:none;transition:border-color .2s}
+  .checkout-input:focus{border-color:var(--orange)}
+  textarea.checkout-input{resize:vertical;min-height:64px}
+  .checkout-next-btn{width:100%;background:var(--orange);color:#fff;border:none;border-radius:8px;padding:14px;font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;cursor:pointer;transition:.2s;margin-top:.5rem}
+  .checkout-next-btn:hover{background:var(--orange-dark)}
+  .checkout-next-btn:disabled{opacity:.6;cursor:not-allowed}
+  .checkout-error{background:#FCEAEA;border:1px solid #E7A9A9;color:#A23B3B;font-size:12px;border-radius:8px;padding:10px 12px;margin-bottom:1rem;display:none}
+  .checkout-error.show{display:block}
+
+  .event-checkbox-group{display:flex;flex-direction:column;gap:8px}
+  .event-checkbox-row{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--black)}
+
+  .event-success-icon{width:52px;height:52px;border-radius:50%;background:var(--pale-g);color:var(--green);font-size:24px;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem}
+  .event-success-text{font-size:13px;color:var(--muted);text-align:center;line-height:1.7}
+  .event-closed{text-align:center;color:#A23B3B;font-size:13px;padding:1rem;background:#FCEAEA;border-radius:12px}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="logo">
+      <svg viewBox="0 0 220 62" height="40" role="img" aria-label="Rera's Treat">
+        <path d="M108 5 C108 2.3 110.5 0.6 112.8 2.4 C115.1 0.6 117.6 2.3 117.6 5 C117.6 8.2 112.8 12.5 112.8 12.5 C112.8 12.5 108 8.2 108 5Z" fill="#D94A32"/>
+        <text x="0" y="40" font-family="'Fraunces', Georgia, serif" font-size="30" font-weight="600" letter-spacing="0.3"><tspan fill="#3B2118">Rera&#8217;s </tspan><tspan fill="#D94A32">Treat</tspan></text>
+        <rect x="0" y="48" width="170" height="3" rx="1.5" fill="#E9A83B"/>
+      </svg>
+    </a>
+    <div class="nav-links">
+      <a href="menu.html">Menu</a>
+      <a href="about.html">Our Story</a>
+      <a href="track-order.html">Track Order</a>
+    </div>
+    <a href="menu.html" class="btn btn-primary" style="padding:10px 18px">Order Now</a>
+  </div>
+</nav>
+
+<section class="event-hero">
+  <div class="eyebrow">Rera's Treat Event</div>
+  <h1 class="event-hero-title" id="eventTitle">Loading…</h1>
+  <p class="event-hero-meta" id="eventMeta"></p>
+</section>
+
+<section class="event-wrap">
+  <div class="event-card">
+    <div id="loadingState">
+      <p style="text-align:center;color:var(--muted);font-size:13px">Loading event details…</p>
+    </div>
+
+    <div id="notFoundState" style="display:none">
+      <div class="event-closed">We couldn't find this event. It may have been moved or the link is out of date.</div>
+    </div>
+
+    <div id="closedState" style="display:none">
+      <p class="event-intro" id="closedIntro"></p>
+      <div class="event-closed">RSVPs are closed for this event.</div>
+    </div>
+
+    <div id="formState" style="display:none">
+      <p class="event-intro" id="eventIntro"></p>
+      <p class="event-body" id="eventBody" style="display:none"></p>
+
+      <div class="checkout-error" id="rsvpError"></div>
+
+      <form id="rsvpForm">
+        <div class="checkout-form-group">
+          <label class="checkout-label">Name</label>
+          <input class="checkout-input" id="rsvpName" type="text" required>
+        </div>
+        <div class="checkout-form-group">
+          <label class="checkout-label">Email</label>
+          <input class="checkout-input" id="rsvpEmail" type="email" placeholder="you@example.com">
+        </div>
+        <div class="checkout-form-group">
+          <label class="checkout-label">Phone</label>
+          <input class="checkout-input" id="rsvpPhone" type="tel" placeholder="0912 345 6789">
+        </div>
+        <div class="checkout-form-group">
+          <label class="checkout-label">Number Attending</label>
+          <input class="checkout-input" id="rsvpNumberAttending" type="number" min="1" value="1">
+        </div>
+        <div class="checkout-form-group">
+          <label class="checkout-label">Dietary / allergy note (optional)</label>
+          <textarea class="checkout-input" id="rsvpDietary" placeholder="e.g. no peanuts"></textarea>
+        </div>
+        <div class="checkout-form-group">
+          <label class="checkout-label">How did you hear about Rera's Treat?</label>
+          <input class="checkout-input" id="rsvpHearAboutUs" type="text" placeholder="e.g. Instagram">
+        </div>
+        <div class="checkout-form-group" id="interestGroup" style="display:none">
+          <label class="checkout-label">What are you most excited to try?</label>
+          <div class="event-checkbox-group" id="interestOptions"></div>
+        </div>
+
+        <button type="submit" class="checkout-next-btn" id="rsvpSubmit">RSVP</button>
+      </form>
+    </div>
+
+    <div id="successState" style="display:none;text-align:center">
+      <div class="event-success-icon">✓</div>
+      <p class="event-success-text">You're on the list! We can't wait to feed you.<br>Keep an eye on your email/phone for details.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">Rera's <span style="color:var(--orange)">Treat</span></div>
+      <div class="footer-slogan">Love, served generously.</div>
+      <div class="footer-socials">
+        <a class="footer-social-btn" href="https://www.instagram.com/rerastreats" target="_blank" title="Instagram">IG</a>
+        <a class="footer-social-btn" href="https://wa.me/2349124800610" target="_blank" title="WhatsApp">WA</a>
+        <a class="footer-social-btn" href="https://www.tiktok.com/@fingerfoodinogijo" target="_blank" title="TikTok">TT</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Contact</div>
+      <div class="footer-line">0912 480 0610</div>
+      <div class="footer-line">orders@rerastreat.com.ng</div>
+    </div>
+    <div>
+      <div class="footer-col-title">Find Us</div>
+      <div class="footer-line">Ogijo, Ogun State, Nigeria</div>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2026 Rera's Treat. All rights reserved.</div>
+</footer>
+
+<script>
+  const API_ORIGIN = 'https://reraos.onrender.com';
+
+  const slug = window.location.pathname.split('/').filter(Boolean).pop();
+
+  const eventTitle = document.getElementById('eventTitle');
+  const eventMeta = document.getElementById('eventMeta');
+  const loadingState = document.getElementById('loadingState');
+  const notFoundState = document.getElementById('notFoundState');
+  const closedState = document.getElementById('closedState');
+  const closedIntro = document.getElementById('closedIntro');
+  const formState = document.getElementById('formState');
+  const successState = document.getElementById('successState');
+  const eventIntro = document.getElementById('eventIntro');
+  const eventBody = document.getElementById('eventBody');
+  const interestGroup = document.getElementById('interestGroup');
+  const interestOptionsWrap = document.getElementById('interestOptions');
+  const rsvpForm = document.getElementById('rsvpForm');
+  const rsvpError = document.getElementById('rsvpError');
+  const rsvpSubmit = document.getElementById('rsvpSubmit');
+
+  function showError(message) {
+    rsvpError.textContent = message;
+    rsvpError.classList.add('show');
+  }
+
+  function clearError() {
+    rsvpError.textContent = '';
+    rsvpError.classList.remove('show');
+  }
+
+  function formatEventDate(iso) {
+    if (!iso) return '';
+    const d = new Date(iso);
+    return d.toLocaleString('en-NG', { dateStyle: 'full', timeStyle: 'short' });
+  }
+
+  async function loadEvent() {
+    if (!slug || slug === 'events.html' || slug === 'events') {
+      loadingState.style.display = 'none';
+      notFoundState.style.display = 'block';
+      return;
+    }
+
+    try {
+      const res = await fetch(`${API_ORIGIN}/public/events/${encodeURIComponent(slug)}`);
+      if (!res.ok) throw new Error('not found');
+      const event = await res.json();
+
+      document.getElementById('pageTitle').textContent = `${event.title} — Rera's Treat`;
+      eventTitle.textContent = event.title;
+      eventMeta.textContent = [
+        formatEventDate(event.eventDate),
+        event.location,
+      ].filter(Boolean).join(' · ');
+
+      loadingState.style.display = 'none';
+
+      if (!event.rsvpOpen || (event.capacity && event.spotsTaken >= event.capacity)) {
+        closedIntro.textContent = event.description || '';
+        closedState.style.display = 'block';
+        return;
+      }
+
+      eventIntro.textContent = event.description || '';
+      if (event.bodyText) {
+        eventBody.textContent = event.bodyText;
+        eventBody.style.display = 'block';
+      }
+
+      if (Array.isArray(event.interestOptions) && event.interestOptions.length > 0) {
+        interestOptionsWrap.innerHTML = '';
+        event.interestOptions.forEach((option, i) => {
+          const row = document.createElement('label');
+          row.className = 'event-checkbox-row';
+          row.innerHTML = `<input type="checkbox" value="${option.replace(/"/g, '&quot;')}" id="interest_${i}"> ${option}`;
+          interestOptionsWrap.appendChild(row);
+        });
+        interestGroup.style.display = 'block';
+      }
+
+      formState.style.display = 'block';
+    } catch (err) {
+      loadingState.style.display = 'none';
+      notFoundState.style.display = 'block';
+    }
+  }
+
+  rsvpForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    clearError();
+
+    const name = document.getElementById('rsvpName').value.trim();
+    const email = document.getElementById('rsvpEmail').value.trim();
+    const phone = document.getElementById('rsvpPhone').value.trim();
+    const numberAttending = Number(document.getElementById('rsvpNumberAttending').value) || 1;
+    const dietaryNote = document.getElementById('rsvpDietary').value.trim();
+    const hearAboutUs = document.getElementById('rsvpHearAboutUs').value.trim();
+    const interests = Array.from(interestOptionsWrap.querySelectorAll('input:checked')).map(i => i.value);
+
+    if (!name) {
+      showError('Please enter your name.');
+      return;
+    }
+    if (!email && !phone) {
+      showError('Please provide an email or phone number so we can reach you.');
+      return;
+    }
+
+    rsvpSubmit.disabled = true;
+    rsvpSubmit.textContent = 'Sending…';
+
+    try {
+      const res = await fetch(`${API_ORIGIN}/public/events/${encodeURIComponent(slug)}/rsvp`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          email: email || undefined,
+          phone: phone || undefined,
+          numberAttending,
+          dietaryNote: dietaryNote || undefined,
+          hearAboutUs: hearAboutUs || undefined,
+          interests,
+        }),
+      });
+
+      if (!res.ok) {
+        const body = await res.json().catch(() => null);
+        throw new Error(body?.message || 'Something went wrong. Please try again.');
+      }
+
+      formState.style.display = 'none';
+      successState.style.display = 'block';
+    } catch (err) {
+      showError(err.message || 'Something went wrong. Please try again.');
+    } finally {
+      rsvpSubmit.disabled = false;
+      rsvpSubmit.textContent = 'RSVP';
+    }
+  });
+
+  loadEvent();
+</script>
+
+</body>
+</html>
