@@ -34,6 +34,12 @@
   .checkout-error{background:#FCEAEA;border:1px solid #E7A9A9;color:#A23B3B;font-size:12px;border-radius:8px;padding:10px 12px;margin-bottom:1rem;display:none}
   .checkout-error.show{display:block}
 
+  .order-number-group{display:flex;align-items:stretch;border:1px solid var(--border);border-radius:8px;overflow:hidden;transition:border-color .2s}
+  .order-number-group:focus-within{border-color:var(--orange)}
+  .order-number-prefix{display:flex;align-items:center;padding:0 0 0 14px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--muted);background:#fff}
+  .order-number-input.checkout-input{border:none;border-radius:0;padding-left:2px}
+  .order-number-input.checkout-input:focus{border-color:transparent}
+
   .track-order-number{font-family:'Fraunces',serif;font-size:22px;font-weight:600;color:var(--green);text-align:center;margin-bottom:.25rem}
   .track-headline{font-size:13px;color:var(--muted);text-align:center;margin-bottom:1.5rem;line-height:1.6}
   .track-items{font-size:12px;color:var(--muted);text-align:center;margin-bottom:1.5rem}
@@ -95,7 +101,10 @@
     <div id="lookupState">
       <div class="checkout-form-group">
         <label class="checkout-label">Order Number</label>
-        <input class="checkout-input" id="orderNumberInput" type="text" placeholder="e.g. ORD-XXXXX">
+        <div class="order-number-group">
+          <span class="order-number-prefix">#</span>
+          <input class="checkout-input order-number-input" id="orderNumberInput" type="text" placeholder="ORD-XXXXX">
+        </div>
       </div>
       <div class="checkout-error" id="lookupError"></div>
       <button class="checkout-next-btn" id="trackBtn">Track My Order</button>
@@ -195,6 +204,14 @@
   const trackTrackerWrap = document.getElementById('trackTrackerWrap');
   const trackAnotherBtn = document.getElementById('trackAnotherBtn');
 
+  // Customers may type, or paste from a notification, an order number with
+  // a leading "#" (e.g. "#ORD-XXXXX") - the "#" is shown as a fixed prefix
+  // outside the field, so strip any leading #'s the user adds themselves.
+  orderNumberInput.addEventListener('input', () => {
+    const stripped = orderNumberInput.value.replace(/^#+\s*/, '');
+    if (stripped !== orderNumberInput.value) orderNumberInput.value = stripped;
+  });
+
   const STATUS_STEPS = ['Order received', 'Payment confirmed', 'Being prepared', 'Ready', 'Enjoy!'];
 
   const STATUS_PROGRESS = {
@@ -277,7 +294,7 @@
   }
 
   trackBtn.addEventListener('click', () => {
-    const orderNumber = orderNumberInput.value.trim();
+    const orderNumber = orderNumberInput.value.trim().replace(/^#+\s*/, '');
     if (!orderNumber) {
       showError('Please enter your order number.');
       return;
@@ -298,7 +315,7 @@
 
   // Support deep-linking from a notification, e.g. track-order.html?order=ORD-XXXXX
   const params = new URLSearchParams(window.location.search);
-  const linkedOrderNumber = params.get('order');
+  const linkedOrderNumber = (params.get('order') || '').replace(/^#+\s*/, '');
   if (linkedOrderNumber) {
     orderNumberInput.value = linkedOrderNumber;
     trackOrder(linkedOrderNumber);
@@ -373,5 +390,6 @@
   });
 </script>
 
+<script src="nav-events.js" defer></script>
 </body>
 </html>

@@ -26,6 +26,8 @@ nav{position:sticky;top:0;z-index:50;background:rgba(250,246,238,.92);backdrop-f
 .nav-links{display:flex;gap:2rem;font-size:13px;letter-spacing:.05em}
 .nav-links a{color:var(--muted);transition:color .2s}
 .nav-links a:hover,.nav-links a.active{color:var(--orange)}
+.nav-event-link{color:var(--orange)!important;font-weight:600;animation:navEventPulse 2.4s ease-in-out infinite}
+@keyframes navEventPulse{0%,100%{opacity:1}50%{opacity:.55}}
 
 .btn{display:inline-block;padding:14px 28px;border-radius:8px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;cursor:pointer;transition:.2s;border:none}
 .btn-primary{background:var(--orange);color:#fff}

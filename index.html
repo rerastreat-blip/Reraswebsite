@@ -59,6 +59,22 @@
   .community-btn{width:100%;background:var(--orange);color:#fff;border:none;border-radius:8px;padding:14px;font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:500;cursor:pointer;transition:background .2s,transform .2s;margin-top:.5rem}
   .community-btn:hover{background:var(--orange-dark);transform:translateY(-1px)}
   .community-btn:disabled{opacity:.6;cursor:not-allowed}
+
+  /* Event promo modal */
+  .event-promo-overlay{position:fixed;inset:0;background:rgba(31,26,20,.6);display:none;align-items:center;justify-content:center;z-index:110;padding:1.5rem}
+  .event-promo-overlay.show{display:flex}
+  .event-promo-modal{background:#fff;border-radius:20px;width:min(94%,440px);max-height:88vh;overflow-y:auto;position:relative;box-shadow:0 30px 60px -20px rgba(31,26,20,.5);animation:eventPromoIn .35s ease}
+  @keyframes eventPromoIn{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+  .event-promo-band{background:linear-gradient(135deg,var(--orange),var(--gold));padding:2rem 2rem 1.5rem;border-radius:20px 20px 0 0;text-align:center;color:#fff;position:relative}
+  .event-promo-close{position:absolute;top:14px;right:16px;background:rgba(255,255,255,.25);border:none;width:28px;height:28px;border-radius:50%;font-size:16px;color:#fff;cursor:pointer;line-height:1}
+  .event-promo-eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;opacity:.9;font-weight:600}
+  .event-promo-title{font-family:'Fraunces',serif;font-size:28px;font-weight:700;margin:.5rem 0 0;line-height:1.15}
+  .event-promo-body{padding:1.75rem 2rem 2rem;text-align:center}
+  .event-promo-desc{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:1.25rem}
+  .event-promo-meta{display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--green);font-weight:600;margin-bottom:1.5rem}
+  .event-promo-cta{display:block;width:100%;background:var(--orange);color:#fff;border:none;border-radius:8px;padding:14px;font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;cursor:pointer;transition:.2s;text-align:center;text-decoration:none}
+  .event-promo-cta:hover{background:var(--orange-dark);transform:translateY(-1px)}
+  .event-promo-later{display:block;text-align:center;margin-top:.85rem;font-size:12px;color:var(--muted);cursor:pointer;background:none;border:none;text-decoration:underline}
 </style>
 </head>
 <body>
@@ -201,6 +217,22 @@
   </div>
 </div>
 
+<div class="event-promo-overlay" id="eventPromoOverlay">
+  <div class="event-promo-modal">
+    <div class="event-promo-band">
+      <button class="event-promo-close" id="eventPromoClose" aria-label="Close">×</button>
+      <div class="event-promo-eyebrow">You're Invited &#127881;</div>
+      <h3 class="event-promo-title" id="eventPromoTitle"></h3>
+    </div>
+    <div class="event-promo-body">
+      <p class="event-promo-desc" id="eventPromoDesc"></p>
+      <div class="event-promo-meta" id="eventPromoMeta"></div>
+      <a href="#" class="event-promo-cta" id="eventPromoCta">RSVP Now</a>
+      <button type="button" class="event-promo-later" id="eventPromoLater">Maybe later</button>
+    </div>
+  </div>
+</div>
+
 <script>
   const COMMUNITY_API_ORIGIN = 'https://reraos.onrender.com';
 
@@ -271,7 +303,55 @@
       communitySubmit.textContent = 'Join the Community';
     }
   });
+
+  // Event promo modal
+  (function () {
+    const overlay = document.getElementById('eventPromoOverlay');
+    const closeBtn = document.getElementById('eventPromoClose');
+    const laterBtn = document.getElementById('eventPromoLater');
+    const titleEl = document.getElementById('eventPromoTitle');
+    const descEl = document.getElementById('eventPromoDesc');
+    const metaEl = document.getElementById('eventPromoMeta');
+    const ctaEl = document.getElementById('eventPromoCta');
+
+    function dismiss(slug) {
+      overlay.classList.remove('show');
+      try { localStorage.setItem('dismissedEvent_' + slug, '1'); } catch (e) {}
+    }
+
+    fetch(`${COMMUNITY_API_ORIGIN}/public/events/featured`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((event) => {
+        if (!event) return;
+
+        let alreadyDismissed = false;
+        try { alreadyDismissed = localStorage.getItem('dismissedEvent_' + event.slug) === '1'; } catch (e) {}
+        if (alreadyDismissed) return;
+
+        titleEl.textContent = event.title;
+        descEl.textContent = event.description || '';
+
+        const metaParts = [];
+        if (event.eventDate) {
+          metaParts.push(new Date(event.eventDate).toLocaleString('en-NG', { dateStyle: 'full', timeStyle: 'short' }));
+        }
+        if (event.location) metaParts.push(event.location);
+        metaEl.textContent = metaParts.join(' · ');
+
+        ctaEl.href = '/events/' + event.slug;
+
+        closeBtn.addEventListener('click', () => dismiss(event.slug));
+        laterBtn.addEventListener('click', () => dismiss(event.slug));
+        overlay.addEventListener('click', (e) => {
+          if (e.target === overlay) dismiss(event.slug);
+        });
+
+        setTimeout(() => overlay.classList.add('show'), 700);
+      })
+      .catch(() => {});
+  })();
 </script>
 
+<script src="nav-events.js" defer></script>
 </body>
 </html>
