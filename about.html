@@ -27,6 +27,14 @@
   .stat-num{font-family:'Fraunces',serif;font-size:30px;color:var(--gold);font-weight:700;text-align:center}
   .stat-label{font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;text-align:center}
 
+  .believe-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:1rem}
+  .believe-card{background:var(--pale-g);border-radius:14px;padding:1.5rem;text-align:center}
+  .believe-card p{font-family:'Fraunces',serif;font-style:italic;font-size:16px;color:var(--green);font-weight:600;line-height:1.5}
+  @media(max-width:720px){.believe-row{grid-template-columns:1fr}}
+
+  .closing-cta{text-align:center;padding:1rem 1.5rem 0}
+  .closing-cta h2{font-size:clamp(26px,4vw,36px);color:var(--green);margin-bottom:1.25rem}
+
   /* Community modal */
   .community-overlay{position:fixed;inset:0;background:rgba(31,26,20,.55);display:none;align-items:center;justify-content:center;z-index:100;padding:1.5rem}
   .community-overlay.show{display:flex}
@@ -69,21 +77,22 @@
 
 <section class="about-hero">
   <div class="eyebrow">Our Story</div>
-  <h1 class="about-hero-title">Where it all started</h1>
+  <h1 class="about-hero-title">A little piece of Rera, served to you.</h1>
 </section>
 
 <section class="story-wrap">
-  <div class="story-visual"></div>
+  <!-- A real photo of Rera's mother, or her kitchen/cooking, would be far more
+       powerful here than a stock image — drop one in as images/olatorera.jpg
+       and it'll automatically replace this placeholder (see script below). -->
+  <div class="story-visual" data-photo="images/olatorera.jpg"></div>
   <div class="story-body">
-    <p>Rera's Treat is a taste of mother's kitchen and love, wrapped up in finger foods for you and yours.</p>
+    <p>Rera comes from Olatorera, my mother's name. Rera's Treat is my way of sharing a piece of her with the world — through food made with care, generosity and a whole lot of love.</p>
 
     <p>The name "Rera" isn't a word you'll find anywhere else — it was coined, built from scratch, just for this. Because some things you're building deserve a name that's never belonged to anyone before you.</p>
 
     <p>That's the same spirit behind everything that leaves our kitchen in Ogijo. Every spring roll, every skewer, every tray of smallchops is made the way a mother makes food for people she loves — with patience, with care, and without cutting corners just because no one's watching.</p>
 
-    <p>We started small, the way most good things do: a few trays, a few orders, a lot of word-of-mouth. Today, Rera's Treat shows up at birthdays, owambes, quiet Sunday get-togethers, and the occasional "I just wanted something to snack on" order — because finger foods aren't just party food. They're an excuse to gather, to share, to pass a plate around and let everyone grab a piece. From Ogijo to Itaoluwo, Shimawa, Odonguyan, and Lukosi, our finger foods, small chops, pasta, and drinks show up wherever people are gathering.</p>
-
-    <p>Whether you're feeding fifty guests or just yourself on a good day, our promise stays the same: fresh, made-to-order, and finished with the kind of love you'd expect from home.</p>
+    <p>We started small, the way most good things do: a few trays, a few orders, a lot of word-of-mouth. Today, Rera's Treat shows up at birthdays, owambes, quiet Sunday get-togethers, and the occasional "I just wanted something to snack on" order — because finger foods aren't just party food. They're an excuse to gather, to share, to pass a plate around and let everyone grab a piece.</p>
   </div>
 
   <div class="stat-row">
@@ -91,6 +100,25 @@
     <div><div class="stat-num">15+</div><div class="stat-label">Menu Items</div></div>
     <div><div class="stat-num">4.9★</div><div class="stat-label">Customer Rating</div></div>
   </div>
+</section>
+
+<section class="story-wrap" style="padding-top:0">
+  <div class="story-body">
+    <p style="font-family:'Fraunces',serif;font-style:italic;font-size:20px;color:var(--green);font-weight:600;margin-bottom:1rem">Why Ogijo?</p>
+    <p>Because this is home. Ogijo is where Olatorera's kitchen actually lives, and it felt right to build Rera's Treat here first — for the people who are already our neighbours, before we ever think about anywhere else. From Ogijo to Itaoluwo, Shimawa, Odonguyan, and Lukosi, our finger foods, small chops, pasta, and drinks show up wherever people are gathering.</p>
+  </div>
+
+  <p style="font-family:'Fraunces',serif;font-style:italic;font-size:20px;color:var(--green);font-weight:600;margin:2rem 0 1rem;text-align:center">What we believe</p>
+  <div class="believe-row">
+    <div class="believe-card"><p>Quick food can still be thoughtful.</p></div>
+    <div class="believe-card"><p>A treat can still be made with care.</p></div>
+    <div class="believe-card"><p>Food can make people feel special.</p></div>
+  </div>
+</section>
+
+<section class="closing-cta">
+  <h2>Ready for a little Rera?</h2>
+  <a href="menu.html" class="btn btn-primary">Order Now</a>
 </section>
 
 <footer>
@@ -166,6 +194,18 @@
 </div>
 
 <script>
+  // Auto-swap the story visual placeholder for a real photo once one is
+  // added to /images (e.g. images/olatorera.jpg).
+  document.querySelectorAll('.story-visual[data-photo]').forEach(el => {
+    const img = new Image();
+    img.onload = () => {
+      el.style.backgroundImage = `url('${el.dataset.photo}')`;
+      el.style.backgroundSize = 'cover';
+      el.style.backgroundPosition = 'center';
+    };
+    img.src = el.dataset.photo;
+  });
+
   const COMMUNITY_API_ORIGIN = 'https://reraos-api-production.up.railway.app';
 
   const communityOverlay = document.getElementById('communityOverlay');
