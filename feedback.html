@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MVVD33NMMS"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-MVVD33NMMS');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tell Us What You Thought — Rera's Treat</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+  .fb-hero{padding:4rem 1.5rem 1rem;text-align:center}
+  .fb-hero-title{font-size:clamp(32px,5vw,48px);font-weight:700;color:var(--green)}
+  .fb-wrap{max-width:480px;margin:0 auto;padding:2rem 1.5rem 6rem}
+  .fb-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:2rem}
+  .fb-intro{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:1.5rem;text-align:center}
+
+  .checkout-form-group{margin-bottom:1.1rem}
+  .checkout-label{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:6px}
+  .checkout-input{width:100%;background:#fff;border:1px solid var(--border);border-radius:8px;padding:11px 14px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--black);outline:none;transition:border-color .2s}
+  .checkout-input:focus{border-color:var(--orange)}
+  textarea.checkout-input{resize:vertical;min-height:80px}
+  .checkout-next-btn{width:100%;background:var(--orange);color:#fff;border:none;border-radius:8px;padding:14px;font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;cursor:pointer;transition:.2s;margin-top:.5rem}
+  .checkout-next-btn:hover{background:var(--orange-dark)}
+  .checkout-next-btn:disabled{opacity:.6;cursor:not-allowed}
+  .checkout-error{background:#FCEAEA;border:1px solid #E7A9A9;color:#A23B3B;font-size:12px;border-radius:8px;padding:10px 12px;margin-bottom:1rem;display:none}
+  .checkout-error.show{display:block}
+
+  .fb-rating{display:flex;gap:8px;justify-content:center;margin-bottom:1.5rem}
+  .fb-star{font-size:32px;cursor:pointer;color:var(--border);transition:color .15s}
+  .fb-star.active{color:var(--gold,#D9A441)}
+
+  .fb-success-icon{width:52px;height:52px;border-radius:50%;background:var(--pale-g);color:var(--green);font-size:24px;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem}
+  .fb-success-text{font-size:13px;color:var(--muted);text-align:center;line-height:1.7}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="logo">
+      <svg viewBox="0 0 220 62" height="40" role="img" aria-label="Rera's Treat">
+        <path d="M108 5 C108 2.3 110.5 0.6 112.8 2.4 C115.1 0.6 117.6 2.3 117.6 5 C117.6 8.2 112.8 12.5 112.8 12.5 C112.8 12.5 108 8.2 108 5Z" fill="#D94A32"/>
+        <text x="0" y="40" font-family="'Fraunces', Georgia, serif" font-size="30" font-weight="600" letter-spacing="0.3"><tspan fill="#3B2118">Rera&#8217;s </tspan><tspan fill="#D94A32">Treat</tspan></text>
+        <rect x="0" y="48" width="170" height="3" rx="1.5" fill="#E9A83B"/>
+      </svg>
+    </a>
+    <div class="nav-links">
+      <a href="menu.html">Menu</a>
+      <a href="about.html">Our Story</a>
+      <a href="track-order.html">Track Order</a>
+    </div>
+    <a href="menu.html" class="btn btn-primary" style="padding:10px 18px">Order Now</a>
+  </div>
+</nav>
+
+<section class="fb-hero">
+  <div class="eyebrow">Feedback</div>
+  <h1 class="fb-hero-title" id="fbTitle">How was it?</h1>
+</section>
+
+<section class="fb-wrap">
+  <div class="fb-card">
+    <div id="loadingState">
+      <p style="text-align:center;color:var(--muted);font-size:13px">Loading…</p>
+    </div>
+
+    <div id="notFoundState" style="display:none">
+      <p style="text-align:center;color:#A23B3B;font-size:13px">We couldn't find this feedback link.</p>
+    </div>
+
+    <div id="alreadySubmittedState" style="display:none;text-align:center">
+      <div class="fb-success-icon">✓</div>
+      <p class="fb-success-text">Thanks — we've already got your feedback on this one. We really appreciate it!</p>
+    </div>
+
+    <div id="formState" style="display:none">
+      <p class="fb-intro" id="fbIntro"></p>
+
+      <div class="checkout-error" id="fbError"></div>
+
+      <form id="fbForm">
+        <div class="fb-rating" id="fbRating">
+          <span class="fb-star" data-value="1">★</span>
+          <span class="fb-star" data-value="2">★</span>
+          <span class="fb-star" data-value="3">★</span>
+          <span class="fb-star" data-value="4">★</span>
+          <span class="fb-star" data-value="5">★</span>
+        </div>
+
+        <div class="checkout-form-group">
+          <label class="checkout-label">Tell us more (optional)</label>
+          <textarea class="checkout-input" id="fbText" placeholder="What did you think?"></textarea>
+        </div>
+
+        <button type="submit" class="checkout-next-btn" id="fbSubmit">Send Feedback</button>
+      </form>
+    </div>
+
+    <div id="successState" style="display:none;text-align:center">
+      <div class="fb-success-icon">✓</div>
+      <p class="fb-success-text">Thank you! We read every word.<br>Come hungry again soon.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">Rera's <span style="color:var(--orange)">Treat</span></div>
+      <div class="footer-slogan">Love, served generously.</div>
+      <div class="footer-socials">
+        <a class="footer-social-btn" href="https://www.instagram.com/rerastreats" target="_blank" title="Instagram">IG</a>
+        <a class="footer-social-btn" href="https://wa.me/2349124800610" target="_blank" title="WhatsApp">WA</a>
+        <a class="footer-social-btn" href="https://www.tiktok.com/@fingerfoodinogijo" target="_blank" title="TikTok">TT</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Contact</div>
+      <div class="footer-line">0912 480 0610</div>
+      <div class="footer-line">orders@rerastreat.com.ng</div>
+    </div>
+    <div>
+      <div class="footer-col-title">Find Us</div>
+      <div class="footer-line">Ogijo, Ogun State, Nigeria</div>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2026 Rera's Treat. All rights reserved.</div>
+</footer>
+
+<script>
+  const API_ORIGIN = 'https://reraos.onrender.com';
+
+  const params = new URLSearchParams(window.location.search);
+  const rsvpId = params.get('rsvp');
+
+  const loadingState = document.getElementById('loadingState');
+  const notFoundState = document.getElementById('notFoundState');
+  const alreadySubmittedState = document.getElementById('alreadySubmittedState');
+  const formState = document.getElementById('formState');
+  const successState = document.getElementById('successState');
+  const fbIntro = document.getElementById('fbIntro');
+  const fbForm = document.getElementById('fbForm');
+  const fbError = document.getElementById('fbError');
+  const fbSubmit = document.getElementById('fbSubmit');
+  const fbText = document.getElementById('fbText');
+  const stars = Array.from(document.querySelectorAll('.fb-star'));
+
+  let selectedRating = 0;
+
+  stars.forEach((star) => {
+    star.addEventListener('click', () => {
+      selectedRating = Number(star.dataset.value);
+      stars.forEach((s) => s.classList.toggle('active', Number(s.dataset.value) <= selectedRating));
+    });
+  });
+
+  function showError(message) {
+    fbError.textContent = message;
+    fbError.classList.add('show');
+  }
+
+  async function loadRsvp() {
+    if (!rsvpId) {
+      loadingState.style.display = 'none';
+      notFoundState.style.display = 'block';
+      return;
+    }
+
+    try {
+      const res = await fetch(`${API_ORIGIN}/public/events/rsvp/${encodeURIComponent(rsvpId)}`);
+      if (!res.ok) throw new Error('not found');
+      const data = await res.json();
+
+      loadingState.style.display = 'none';
+
+      if (data.feedback || data.feedbackRating) {
+        alreadySubmittedState.style.display = 'block';
+        return;
+      }
+
+      fbIntro.textContent = `Thanks for coming to ${data.eventTitle}! We'd love to know what you thought.`;
+      formState.style.display = 'block';
+    } catch (err) {
+      loadingState.style.display = 'none';
+      notFoundState.style.display = 'block';
+    }
+  }
+
+  fbForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    fbError.classList.remove('show');
+
+    fbSubmit.disabled = true;
+    fbSubmit.textContent = 'Sending…';
+
+    try {
+      const res = await fetch(`${API_ORIGIN}/public/events/rsvp/${encodeURIComponent(rsvpId)}/feedback`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          feedback: fbText.value.trim() || undefined,
+          feedbackRating: selectedRating || undefined,
+        }),
+      });
+
+      if (!res.ok) throw new Error('Something went wrong. Please try again.');
+
+      formState.style.display = 'none';
+      successState.style.display = 'block';
+    } catch (err) {
+      showError(err.message || 'Something went wrong. Please try again.');
+    } finally {
+      fbSubmit.disabled = false;
+      fbSubmit.textContent = 'Send Feedback';
+    }
+  });
+
+  loadRsvp();
+</script>
+
+</body>
+</html>

@@ -5,6 +5,11 @@
   force = true
 
 [[redirects]]
+  from = "/events/feedback"
+  to = "/feedback.html"
+  status = 200
+
+[[redirects]]
   from = "/events/*"
   to = "/events.html"
   status = 200
