@@ -106,6 +106,11 @@
   .checkout-success-icon{width:52px;height:52px;border-radius:50%;background:var(--pale-g);color:var(--green);font-size:24px;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem}
   #stepDone .checkout-title{text-align:center}
   #ackMessage{font-size:13px;color:var(--muted);text-align:center;margin-bottom:1.5rem;line-height:1.7}
+  .status-tracker{display:flex;flex-direction:column;gap:10px;margin-bottom:1.5rem;padding:1rem;background:var(--pale-g);border-radius:12px}
+  .status-step{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted)}
+  .status-step-done{color:var(--green);font-weight:600}
+  .status-dot{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;border:1.5px solid var(--muted);color:var(--muted);flex-shrink:0}
+  .status-step-done .status-dot{background:var(--green);border-color:var(--green);color:#fff}
 
   /* Cart review step */
   .cart-items{margin-bottom:.5rem;display:flex;flex-direction:column;gap:10px;max-height:240px;overflow-y:auto}
@@ -491,22 +496,52 @@
     </div>
 
     <div class="checkout-step" id="stepPayment" style="display:none">
-      <h3 class="checkout-title">Complete Payment</h3>
+      <h3 class="checkout-title">Let's make it official.</h3>
       <div class="checkout-error" id="paymentError"></div>
+      <div class="payment-box">
+        <div class="payment-row"><span>Order</span><strong id="payOrderNumber"></strong></div>
+        <div class="payment-row payment-amount"><span>Amount</span><strong id="payAmount"></strong></div>
+      </div>
+      <p class="payment-note">Transfer to</p>
       <div class="payment-box">
         <div class="payment-row"><span>Bank</span><strong id="payBank"></strong></div>
         <div class="payment-row"><span>Account Name</span><strong id="payAccountName"></strong></div>
-        <div class="payment-row"><span>Account Number</span><strong id="payAccountNumber"></strong></div>
-        <div class="payment-row payment-amount"><span>Amount</span><strong id="payAmount"></strong></div>
+        <div class="payment-row">
+          <span>Account Number</span>
+          <strong id="payAccountNumber"></strong>
+        </div>
+        <button type="button" class="cart-item-remove" id="copyAccountBtn" style="margin-top:8px">Copy Account Number</button>
       </div>
-      <p class="payment-note">Transfer the exact amount above, then tap the button once you're done. We'll confirm your order shortly after.</p>
-      <button class="checkout-next-btn" id="paidBtn">I Have Paid</button>
+      <p class="payment-note">Transferred? Mark your order as paid below.</p>
+      <button class="checkout-next-btn" id="paidBtn">I've Made Payment</button>
     </div>
 
     <div class="checkout-step" id="stepDone" style="display:none">
-      <div class="checkout-success-icon">✓</div>
-      <h3 class="checkout-title">Order Received!</h3>
+      <div class="checkout-success-icon">❤️</div>
+      <h3 class="checkout-title">Your Rera is coming.</h3>
       <p id="ackMessage"></p>
+      <div class="status-tracker">
+        <div class="status-step status-step-done">
+          <span class="status-dot">✓</span>
+          <span>Order received</span>
+        </div>
+        <div class="status-step">
+          <span class="status-dot">○</span>
+          <span>Payment confirmed</span>
+        </div>
+        <div class="status-step">
+          <span class="status-dot">○</span>
+          <span>Being prepared</span>
+        </div>
+        <div class="status-step">
+          <span class="status-dot">○</span>
+          <span>Ready for pickup</span>
+        </div>
+        <div class="status-step">
+          <span class="status-dot">○</span>
+          <span>Enjoy!</span>
+        </div>
+      </div>
       <button class="checkout-next-btn" id="checkoutFinish">Done</button>
     </div>
   </div>
@@ -1070,6 +1105,7 @@
       const { order, paymentAccount } = await checkoutRes.json();
 
       checkoutSessionId = session.id;
+      document.getElementById('payOrderNumber').textContent = order.orderNumber;
       document.getElementById('payBank').textContent = paymentAccount.bankName;
       document.getElementById('payAccountName').textContent = paymentAccount.accountName;
       document.getElementById('payAccountNumber').textContent = paymentAccount.accountNumber;
@@ -1082,6 +1118,19 @@
     } finally {
       detailsNext.disabled = false;
       detailsNext.textContent = 'Continue →';
+    }
+  });
+
+  const copyAccountBtn = document.getElementById('copyAccountBtn');
+  copyAccountBtn.addEventListener('click', async () => {
+    const accountNumber = document.getElementById('payAccountNumber').textContent;
+    try {
+      await navigator.clipboard.writeText(accountNumber);
+      const original = copyAccountBtn.textContent;
+      copyAccountBtn.textContent = 'Copied!';
+      setTimeout(() => { copyAccountBtn.textContent = original; }, 1500);
+    } catch (err) {
+      console.error('Could not copy account number', err);
     }
   });
 
@@ -1098,7 +1147,7 @@
       const order = await res.json();
 
       document.getElementById('ackMessage').textContent =
-        `Thanks! We've received your order (${order.orderNumber}) and you'll be notified once your payment is confirmed.`;
+        `Order #${order.orderNumber} — we've received your payment notification and are confirming your order.`;
 
       selected.clear();
       document.querySelectorAll('.menu-card.selected').forEach(c => c.classList.remove('selected'));
