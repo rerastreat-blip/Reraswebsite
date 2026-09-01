@@ -14,20 +14,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Menu — Rera's Treat</title>
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <style>
   .menu-hero{padding:4rem 1.5rem 1rem;text-align:center}
   .menu-hero-title{font-size:clamp(36px,6vw,56px);font-weight:700;color:var(--green)}
 
   .menu-filter{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;max-width:1100px;margin:0 auto;padding:2rem 1.5rem 0}
-  .filter-pill{padding:9px 20px;border-radius:999px;border:1.5px solid var(--border);background:#fff;font-family:'Jost',sans-serif;font-size:12px;font-weight:500;color:var(--muted);cursor:pointer;transition:.15s}
+  .filter-pill{padding:9px 20px;border-radius:999px;border:1.5px solid var(--border);background:#fff;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;color:var(--muted);cursor:pointer;transition:.15s}
   .filter-pill:hover{border-color:var(--orange)}
   .filter-pill.active{background:var(--orange);border-color:var(--orange);color:#fff}
 
   .category-section{max-width:1100px;margin:0 auto;padding:2.25rem 1.5rem 0}
   .category-section:last-of-type{padding-bottom:6rem}
-  .category-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;color:var(--green);margin-bottom:1.25rem}
+  .category-title{font-family:'Fraunces',serif;font-size:26px;font-weight:600;color:var(--green);margin-bottom:1.25rem}
   .menu-slider-wrap{position:relative}
   .menu-grid{display:flex;gap:1.25rem;overflow-x:auto;scroll-snap-type:x proximity;scroll-behavior:smooth;padding:4px 2px 14px;-webkit-overflow-scrolling:touch}
   .menu-grid::-webkit-scrollbar{height:6px}
@@ -43,12 +43,12 @@
   .menu-card.selected{border-color:var(--orange);background:var(--pale-o)}
   .menu-thumb{width:100%;height:130px;border-radius:10px;margin-bottom:1rem;background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;font-size:36px}
   .menu-card:nth-child(6n+1) .menu-thumb{background:linear-gradient(135deg,var(--pale-g),var(--leaf))}
-  .menu-card:nth-child(6n+2) .menu-thumb{background:linear-gradient(135deg,var(--pale-o),#f7c9a0)}
-  .menu-card:nth-child(6n+3) .menu-thumb{background:linear-gradient(135deg,#fff2df,var(--pale-o))}
+  .menu-card:nth-child(6n+2) .menu-thumb{background:linear-gradient(135deg,var(--pale-o),#EFA98F)}
+  .menu-card:nth-child(6n+3) .menu-thumb{background:linear-gradient(135deg,#FBEACB,var(--pale-o))}
   .menu-card:nth-child(6n+4) .menu-thumb{background:linear-gradient(135deg,var(--leaf),var(--pale-g))}
   .menu-card:nth-child(6n+5) .menu-thumb{background:linear-gradient(135deg,var(--pale-o),var(--leaf))}
-  .menu-card:nth-child(6n+6) .menu-thumb{background:linear-gradient(135deg,var(--leaf),#f7c9a0)}
-  .menu-name{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:600;color:var(--green)}
+  .menu-card:nth-child(6n+6) .menu-thumb{background:linear-gradient(135deg,var(--leaf),#EFA98F)}
+  .menu-name{font-family:'Fraunces',serif;font-size:19px;font-weight:600;color:var(--green)}
   .menu-desc{font-size:12px;color:var(--muted);margin:6px 0 10px;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden}
   .menu-foot{display:flex;justify-content:space-between;align-items:center}
   .menu-price{font-size:14px;font-weight:500;color:var(--black)}
@@ -63,7 +63,7 @@
   .tray{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(120%);width:min(92%,480px);background:var(--green);border-radius:16px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 16px 40px -12px rgba(31,59,46,.5);transition:transform .3s ease;z-index:60}
   .tray.show{transform:translateX(-50%) translateY(0)}
   .tray-info{color:#fff}
-  .tray-count{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600}
+  .tray-count{font-family:'Fraunces',serif;font-size:20px;font-weight:600}
   .tray-count span{color:var(--leaf)}
   .tray-sub{font-size:11px;color:var(--leaf);letter-spacing:.05em}
   .tray-btn{background:var(--orange);color:#fff;border:none;padding:12px 20px;border-radius:10px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:500;cursor:pointer;transition:.2s}
@@ -74,20 +74,20 @@
   .checkout-overlay.show{display:flex}
   .checkout-modal{background:#fff;border-radius:16px;padding:2rem;width:min(92%,420px);max-height:88vh;overflow-y:auto;position:relative}
   .checkout-close{position:absolute;top:14px;right:16px;background:none;border:none;font-size:20px;color:var(--muted);cursor:pointer;line-height:1}
-  .checkout-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;color:var(--green);margin-bottom:1.25rem}
+  .checkout-title{font-family:'Fraunces',serif;font-size:24px;font-weight:600;color:var(--green);margin-bottom:1.25rem}
   .checkout-sub{font-size:12px;color:var(--muted);margin:-.75rem 0 1.25rem}
 
   .order-type-options{display:flex;gap:12px;margin-bottom:1.5rem}
-  .order-type-btn{flex:1;padding:1.1rem .75rem;border:1.5px solid var(--border);border-radius:10px;background:#fff;font-family:'Jost',sans-serif;font-size:13px;font-weight:500;color:var(--black);cursor:pointer;transition:.15s;text-align:center}
+  .order-type-btn{flex:1;padding:1.1rem .75rem;border:1.5px solid var(--border);border-radius:10px;background:#fff;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;color:var(--black);cursor:pointer;transition:.15s;text-align:center}
   .order-type-btn:hover{border-color:var(--orange)}
   .order-type-btn.selected{border-color:var(--orange);background:var(--pale-o);color:var(--orange-dark)}
 
   .checkout-form-group{margin-bottom:1.1rem}
   .checkout-label{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:6px}
-  .checkout-input{width:100%;background:#fff;border:1px solid var(--border);border-radius:8px;padding:11px 14px;font-family:'Jost',sans-serif;font-size:13px;color:var(--black);outline:none;transition:border-color .2s}
+  .checkout-input{width:100%;background:#fff;border:1px solid var(--border);border-radius:8px;padding:11px 14px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--black);outline:none;transition:border-color .2s}
   .checkout-input:focus{border-color:var(--orange)}
 
-  .checkout-next-btn{width:100%;background:var(--orange);color:#fff;border:none;border-radius:8px;padding:14px;font-family:'Jost',sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;cursor:pointer;transition:.2s;margin-top:.5rem}
+  .checkout-next-btn{width:100%;background:var(--orange);color:#fff;border:none;border-radius:8px;padding:14px;font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;cursor:pointer;transition:.2s;margin-top:.5rem}
   .checkout-next-btn:hover{background:var(--orange-dark)}
   .checkout-next-btn:disabled{opacity:.6;cursor:not-allowed}
   .checkout-back-btn{width:100%;background:none;border:none;color:var(--muted);font-size:12px;padding:10px;cursor:pointer;text-align:center}
@@ -112,17 +112,17 @@
   .community-overlay.show{display:flex}
   .community-modal{background:#fff;border-radius:16px;padding:2rem;width:min(92%,460px);max-height:88vh;overflow-y:auto;position:relative}
   .community-close{position:absolute;top:14px;right:16px;background:none;border:none;font-size:20px;color:var(--muted);cursor:pointer;line-height:1}
-  .community-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;color:var(--green);margin-bottom:.75rem}
+  .community-title{font-family:'Fraunces',serif;font-size:26px;font-weight:600;color:var(--green);margin-bottom:.75rem}
   .community-intro{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:1.5rem}
   .community-error{background:#FCEAEA;border:1px solid #E7A9A9;color:#A23B3B;font-size:12px;border-radius:8px;padding:10px 12px;margin-bottom:1rem;display:none}
   .community-error.show{display:block}
   .community-success-icon{width:52px;height:52px;border-radius:50%;background:var(--pale-g);color:var(--green);font-size:24px;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem}
   .community-form-group{margin-bottom:1.1rem}
   .community-label{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:6px}
-  .community-input{width:100%;background:#fff;border:1px solid var(--border);border-radius:8px;padding:11px 14px;font-family:'Jost',sans-serif;font-size:13px;color:var(--black);transition:border-color .2s;outline:none}
+  .community-input{width:100%;background:#fff;border:1px solid var(--border);border-radius:8px;padding:11px 14px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--black);transition:border-color .2s;outline:none}
   .community-input:focus{border-color:var(--orange)}
-  .community-btn{width:100%;background:var(--orange);color:#fff;border:none;border-radius:8px;padding:14px;font-family:'Jost',sans-serif;font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:500;cursor:pointer;transition:background .2s,transform .2s;margin-top:.5rem}
-  .community-btn:hover{background:#d05518;transform:translateY(-1px)}
+  .community-btn{width:100%;background:var(--orange);color:#fff;border:none;border-radius:8px;padding:14px;font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:500;cursor:pointer;transition:background .2s,transform .2s;margin-top:.5rem}
+  .community-btn:hover{background:var(--orange-dark);transform:translateY(-1px)}
   .community-btn:disabled{opacity:.6;cursor:not-allowed}
 </style>
 </head>
@@ -132,10 +132,10 @@
   <div class="nav-inner">
     <div class="logo">
       <svg viewBox="0 0 320 108" height="38" role="img" aria-label="Rera's Treat">
-        <text x="160" y="66" text-anchor="middle" font-family="'Cormorant Garamond', Georgia, serif" font-size="60" font-weight="600" fill="#E8621A" letter-spacing="2">Rera&#8217;s</text>
-        <path d="M168 45 C168 37 176 31 184 37 C192 31 200 37 200 45 C200 53 184 63 184 63 C184 63 168 53 168 45Z" fill="#E8621A" opacity="0.15"/>
-        <path d="M170 45 C170 38.5 177 33 184 38.5 C191 33 198 38.5 198 45 C198 52 184 61 184 61 C184 61 170 52 170 45Z" fill="none" stroke="#E8621A" stroke-width="1.5"/>
-        <text x="160" y="96" text-anchor="middle" font-family="'Cormorant Garamond', Georgia, serif" font-size="44" font-weight="600" font-style="italic" fill="#1C4A1C" letter-spacing="1">Treat</text>
+        <text x="160" y="66" text-anchor="middle" font-family="'Fraunces', Georgia, serif" font-size="60" font-weight="600" fill="#D94A32" letter-spacing="2">Rera&#8217;s</text>
+        <path d="M168 45 C168 37 176 31 184 37 C192 31 200 37 200 45 C200 53 184 63 184 63 C184 63 168 53 168 45Z" fill="#D94A32" opacity="0.15"/>
+        <path d="M170 45 C170 38.5 177 33 184 38.5 C191 33 198 38.5 198 45 C198 52 184 61 184 61 C184 61 170 52 170 45Z" fill="none" stroke="#D94A32" stroke-width="1.5"/>
+        <text x="160" y="96" text-anchor="middle" font-family="'Fraunces', Georgia, serif" font-size="44" font-weight="600" font-style="italic" fill="#3B2118" letter-spacing="1">Treat</text>
       </svg>
     </div>
     <div class="nav-links">
@@ -448,7 +448,7 @@
   <div class="footer-inner">
     <div>
       <div class="footer-brand">Rera's <span style="color:var(--orange)">Treat</span></div>
-      <div class="footer-slogan">Made with the love of a mother's kitchen.</div>
+      <div class="footer-slogan">Love, served generously.</div>
       <div class="footer-socials">
         <a class="footer-social-btn" href="https://www.instagram.com/rerastreats" target="_blank" title="Instagram">IG</a>
         <a class="footer-social-btn" href="https://wa.me/2349124800610" target="_blank" title="WhatsApp">WA</a>

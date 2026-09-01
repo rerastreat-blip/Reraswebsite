@@ -14,7 +14,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Our Story — Rera's Treat</title>
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <style>
   .about-hero{padding:4rem 1.5rem 2rem;text-align:center}
@@ -24,7 +24,7 @@
   .story-body p{color:var(--black);font-size:15px;margin-bottom:1.25rem;font-weight:300;line-height:1.85}
   .story-placeholder{background:var(--pale-o);border:1px dashed var(--orange);border-radius:12px;padding:1.5rem;color:var(--muted);font-size:13px;font-style:italic}
   .stat-row{display:flex;gap:2.5rem;justify-content:center;margin-top:2.5rem}
-  .stat-num{font-family:'Cormorant Garamond',serif;font-size:30px;color:var(--orange);font-weight:700;text-align:center}
+  .stat-num{font-family:'Fraunces',serif;font-size:30px;color:var(--gold);font-weight:700;text-align:center}
   .stat-label{font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;text-align:center}
 
   /* Community modal */
@@ -32,17 +32,17 @@
   .community-overlay.show{display:flex}
   .community-modal{background:#fff;border-radius:16px;padding:2rem;width:min(92%,460px);max-height:88vh;overflow-y:auto;position:relative}
   .community-close{position:absolute;top:14px;right:16px;background:none;border:none;font-size:20px;color:var(--muted);cursor:pointer;line-height:1}
-  .community-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;color:var(--green);margin-bottom:.75rem}
+  .community-title{font-family:'Fraunces',serif;font-size:26px;font-weight:600;color:var(--green);margin-bottom:.75rem}
   .community-intro{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:1.5rem}
   .community-error{background:#FCEAEA;border:1px solid #E7A9A9;color:#A23B3B;font-size:12px;border-radius:8px;padding:10px 12px;margin-bottom:1rem;display:none}
   .community-error.show{display:block}
   .community-success-icon{width:52px;height:52px;border-radius:50%;background:var(--pale-g);color:var(--green);font-size:24px;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem}
   .community-form-group{margin-bottom:1.1rem}
   .community-label{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:6px}
-  .community-input{width:100%;background:#fff;border:1px solid var(--border);border-radius:8px;padding:11px 14px;font-family:'Jost',sans-serif;font-size:13px;color:var(--black);transition:border-color .2s;outline:none}
+  .community-input{width:100%;background:#fff;border:1px solid var(--border);border-radius:8px;padding:11px 14px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--black);transition:border-color .2s;outline:none}
   .community-input:focus{border-color:var(--orange)}
-  .community-btn{width:100%;background:var(--orange);color:#fff;border:none;border-radius:8px;padding:14px;font-family:'Jost',sans-serif;font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:500;cursor:pointer;transition:background .2s,transform .2s;margin-top:.5rem}
-  .community-btn:hover{background:#d05518;transform:translateY(-1px)}
+  .community-btn{width:100%;background:var(--orange);color:#fff;border:none;border-radius:8px;padding:14px;font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:500;cursor:pointer;transition:background .2s,transform .2s;margin-top:.5rem}
+  .community-btn:hover{background:var(--orange-dark);transform:translateY(-1px)}
   .community-btn:disabled{opacity:.6;cursor:not-allowed}
 </style>
 </head>
@@ -52,10 +52,10 @@
   <div class="nav-inner">
     <div class="logo">
       <svg viewBox="0 0 320 108" height="38" role="img" aria-label="Rera's Treat">
-        <text x="160" y="66" text-anchor="middle" font-family="'Cormorant Garamond', Georgia, serif" font-size="60" font-weight="600" fill="#E8621A" letter-spacing="2">Rera&#8217;s</text>
-        <path d="M168 45 C168 37 176 31 184 37 C192 31 200 37 200 45 C200 53 184 63 184 63 C184 63 168 53 168 45Z" fill="#E8621A" opacity="0.15"/>
-        <path d="M170 45 C170 38.5 177 33 184 38.5 C191 33 198 38.5 198 45 C198 52 184 61 184 61 C184 61 170 52 170 45Z" fill="none" stroke="#E8621A" stroke-width="1.5"/>
-        <text x="160" y="96" text-anchor="middle" font-family="'Cormorant Garamond', Georgia, serif" font-size="44" font-weight="600" font-style="italic" fill="#1C4A1C" letter-spacing="1">Treat</text>
+        <text x="160" y="66" text-anchor="middle" font-family="'Fraunces', Georgia, serif" font-size="60" font-weight="600" fill="#D94A32" letter-spacing="2">Rera&#8217;s</text>
+        <path d="M168 45 C168 37 176 31 184 37 C192 31 200 37 200 45 C200 53 184 63 184 63 C184 63 168 53 168 45Z" fill="#D94A32" opacity="0.15"/>
+        <path d="M170 45 C170 38.5 177 33 184 38.5 C191 33 198 38.5 198 45 C198 52 184 61 184 61 C184 61 170 52 170 45Z" fill="none" stroke="#D94A32" stroke-width="1.5"/>
+        <text x="160" y="96" text-anchor="middle" font-family="'Fraunces', Georgia, serif" font-size="44" font-weight="600" font-style="italic" fill="#3B2118" letter-spacing="1">Treat</text>
       </svg>
     </div>
     <div class="nav-links">
@@ -99,7 +99,7 @@
   <div class="footer-inner">
     <div>
       <div class="footer-brand">Rera's <span style="color:var(--orange)">Treat</span></div>
-      <div class="footer-slogan">Made with the love of a mother's kitchen.</div>
+      <div class="footer-slogan">Love, served generously.</div>
       <div class="footer-socials">
         <a class="footer-social-btn" href="https://www.instagram.com/rerastreats" target="_blank" title="Instagram">IG</a>
         <a class="footer-social-btn" href="https://wa.me/2349124800610" target="_blank" title="WhatsApp">WA</a>
