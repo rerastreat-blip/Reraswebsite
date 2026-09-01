@@ -487,6 +487,10 @@
         <label class="checkout-label">Phone Number</label>
         <input class="checkout-input" id="checkoutPhone" type="tel" autocomplete="tel" placeholder="0912 345 6789">
       </div>
+      <div class="checkout-form-group">
+        <label class="checkout-label">Email (optional)</label>
+        <input class="checkout-input" id="checkoutEmail" type="email" autocomplete="email" placeholder="you@example.com">
+      </div>
       <div class="checkout-form-group" id="tableNumberGroup" style="display:none">
         <label class="checkout-label">Table Number</label>
         <input class="checkout-input" id="checkoutTableNumber" type="text" placeholder="e.g. 4">
@@ -956,6 +960,7 @@
   const checkoutFinish = document.getElementById('checkoutFinish');
   const checkoutName = document.getElementById('checkoutName');
   const checkoutPhone = document.getElementById('checkoutPhone');
+  const checkoutEmail = document.getElementById('checkoutEmail');
   const tableNumberGroup = document.getElementById('tableNumberGroup');
   const checkoutTableNumber = document.getElementById('checkoutTableNumber');
 
@@ -1058,10 +1063,16 @@
     clearError(detailsError);
     const name = checkoutName.value.trim();
     const phone = checkoutPhone.value.trim();
+    const email = checkoutEmail.value.trim();
     const tableNumber = checkoutTableNumber.value.trim();
 
     if (!name || !phone) {
       showError(detailsError, 'Please enter your name and phone number.');
+      return;
+    }
+
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      showError(detailsError, 'That email address doesn\'t look right.');
       return;
     }
 
@@ -1079,7 +1090,11 @@
       const sessionRes = await fetch(`${API_ORIGIN}/whatsapp-sessions`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ customerPhone: phone, customerName: name }),
+        body: JSON.stringify({
+          customerPhone: phone,
+          customerName: name,
+          ...(email ? { customerEmail: email } : {}),
+        }),
       });
       if (!sessionRes.ok) throw new Error('Could not start your order session.');
       const session = await sessionRes.json();
