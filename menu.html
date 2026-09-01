@@ -52,13 +52,13 @@
   .menu-desc{font-size:12px;color:var(--muted);margin:6px 0 10px;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden}
   .menu-foot{display:flex;justify-content:space-between;align-items:center}
   .menu-price{font-size:14px;font-weight:500;color:var(--black)}
-  .check{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--muted);display:flex;align-items:center;justify-content:center;font-size:12px;color:transparent;transition:.2s}
-  .menu-card.selected .check{display:none}
-  .qty-stepper{display:none;align-items:center;gap:10px}
-  .menu-card.selected .qty-stepper{display:flex}
-  .qty-btn{width:24px;height:24px;border-radius:50%;border:1.5px solid var(--orange);background:#fff;color:var(--orange);font-size:14px;font-weight:600;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.15s}
+  .menu-qty-badge{position:absolute;top:10px;right:10px;background:var(--orange);color:#fff;font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;display:none;z-index:2}
+  .menu-card.selected .menu-qty-badge{display:block}
+  .menu-add-btn{background:var(--pale-o);color:var(--orange-dark);border:none;border-radius:999px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer;transition:.15s;font-family:'DM Sans',sans-serif}
+  .menu-add-btn:hover{background:var(--orange);color:#fff}
+  .qty-btn{width:26px;height:26px;border-radius:50%;border:1.5px solid var(--orange);background:#fff;color:var(--orange);font-size:15px;font-weight:600;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.15s}
   .qty-btn:hover{background:var(--orange);color:#fff}
-  .qty-value{font-size:13px;font-weight:600;color:var(--green);min-width:14px;text-align:center}
+  .qty-value{font-size:14px;font-weight:600;color:var(--green);min-width:18px;text-align:center}
 
   .tray{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(120%);width:min(92%,480px);background:var(--green);border-radius:16px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 16px 40px -12px rgba(31,59,46,.5);transition:transform .3s ease;z-index:60}
   .tray.show{transform:translateX(-50%) translateY(0)}
@@ -107,6 +107,37 @@
   #stepDone .checkout-title{text-align:center}
   #ackMessage{font-size:13px;color:var(--muted);text-align:center;margin-bottom:1.5rem;line-height:1.7}
 
+  /* Cart review step */
+  .cart-items{margin-bottom:.5rem;display:flex;flex-direction:column;gap:10px;max-height:240px;overflow-y:auto}
+  .cart-item-row{display:flex;justify-content:space-between;align-items:center;font-size:13px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+  .cart-item-remove{background:none;border:none;color:var(--muted);font-size:11px;cursor:pointer;margin-left:8px;text-decoration:underline;font-family:'DM Sans',sans-serif}
+  .cart-subtotal-row{display:flex;justify-content:space-between;font-size:14px;font-weight:600;color:var(--green);padding:12px 0;border-top:1px solid var(--border);margin-top:4px}
+  .cart-pickup-note{font-size:12px;color:var(--muted);margin-top:2px}
+  .cart-rera-note{font-family:'Fraunces',serif;font-style:italic;font-size:14px;color:var(--gold);margin:12px 0 4px;text-align:center}
+
+  /* Product detail modal */
+  .detail-overlay{position:fixed;inset:0;background:rgba(31,26,20,.55);display:none;align-items:center;justify-content:center;z-index:100;padding:1.5rem}
+  .detail-overlay.show{display:flex}
+  .detail-modal{background:#fff;border-radius:16px;padding:2rem;width:min(92%,420px);max-height:88vh;overflow-y:auto;position:relative}
+  .detail-close{position:absolute;top:14px;right:16px;background:none;border:none;font-size:20px;color:var(--muted);cursor:pointer;line-height:1}
+  .detail-thumb{width:100%;height:180px;border-radius:12px;margin-bottom:1.25rem;background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;font-size:48px;background-color:var(--pale-g)}
+  .detail-name{font-family:'Fraunces',serif;font-size:24px;font-weight:600;color:var(--green);margin-bottom:.5rem}
+  .detail-desc{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:1rem}
+  .detail-price{font-size:18px;font-weight:600;color:var(--orange-dark);margin-bottom:1.25rem}
+  .detail-qty-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem}
+  .detail-added{display:none;text-align:center;color:var(--green);font-weight:600;margin-top:.75rem}
+
+  /* Drink nudge */
+  .drink-nudge{position:fixed;bottom:96px;left:50%;transform:translateX(-50%) translateY(150%);width:min(92%,480px);background:#fff;border:1px solid var(--border);border-radius:16px;padding:16px 18px;box-shadow:0 16px 40px -12px rgba(43,36,32,.3);transition:transform .3s ease;z-index:65}
+  .drink-nudge.show{transform:translateX(-50%) translateY(0)}
+  .drink-nudge-title{font-family:'Fraunces',serif;font-size:16px;color:var(--green);margin-bottom:2px}
+  .drink-nudge-sub{font-size:12px;color:var(--muted)}
+  .drink-nudge-items{display:flex;flex-direction:column;gap:8px;margin:12px 0}
+  .drink-nudge-item{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:var(--pale-g);border-radius:10px;font-size:13px;gap:10px}
+  .drink-nudge-add{background:var(--orange);color:#fff;border:none;border-radius:999px;padding:5px 12px;font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap;font-family:'DM Sans',sans-serif}
+  .drink-nudge-add:hover{background:var(--orange-dark)}
+  .drink-nudge-dismiss{width:100%;background:none;border:none;color:var(--muted);font-size:12px;padding:8px;cursor:pointer;text-align:center;font-family:'DM Sans',sans-serif}
+
   /* Community modal */
   .community-overlay{position:fixed;inset:0;background:rgba(31,26,20,.55);display:none;align-items:center;justify-content:center;z-index:100;padding:1.5rem}
   .community-overlay.show{display:flex}
@@ -149,8 +180,8 @@
 
 <section class="menu-hero">
   <div class="eyebrow">The Menu</div>
-  <h1 class="menu-hero-title">Pick what you're craving</h1>
-  <p style="color:var(--muted);font-size:14px;margin-top:.75rem">Select one or more, then checkout for pickup.</p>
+  <h1 class="menu-hero-title">What are you having?</h1>
+  <p style="color:var(--muted);font-size:14px;margin-top:.75rem">Tap anything for a closer look, or add it straight to your order.</p>
 </section>
 
 <div class="menu-filter" id="menuFilter"></div>
@@ -386,6 +417,33 @@
   <button class="tray-btn" id="trayBtn">Checkout →</button>
 </div>
 
+<div class="drink-nudge" id="drinkNudge">
+  <div class="drink-nudge-title">Something to wash that down?</div>
+  <div class="drink-nudge-sub">You didn't come all this way for dry swallowing.</div>
+  <div class="drink-nudge-items" id="drinkNudgeItems"></div>
+  <button type="button" class="drink-nudge-dismiss" id="drinkNudgeDismiss">No thanks, I'm good</button>
+</div>
+
+<div class="detail-overlay" id="detailOverlay">
+  <div class="detail-modal">
+    <button class="detail-close" id="detailClose" aria-label="Close">×</button>
+    <div class="detail-thumb" id="detailThumb"></div>
+    <h3 class="detail-name" id="detailName"></h3>
+    <p class="detail-desc" id="detailDesc"></p>
+    <div class="detail-price" id="detailPrice"></div>
+    <div class="detail-qty-row">
+      <span class="checkout-label" style="margin:0">Quantity</span>
+      <div class="qty-stepper" style="display:flex;align-items:center;gap:10px">
+        <button class="qty-btn" type="button" id="detailQtyDec">−</button>
+        <span class="qty-value" id="detailQtyValue">1</span>
+        <button class="qty-btn" type="button" id="detailQtyInc">+</button>
+      </div>
+    </div>
+    <button class="checkout-next-btn" id="detailAddBtn">Add to Order</button>
+    <div class="detail-added" id="detailAdded">Added! ❤️</div>
+  </div>
+</div>
+
 <div class="checkout-overlay" id="checkoutOverlay">
   <div class="checkout-modal">
     <button class="checkout-close" id="checkoutClose" aria-label="Close">×</button>
@@ -399,6 +457,18 @@
         <button class="order-type-btn" type="button" data-type="PICKUP">Pickup</button>
       </div>
       <button class="checkout-next-btn" id="orderTypeNext" disabled>Continue →</button>
+    </div>
+
+    <div class="checkout-step" id="stepCart">
+      <h3 class="checkout-title">Your Treats</h3>
+      <div class="cart-items" id="cartItems"></div>
+      <div class="cart-subtotal-row">
+        <span>Subtotal</span>
+        <strong id="cartSubtotal"></strong>
+      </div>
+      <p class="cart-pickup-note">Pickup only — we'll have it ready for you at the counter.</p>
+      <p class="cart-rera-note">Good choices.</p>
+      <button class="checkout-next-btn" id="cartContinueBtn">Continue →</button>
     </div>
 
     <div class="checkout-step" id="stepDetails" style="display:none">
@@ -533,72 +603,59 @@
 
   function fmt(n){ return '₦' + n.toLocaleString(); }
 
+  function setCartQty(item, qty){
+    if (qty <= 0) {
+      selected.delete(item.id);
+    } else {
+      selected.set(item.id, { ...item, qty });
+    }
+    syncCardUI(item.id, qty);
+    updateTray();
+  }
+
+  function addToCart(item, qtyDelta){
+    const existing = selected.get(item.id);
+    setCartQty(item, (existing ? existing.qty : 0) + qtyDelta);
+  }
+
+  function syncCardUI(itemId, qty){
+    const card = menuSections.querySelector(`.menu-card[data-id="${itemId}"]`);
+    if (!card) return;
+    card.classList.toggle('selected', qty > 0);
+    const badge = card.querySelector('.menu-qty-badge');
+    if (badge) badge.textContent = `×${qty}`;
+  }
+
   function buildCard(item){
     const card = document.createElement('div');
     card.className = 'menu-card';
     card.dataset.id = item.id;
     card.innerHTML = `
+      <div class="menu-qty-badge"></div>
       <div class="menu-thumb">${item.image ? '' : '🍽️'}</div>
       <div class="menu-name">${item.name}</div>
       <div class="menu-desc">${item.desc}</div>
       <div class="menu-foot">
         <div class="menu-price">${fmt(item.price)}</div>
-        <div class="check">✓</div>
-        <div class="qty-stepper">
-          <button class="qty-btn" type="button" data-action="dec">−</button>
-          <span class="qty-value">1</span>
-          <button class="qty-btn" type="button" data-action="inc">+</button>
-        </div>
+        <button class="menu-add-btn" type="button">+ Add</button>
       </div>
     `;
     if (item.image) {
-      const thumb = card.querySelector('.menu-thumb');
-      thumb.style.backgroundImage = `url('${item.image}')`;
+      card.querySelector('.menu-thumb').style.backgroundImage = `url('${item.image}')`;
     }
 
-    const qtyValue = card.querySelector('.qty-value');
-
-    if (selected.has(item.id)) {
+    const existing = selected.get(item.id);
+    if (existing) {
       card.classList.add('selected');
-      qtyValue.textContent = selected.get(item.id).qty;
+      card.querySelector('.menu-qty-badge').textContent = `×${existing.qty}`;
     }
 
-    function select(qty){
-      selected.set(item.id, { ...item, qty });
-      card.classList.add('selected');
-      qtyValue.textContent = qty;
-      updateTray();
-    }
+    card.addEventListener('click', () => openDetail(item));
 
-    function deselect(){
-      selected.delete(item.id);
-      card.classList.remove('selected');
-      qtyValue.textContent = 1;
-      updateTray();
-    }
-
-    card.addEventListener('click', () => {
-      if (selected.has(item.id)) {
-        deselect();
-      } else {
-        select(1);
-      }
-    });
-
-    card.querySelector('[data-action="inc"]').addEventListener('click', (e) => {
+    card.querySelector('.menu-add-btn').addEventListener('click', (e) => {
       e.stopPropagation();
-      const current = selected.get(item.id);
-      select(current.qty + 1);
-    });
-
-    card.querySelector('[data-action="dec"]').addEventListener('click', (e) => {
-      e.stopPropagation();
-      const current = selected.get(item.id);
-      if (current.qty <= 1) {
-        deselect();
-      } else {
-        select(current.qty - 1);
-      }
+      addToCart(item, 1);
+      maybeShowDrinkNudge(item);
     });
 
     return card;
@@ -724,10 +781,133 @@
     tray.classList.toggle('show', count > 0);
   }
 
-  // --- Checkout flow: order type -> name/phone -> payment -> acknowledgement ---
+  // --- Product detail modal ---
+  const detailOverlay = document.getElementById('detailOverlay');
+  const detailClose = document.getElementById('detailClose');
+  const detailThumb = document.getElementById('detailThumb');
+  const detailName = document.getElementById('detailName');
+  const detailDesc = document.getElementById('detailDesc');
+  const detailPrice = document.getElementById('detailPrice');
+  const detailQtyValue = document.getElementById('detailQtyValue');
+  const detailQtyDec = document.getElementById('detailQtyDec');
+  const detailQtyInc = document.getElementById('detailQtyInc');
+  const detailAddBtn = document.getElementById('detailAddBtn');
+  const detailAdded = document.getElementById('detailAdded');
+
+  let detailItem = null;
+  let detailQty = 1;
+
+  function openDetail(item){
+    detailItem = item;
+    const existing = selected.get(item.id);
+    detailQty = existing ? existing.qty : 1;
+
+    detailName.textContent = item.name;
+    detailDesc.textContent = item.desc || '';
+    detailPrice.textContent = fmt(item.price);
+    detailThumb.style.backgroundImage = item.image ? `url('${item.image}')` : '';
+    detailThumb.textContent = item.image ? '' : '🍽️';
+    detailQtyValue.textContent = detailQty;
+    detailAdded.style.display = 'none';
+    detailAddBtn.style.display = 'block';
+    detailAddBtn.textContent = existing ? 'Update Order' : 'Add to Order';
+
+    detailOverlay.classList.add('show');
+  }
+
+  function closeDetail(){
+    detailOverlay.classList.remove('show');
+  }
+
+  detailClose.addEventListener('click', closeDetail);
+  detailOverlay.addEventListener('click', (e) => { if (e.target === detailOverlay) closeDetail(); });
+
+  detailQtyDec.addEventListener('click', () => {
+    if (detailQty > 1) {
+      detailQty--;
+      detailQtyValue.textContent = detailQty;
+    }
+  });
+
+  detailQtyInc.addEventListener('click', () => {
+    detailQty++;
+    detailQtyValue.textContent = detailQty;
+  });
+
+  detailAddBtn.addEventListener('click', () => {
+    setCartQty(detailItem, detailQty);
+    detailAddBtn.style.display = 'none';
+    detailAdded.style.display = 'block';
+    const addedItem = detailItem;
+    setTimeout(() => {
+      closeDetail();
+      maybeShowDrinkNudge(addedItem);
+    }, 900);
+  });
+
+  // --- Drink nudge ---
+  const drinkNudge = document.getElementById('drinkNudge');
+  const drinkNudgeItems = document.getElementById('drinkNudgeItems');
+  const drinkNudgeDismiss = document.getElementById('drinkNudgeDismiss');
+  let drinkNudgeShown = false;
+
+  function findDrinksCategory(){
+    return categories.find(c => c.name.trim().toLowerCase() === 'drinks');
+  }
+
+  function maybeShowDrinkNudge(justAddedItem){
+    if (drinkNudgeShown) return;
+
+    const drinksCategory = findDrinksCategory();
+    if (!drinksCategory) return;
+    if (justAddedItem.categoryId === drinksCategory.id) return;
+
+    const hasDrinkInCart = [...selected.values()].some(i => i.categoryId === drinksCategory.id);
+    if (hasDrinkInCart) return;
+
+    const drinkItems = allItems.filter(i => i.categoryId === drinksCategory.id).slice(0, 4);
+    if (drinkItems.length === 0) return;
+
+    drinkNudgeShown = true;
+    drinkNudgeItems.innerHTML = '';
+    drinkItems.forEach(item => {
+      const row = document.createElement('div');
+      row.className = 'drink-nudge-item';
+
+      const label = document.createElement('span');
+      label.textContent = `${item.name} — ${fmt(item.price)}`;
+
+      const addBtn = document.createElement('button');
+      addBtn.type = 'button';
+      addBtn.className = 'drink-nudge-add';
+      addBtn.textContent = '+ Add';
+      addBtn.addEventListener('click', () => {
+        addToCart(item, 1);
+        dismissDrinkNudge();
+      });
+
+      row.appendChild(label);
+      row.appendChild(addBtn);
+      drinkNudgeItems.appendChild(row);
+    });
+
+    drinkNudge.classList.add('show');
+  }
+
+  function dismissDrinkNudge(){
+    drinkNudge.classList.remove('show');
+  }
+
+  drinkNudgeDismiss.addEventListener('click', dismissDrinkNudge);
+
+  // --- Checkout flow: cart review -> order type -> name/phone -> payment -> acknowledgement ---
   const checkoutOverlay = document.getElementById('checkoutOverlay');
   const checkoutClose = document.getElementById('checkoutClose');
   const stepOrderType = document.getElementById('stepOrderType');
+  const stepCart = document.getElementById('stepCart');
+  const cartItemsEl = document.getElementById('cartItems');
+  const cartSubtotal = document.getElementById('cartSubtotal');
+  const cartContinueBtn = document.getElementById('cartContinueBtn');
   const stepDetails = document.getElementById('stepDetails');
   const stepPayment = document.getElementById('stepPayment');
   const stepDone = document.getElementById('stepDone');
@@ -747,7 +927,7 @@
   let checkoutSessionId = null;
 
   function showStep(step){
-    [stepOrderType, stepDetails, stepPayment, stepDone].forEach(s => s.style.display = 'none');
+    [stepOrderType, stepCart, stepDetails, stepPayment, stepDone].forEach(s => s.style.display = 'none');
     step.style.display = 'block';
   }
 
@@ -761,9 +941,47 @@
     el.classList.remove('show');
   }
 
+  function renderCartStep(){
+    cartItemsEl.innerHTML = '';
+    let subtotal = 0;
+
+    [...selected.values()].forEach(item => {
+      subtotal += item.price * item.qty;
+
+      const row = document.createElement('div');
+      row.className = 'cart-item-row';
+
+      const label = document.createElement('span');
+      label.textContent = `${item.name} × ${item.qty}`;
+
+      const right = document.createElement('span');
+      right.textContent = fmt(item.price * item.qty);
+
+      const removeBtn = document.createElement('button');
+      removeBtn.type = 'button';
+      removeBtn.className = 'cart-item-remove';
+      removeBtn.textContent = 'Remove';
+      removeBtn.addEventListener('click', () => {
+        setCartQty(item, 0);
+        if (selected.size === 0) {
+          closeCheckout();
+        } else {
+          renderCartStep();
+        }
+      });
+
+      right.appendChild(removeBtn);
+      row.appendChild(label);
+      row.appendChild(right);
+      cartItemsEl.appendChild(row);
+    });
+
+    cartSubtotal.textContent = fmt(subtotal);
+  }
+
   function openCheckout(){
     // Pickup is the only order type for now (Dine In disabled above) —
-    // skip the order-type step and go straight to details.
+    // skip the order-type step and go straight from cart review to details.
     checkoutOrderType = 'PICKUP';
     checkoutSessionId = null;
     checkoutName.value = '';
@@ -772,7 +990,8 @@
     tableNumberGroup.style.display = 'none';
     clearError(detailsError);
     clearError(paymentError);
-    showStep(stepDetails);
+    renderCartStep();
+    showStep(stepCart);
     checkoutOverlay.classList.add('show');
   }
 
@@ -782,7 +1001,8 @@
 
   trayBtn.addEventListener('click', openCheckout);
   checkoutClose.addEventListener('click', closeCheckout);
-  detailsBack.addEventListener('click', closeCheckout);
+  cartContinueBtn.addEventListener('click', () => showStep(stepDetails));
+  detailsBack.addEventListener('click', () => showStep(stepCart));
 
   document.querySelectorAll('.order-type-btn').forEach(btn => {
     btn.addEventListener('click', () => {
