@@ -13,9 +13,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title id="pageTitle">Rera's Treat — Events</title>
-<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="/style.css">
 <style>
   .event-hero{padding:4rem 1.5rem 1rem;text-align:center}
   .event-hero-title{font-size:clamp(32px,5vw,48px);font-weight:700;color:var(--green)}
@@ -40,6 +40,12 @@
   .event-checkbox-group{display:flex;flex-direction:column;gap:8px}
   .event-checkbox-row{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--black)}
 
+  .rsvp-qty-stepper{display:flex;align-items:center;gap:16px;border:1px solid var(--border);border-radius:8px;padding:10px 16px;width:fit-content}
+  .rsvp-qty-stepper .qty-btn{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--orange);background:#fff;color:var(--orange);font-size:17px;font-weight:600;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.15s}
+  .rsvp-qty-stepper .qty-btn:hover{background:var(--orange);color:#fff}
+  .rsvp-qty-stepper .qty-value{font-size:16px;font-weight:600;color:var(--green);min-width:20px;text-align:center}
+  .rsvp-hint{font-size:11px;color:var(--muted);margin-top:6px}
+
   .event-success-icon{width:52px;height:52px;border-radius:50%;background:var(--pale-g);color:var(--green);font-size:24px;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem}
   .event-success-text{font-size:13px;color:var(--muted);text-align:center;line-height:1.7}
   .event-closed{text-align:center;color:#A23B3B;font-size:13px;padding:1rem;background:#FCEAEA;border-radius:12px}
@@ -49,7 +55,7 @@
 
 <nav>
   <div class="nav-inner">
-    <a href="index.html" class="logo">
+    <a href="/index.html" class="logo">
       <svg viewBox="0 0 220 62" height="40" role="img" aria-label="Rera's Treat">
         <path d="M108 5 C108 2.3 110.5 0.6 112.8 2.4 C115.1 0.6 117.6 2.3 117.6 5 C117.6 8.2 112.8 12.5 112.8 12.5 C112.8 12.5 108 8.2 108 5Z" fill="#D94A32"/>
         <text x="0" y="40" font-family="'Fraunces', Georgia, serif" font-size="30" font-weight="600" letter-spacing="0.3"><tspan fill="#3B2118">Rera&#8217;s </tspan><tspan fill="#D94A32">Treat</tspan></text>
@@ -57,11 +63,11 @@
       </svg>
     </a>
     <div class="nav-links">
-      <a href="menu.html">Menu</a>
-      <a href="about.html">Our Story</a>
-      <a href="track-order.html">Track Order</a>
+      <a href="/menu.html">Menu</a>
+      <a href="/about.html">Our Story</a>
+      <a href="/track-order.html">Track Order</a>
     </div>
-    <a href="menu.html" class="btn btn-primary" style="padding:10px 18px">Order Now</a>
+    <a href="/menu.html" class="btn btn-primary" style="padding:10px 18px">Order Now</a>
   </div>
 </nav>
 
@@ -107,7 +113,12 @@
         </div>
         <div class="checkout-form-group">
           <label class="checkout-label">Number Attending</label>
-          <input class="checkout-input" id="rsvpNumberAttending" type="number" min="1" value="1">
+          <div class="rsvp-qty-stepper">
+            <button type="button" class="qty-btn" id="rsvpQtyDec" aria-label="Decrease">−</button>
+            <span class="qty-value" id="rsvpQtyValue">1</span>
+            <button type="button" class="qty-btn" id="rsvpQtyInc" aria-label="Increase">+</button>
+          </div>
+          <p class="rsvp-hint">Up to 2 people per RSVP</p>
         </div>
         <div class="checkout-form-group">
           <label class="checkout-label">Dietary / allergy note (optional)</label>
@@ -177,6 +188,21 @@
   const rsvpForm = document.getElementById('rsvpForm');
   const rsvpError = document.getElementById('rsvpError');
   const rsvpSubmit = document.getElementById('rsvpSubmit');
+
+  const MAX_ATTENDING = 2;
+  const rsvpQtyValue = document.getElementById('rsvpQtyValue');
+  const rsvpQtyDec = document.getElementById('rsvpQtyDec');
+  const rsvpQtyInc = document.getElementById('rsvpQtyInc');
+  let numberAttending = 1;
+
+  rsvpQtyDec.addEventListener('click', () => {
+    numberAttending = Math.max(1, numberAttending - 1);
+    rsvpQtyValue.textContent = numberAttending;
+  });
+  rsvpQtyInc.addEventListener('click', () => {
+    numberAttending = Math.min(MAX_ATTENDING, numberAttending + 1);
+    rsvpQtyValue.textContent = numberAttending;
+  });
 
   function showError(message) {
     rsvpError.textContent = message;
@@ -252,7 +278,6 @@
     const name = document.getElementById('rsvpName').value.trim();
     const email = document.getElementById('rsvpEmail').value.trim();
     const phone = document.getElementById('rsvpPhone').value.trim();
-    const numberAttending = Number(document.getElementById('rsvpNumberAttending').value) || 1;
     const dietaryNote = document.getElementById('rsvpDietary').value.trim();
     const hearAboutUs = document.getElementById('rsvpHearAboutUs').value.trim();
     const interests = Array.from(interestOptionsWrap.querySelectorAll('input:checked')).map(i => i.value);
@@ -302,6 +327,6 @@
   loadEvent();
 </script>
 
-<script src="nav-events.js" defer></script>
+<script src="/nav-events.js" defer></script>
 </body>
 </html>
