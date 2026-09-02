@@ -21,6 +21,8 @@
   .menu-hero-title{font-size:clamp(36px,6vw,56px);font-weight:700;color:var(--green)}
 
   .menu-filter{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;max-width:1100px;margin:0 auto;padding:2rem 1.5rem 0}
+  .serves-banner{max-width:1100px;margin:1.5rem auto 0;padding:0 1.5rem;display:flex;align-items:center;justify-content:center;gap:14px;font-size:13px;color:var(--green)}
+  .serves-banner-clear{color:var(--orange);font-weight:600;text-decoration:underline}
   .filter-pill{padding:9px 20px;border-radius:999px;border:1.5px solid var(--border);background:#fff;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;color:var(--muted);cursor:pointer;transition:.15s}
   .filter-pill:hover{border-color:var(--orange)}
   .filter-pill.active{background:var(--orange);border-color:var(--orange);color:#fff}
@@ -54,6 +56,8 @@
   .menu-price{font-size:14px;font-weight:500;color:var(--black)}
   .menu-qty-badge{position:absolute;top:10px;right:10px;background:var(--orange);color:#fff;font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;display:none;z-index:2}
   .menu-card.selected .menu-qty-badge{display:block}
+  .menu-featured-badge{position:absolute;top:10px;left:10px;background:var(--gold);color:#fff;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;border-radius:999px;z-index:2}
+  .menu-servings{font-size:11px;color:var(--muted);margin:-4px 0 8px}
   .menu-add-btn{background:var(--pale-o);color:var(--orange-dark);border:none;border-radius:999px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer;transition:.15s;font-family:'DM Sans',sans-serif}
   .menu-add-btn:hover{background:var(--orange);color:#fff}
   .qty-btn{width:26px;height:26px;border-radius:50%;border:1.5px solid var(--orange);background:#fff;color:var(--orange);font-size:15px;font-weight:600;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.15s}
@@ -128,6 +132,8 @@
   .detail-thumb{width:100%;height:180px;border-radius:12px;margin-bottom:1.25rem;background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;font-size:48px;background-color:var(--pale-g)}
   .detail-name{font-family:'Fraunces',serif;font-size:24px;font-weight:600;color:var(--green);margin-bottom:.5rem}
   .detail-desc{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:1rem}
+  .detail-servings{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);font-weight:600;margin:-0.5rem 0 1rem}
+  .detail-contents{font-size:13px;color:var(--muted);line-height:1.8;margin:0 0 1rem;padding-left:1.1rem}
   .detail-price{font-size:18px;font-weight:600;color:var(--orange-dark);margin-bottom:1.25rem}
   .detail-qty-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem}
   .detail-added{display:none;text-align:center;color:var(--green);font-weight:600;margin-top:.75rem}
@@ -188,6 +194,11 @@
   <h1 class="menu-hero-title">What are you having?</h1>
   <p style="color:var(--muted);font-size:14px;margin-top:.75rem">Tap anything for a closer look, or add it straight to your order.</p>
 </section>
+
+<div class="serves-banner" id="servesBanner" style="display:none">
+  <span id="servesBannerText"></span>
+  <a href="menu.html" class="serves-banner-clear">View All</a>
+</div>
 
 <div class="menu-filter" id="menuFilter"></div>
 <div id="menuSections">
@@ -435,6 +446,8 @@
     <div class="detail-thumb" id="detailThumb"></div>
     <h3 class="detail-name" id="detailName"></h3>
     <p class="detail-desc" id="detailDesc"></p>
+    <p class="detail-servings" id="detailServings" style="display:none"></p>
+    <ul class="detail-contents" id="detailContents" style="display:none"></ul>
     <div class="detail-price" id="detailPrice"></div>
     <div class="detail-qty-row">
       <span class="checkout-label" style="margin:0">Quantity</span>
@@ -580,7 +593,7 @@
   <div class="community-modal">
     <button class="community-close" id="communityClose" aria-label="Close">×</button>
     <h3 class="community-title">Join the Rera's Treat Community</h3>
-    <p class="community-intro">We're building something for Ogijo — and honestly, it's better built with you than without you. Join the community and be the first to know when we open, get early perks, and help shape what's on the menu.</p>
+    <p class="community-intro">We&rsquo;re bringing a little piece of Rera to Ogijo, and we&rsquo;d love to have you at the table. Join our community to be the first to know when we open, enjoy early treats and perks, and help us decide what we&rsquo;ll be serving.</p>
 
     <div class="community-error" id="communityError"></div>
 
@@ -641,6 +654,19 @@
   let categories = [];
   let activeCategoryId = 'ALL';
 
+  const SERVES_LABEL = { solo: 'Just me', few: 'A few of us', many: 'Quite a few of us' };
+  const servesFilter = new URLSearchParams(window.location.search).get('serves');
+
+  function servingsBucket(servingsText){
+    if (!servingsText) return null;
+    const match = String(servingsText).match(/\d+/);
+    if (!match) return null;
+    const n = parseInt(match[0], 10);
+    if (n <= 1) return 'solo';
+    if (n <= 5) return 'few';
+    return 'many';
+  }
+
   function fmt(n){ return '₦' + n.toLocaleString(); }
 
   function setCartQty(item, qty){
@@ -670,11 +696,14 @@
     const card = document.createElement('div');
     card.className = 'menu-card';
     card.dataset.id = item.id;
+    if (item.featured) card.classList.add('featured');
     card.innerHTML = `
       <div class="menu-qty-badge"></div>
+      ${item.featured ? '<div class="menu-featured-badge">Featured</div>' : ''}
       <div class="menu-thumb">${item.image ? '' : '🍽️'}</div>
       <div class="menu-name">${item.name}</div>
       <div class="menu-desc">${item.desc}</div>
+      ${item.servings ? `<div class="menu-servings">Serves ${item.servings}</div>` : ''}
       <div class="menu-foot">
         <div class="menu-price">${fmt(item.price)}</div>
         <button class="menu-add-btn" type="button">+ Add</button>
@@ -725,12 +754,27 @@
     renderFilterPills();
     menuSections.innerHTML = '';
 
+    const servesBanner = document.getElementById('servesBanner');
+    const servesBannerText = document.getElementById('servesBannerText');
+    let itemPool = allItems;
+
+    if (servesFilter && SERVES_LABEL[servesFilter]) {
+      const matching = allItems.filter(i => servingsBucket(i.servings) === servesFilter);
+      servesBanner.style.display = 'flex';
+      servesBannerText.textContent = matching.length > 0
+        ? `Showing picks for "${SERVES_LABEL[servesFilter]}"`
+        : `We haven't tagged picks for "${SERVES_LABEL[servesFilter]}" yet — here's the full menu.`;
+      if (matching.length > 0) itemPool = matching;
+    } else {
+      servesBanner.style.display = 'none';
+    }
+
     const categoriesToShow = activeCategoryId === 'ALL'
       ? categories
       : categories.filter(c => c.id === activeCategoryId);
 
     categoriesToShow.forEach(cat => {
-      const items = allItems.filter(i => i.categoryId === cat.id);
+      const items = itemPool.filter(i => i.categoryId === cat.id);
       if (items.length === 0) return;
 
       const section = document.createElement('section');
@@ -793,6 +837,9 @@
             price: Number(p.price),
             image: resolveImageUrl(Array.isArray(p.images) && p.images.length ? p.images[0] : null),
             categoryId: category.id,
+            servings: p.servings || '',
+            contents: Array.isArray(p.contents) ? p.contents : [],
+            featured: Boolean(p.featured),
           };
         });
 
@@ -827,6 +874,8 @@
   const detailThumb = document.getElementById('detailThumb');
   const detailName = document.getElementById('detailName');
   const detailDesc = document.getElementById('detailDesc');
+  const detailServings = document.getElementById('detailServings');
+  const detailContents = document.getElementById('detailContents');
   const detailPrice = document.getElementById('detailPrice');
   const detailQtyValue = document.getElementById('detailQtyValue');
   const detailQtyDec = document.getElementById('detailQtyDec');
@@ -844,6 +893,22 @@
 
     detailName.textContent = item.name;
     detailDesc.textContent = item.desc || '';
+
+    if (item.servings) {
+      detailServings.textContent = `Serves ${item.servings}`;
+      detailServings.style.display = 'block';
+    } else {
+      detailServings.style.display = 'none';
+    }
+
+    if (item.contents && item.contents.length > 0) {
+      detailContents.innerHTML = item.contents.map(line => `<li>${line}</li>`).join('');
+      detailContents.style.display = 'block';
+    } else {
+      detailContents.innerHTML = '';
+      detailContents.style.display = 'none';
+    }
+
     detailPrice.textContent = fmt(item.price);
     detailThumb.style.backgroundImage = item.image ? `url('${item.image}')` : '';
     detailThumb.textContent = item.image ? '' : '🍽️';

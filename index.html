@@ -36,6 +36,29 @@
   .hero-shot span{background:rgba(43,36,32,.72);color:#fff;font-size:10px;letter-spacing:.05em;padding:5px 9px;border-radius:6px}
   @media(max-width:720px){.hero-gallery{grid-template-columns:repeat(2,1fr)}}
 
+  /* Who are we feeding? */
+  .feeding-guide{max-width:1100px;margin:4rem auto 0;padding:0 1.5rem;text-align:center}
+  .feeding-options{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-top:2rem}
+  @media(max-width:720px){.feeding-options{grid-template-columns:1fr}}
+  .feeding-card{display:block;border:1.5px solid var(--border);border-radius:16px;padding:1.75rem 1.5rem;text-align:left;transition:.2s;background:#fff}
+  .feeding-card:hover{border-color:var(--orange);transform:translateY(-3px);box-shadow:0 12px 30px -14px rgba(43,36,32,.25)}
+  .feeding-card-title{font-family:'Fraunces',serif;font-size:19px;font-weight:600;color:var(--green);margin-bottom:6px}
+  .feeding-card-sub{font-size:12px;color:var(--orange);font-weight:600;letter-spacing:.03em}
+  .feeding-not-sure{margin-top:1.75rem;font-size:13px;color:var(--muted)}
+  .feeding-not-sure a{color:var(--orange);font-weight:600;text-decoration:underline}
+
+  /* Featured */
+  .featured-section{max-width:1100px;margin:4rem auto 0;padding:0 1.5rem}
+  .featured-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-top:2rem}
+  @media(max-width:720px){.featured-grid{grid-template-columns:1fr}}
+  .featured-card{border:1px solid var(--border);border-radius:14px;overflow:hidden;background:#fff;text-align:left;transition:.2s;display:block}
+  .featured-card:hover{border-color:var(--orange);transform:translateY(-3px)}
+  .featured-thumb{height:150px;background:linear-gradient(135deg,var(--pale-o),var(--pale-g));background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;font-size:34px}
+  .featured-body{padding:1.1rem 1.25rem}
+  .featured-name{font-family:'Fraunces',serif;font-size:17px;font-weight:600;color:var(--green)}
+  .featured-desc{font-size:12px;color:var(--muted);margin:6px 0 10px;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+  .featured-price{font-size:14px;font-weight:500;color:var(--black)}
+
   .teaser-row{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;max-width:1100px;margin:0 auto}
   .teaser-visual{background:linear-gradient(160deg,var(--pale-g),var(--leaf));border-radius:20px;height:300px}
   .teaser-title{font-size:28px;color:var(--green);font-weight:600;margin-bottom:1rem}
@@ -117,6 +140,32 @@
   </div>
 </section>
 
+<section class="feeding-guide">
+  <div class="eyebrow">Not sure where to start?</div>
+  <h2 class="section-title">Who are we feeding?</h2>
+  <div class="feeding-options">
+    <a href="menu.html?serves=solo" class="feeding-card">
+      <div class="feeding-card-title">Just me.</div>
+      <div class="feeding-card-sub">Solo Pack →</div>
+    </a>
+    <a href="menu.html?serves=few" class="feeding-card">
+      <div class="feeding-card-title">A few of us.</div>
+      <div class="feeding-card-sub">Boxes for a small group →</div>
+    </a>
+    <a href="menu.html?serves=many" class="feeding-card">
+      <div class="feeding-card-title">Quite a few of us.</div>
+      <div class="feeding-card-sub">Platters for a crowd →</div>
+    </a>
+  </div>
+  <div class="feeding-not-sure" id="feedingNotSure" style="display:none"></div>
+</section>
+
+<section class="featured-section" id="featuredSection" style="display:none">
+  <div class="eyebrow" style="text-align:center">Rera's Picks</div>
+  <h2 class="section-title" style="text-align:center">Featured Right Now</h2>
+  <div class="featured-grid" id="featuredGrid"></div>
+</section>
+
 <section class="section">
   <div class="teaser-row">
     <div class="teaser-visual"></div>
@@ -173,7 +222,7 @@
   <div class="community-modal">
     <button class="community-close" id="communityClose" aria-label="Close">×</button>
     <h3 class="community-title">Join the Rera's Treat Community</h3>
-    <p class="community-intro">We're building something for Ogijo — and honestly, it's better built with you than without you. Join the community and be the first to know when we open, get early perks, and help shape what's on the menu.</p>
+    <p class="community-intro">We&rsquo;re bringing a little piece of Rera to Ogijo, and we&rsquo;d love to have you at the table. Join our community to be the first to know when we open, enjoy early treats and perks, and help us decide what we&rsquo;ll be serving.</p>
 
     <div class="community-error" id="communityError"></div>
 
@@ -347,6 +396,48 @@
         });
 
         setTimeout(() => overlay.classList.add('show'), 700);
+      })
+      .catch(() => {});
+  })();
+
+  // Featured products + "Who are we feeding?" recommendation
+  (function () {
+    function resolveImageUrl(path) {
+      if (!path) return null;
+      return /^https?:\/\//.test(path) ? path : `${COMMUNITY_API_ORIGIN}${path}`;
+    }
+
+    fetch(`${COMMUNITY_API_ORIGIN}/whatsapp-sessions/menu`)
+      .then((res) => (res.ok ? res.json() : []))
+      .then((data) => {
+        const products = Array.isArray(data) ? data : (data.data || data.items || []);
+        const available = products.filter((p) => p.status === 'ACTIVE' && p.isAvailable);
+
+        const featured = available.filter((p) => p.featured);
+        if (featured.length > 0) {
+          const grid = document.getElementById('featuredGrid');
+          grid.innerHTML = featured.map((p) => {
+            const image = resolveImageUrl(Array.isArray(p.images) && p.images.length ? p.images[0] : null);
+            return `
+              <a href="menu.html" class="featured-card">
+                <div class="featured-thumb" style="${image ? `background-image:url('${image}')` : ''}">${image ? '' : '🍽️'}</div>
+                <div class="featured-body">
+                  <div class="featured-name">${p.name}</div>
+                  <div class="featured-desc">${p.description || ''}</div>
+                  <div class="featured-price">₦${Number(p.price).toLocaleString()}</div>
+                </div>
+              </a>
+            `;
+          }).join('');
+          document.getElementById('featuredSection').style.display = 'block';
+        }
+
+        const igbadun = available.find((p) => p.name.toLowerCase().includes('igbadun'));
+        if (igbadun) {
+          const notSure = document.getElementById('feedingNotSure');
+          notSure.innerHTML = `Not sure? <a href="menu.html">Start with ${igbadun.name}</a> — it's a favourite for a reason.`;
+          notSure.style.display = 'block';
+        }
       })
       .catch(() => {});
   })();
