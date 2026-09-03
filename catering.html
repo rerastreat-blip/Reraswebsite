@@ -12,28 +12,34 @@
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Our Story — Rera's Treat</title>
+<title>Catering &amp; Events — Rera's Treat</title>
+<meta name="description" content="Planning a birthday, wedding, office meeting or house party in Ogijo? Rera's Treat makes finger foods and food packs for groups of any size. Plan your order today.">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <style>
-  .about-hero{padding:4rem 1.5rem 2rem;text-align:center}
-  .about-hero-title{font-size:clamp(36px,6vw,56px);font-weight:700;color:var(--green)}
-  .story-wrap{max-width:720px;margin:0 auto;padding:2rem 1.5rem 5rem}
-  .story-visual{background:linear-gradient(160deg,var(--pale-o),var(--pale-g));border-radius:20px;height:280px;margin-bottom:2.5rem}
-  .story-body p{color:var(--black);font-size:15px;margin-bottom:1.25rem;font-weight:300;line-height:1.85}
-  .story-placeholder{background:var(--pale-o);border:1px dashed var(--orange);border-radius:12px;padding:1.5rem;color:var(--muted);font-size:13px;font-style:italic}
-  .stat-row{display:flex;gap:2.5rem;justify-content:center;margin-top:2.5rem}
-  .stat-num{font-family:'Fraunces',serif;font-size:30px;color:var(--gold);font-weight:700;text-align:center}
-  .stat-label{font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;text-align:center}
+  .catering-hero{padding:4rem 1.5rem 2rem;text-align:center}
+  .catering-hero-title{font-size:clamp(34px,6vw,54px);font-weight:700;color:var(--green);max-width:760px;margin:1rem auto}
+  .catering-hero-sub{max-width:520px;margin:1rem auto 2rem;color:var(--muted);font-size:15px;font-weight:300;line-height:1.7}
 
-  .believe-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:1rem}
-  .believe-card{background:var(--pale-g);border-radius:14px;padding:1.5rem;text-align:center}
-  .believe-card p{font-family:'Fraunces',serif;font-style:italic;font-size:16px;color:var(--green);font-weight:600;line-height:1.5}
-  @media(max-width:720px){.believe-row{grid-template-columns:1fr}}
+  .catering-wrap{max-width:900px;margin:0 auto;padding:1rem 1.5rem 5rem}
 
-  .closing-cta{text-align:center;padding:1rem 1.5rem 0}
-  .closing-cta h2{font-size:clamp(26px,4vw,36px);color:var(--green);margin-bottom:1.25rem}
+  .occasion-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin:2.5rem 0 3.5rem}
+  @media(max-width:720px){.occasion-grid{grid-template-columns:repeat(2,1fr)}}
+  .occasion-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:1.5rem 1rem;text-align:center}
+  .occasion-emoji{font-size:28px;margin-bottom:.6rem}
+  .occasion-label{font-family:'Fraunces',serif;font-size:14px;font-weight:600;color:var(--green)}
+
+  .how-it-works{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin:3rem 0}
+  @media(max-width:720px){.how-it-works{grid-template-columns:1fr}}
+  .how-step{text-align:center}
+  .how-step-num{font-family:'Fraunces',serif;font-size:32px;font-weight:700;color:var(--gold)}
+  .how-step-title{font-family:'Fraunces',serif;font-size:17px;font-weight:600;color:var(--green);margin:.4rem 0 .5rem}
+  .how-step-body{font-size:13px;color:var(--muted);line-height:1.6}
+
+  .catering-cta{text-align:center;background:var(--pale-g);border-radius:20px;padding:3rem 2rem;margin-top:2rem}
+  .catering-cta h2{font-family:'Fraunces',serif;font-size:clamp(24px,4vw,32px);color:var(--green);margin-bottom:.75rem}
+  .catering-cta p{color:var(--muted);font-size:14px;margin-bottom:1.5rem;max-width:440px;margin-left:auto;margin-right:auto}
 
   /* Community modal */
   .community-overlay{position:fixed;inset:0;background:rgba(31,26,20,.55);display:none;align-items:center;justify-content:center;z-index:100;padding:1.5rem}
@@ -67,8 +73,8 @@
     </a>
     <div class="nav-links">
       <a href="menu.html">Menu</a>
-      <a href="about.html" class="active">Our Story</a>
-      <a href="catering.html">Catering</a>
+      <a href="about.html">Our Story</a>
+      <a href="catering.html" class="active">Catering</a>
       <a href="track-order.html">Track Order</a>
     </div>
     <button type="button" class="btn btn-outline" style="padding:10px 18px" data-open-community>Join Community</button>
@@ -76,78 +82,47 @@
   </div>
 </nav>
 
-<section class="about-hero">
-  <div class="eyebrow">Our Story</div>
-  <h1 class="about-hero-title">A little piece of Rera, served to you.</h1>
+<section class="catering-hero">
+  <div class="eyebrow">Catering &amp; Events</div>
+  <h1 class="catering-hero-title">Feeding a few more people? We've got you.</h1>
+  <p class="catering-hero-sub">Rera's Treat makes finger foods and food packs sized for groups — from a small get-together to a full celebration, across Ogijo and our service areas.</p>
 </section>
 
-<section class="story-wrap">
-  <!-- A real photo of Rera's mother, or her kitchen/cooking, would be far more
-       powerful here than a stock image — drop one in as images/olatorera.jpg
-       and it'll automatically replace this placeholder (see script below). -->
-  <div class="story-visual" data-photo="images/olatorera.jpg"></div>
-  <div class="story-body">
-    <p>Some kinds of love are served on a plate.</p>
-
-    <p>They look like a full pot waiting for everyone to eat.<br>
-    They sound like, "Have you eaten?"<br>
-    They feel like someone insisting you take just one more.</p>
-
-    <p>That is the kind of love we know.</p>
-
-    <p>Rera comes from Olatorera, my mother's name.</p>
-
-    <p>My mother has always had a special relationship with food. She doesn't just cook for people; she feeds them. She gets excited about having people around, about making enough, about seeing everyone enjoy what she's made.</p>
-
-    <p>And somewhere along the way, I realised that what she was giving people was bigger than food.</p>
-
-    <p>She was making people feel cared for.</p>
-
-    <p>Rera's Treat is my way of sharing a piece of that with you.</p>
-
-    <p>We bring that warmth into freshly made finger food that fits the way life moves in Ogijo — something you can grab on your way somewhere, pick up after a long day, share with friends or simply enjoy because you felt like treating yourself.</p>
-
-    <p>But we don't want quick food to feel ordinary.</p>
-
-    <p>We care about the little things: the crispness, the freshness, the way everything is put together, the excitement of opening your pack and finding something you can't wait to eat.</p>
-
-    <p>Because we believe food can be quick and thoughtful.<br>
-    It can be simple and special.<br>
-    And even the smallest treat can make you feel a little bit loved.</p>
-
-    <p>So this is Rera.</p>
-
-    <p>A little piece of my mother.<br>
-    A little piece of home.<br>
-    Made fresh for Ogijo.</p>
-
-    <p style="font-family:'Fraunces',serif;font-style:italic;color:var(--gold);font-weight:600">Love, served generously.</p>
+<section class="catering-wrap">
+  <div class="occasion-grid">
+    <div class="occasion-card"><div class="occasion-emoji">🎂</div><div class="occasion-label">Birthdays</div></div>
+    <div class="occasion-card"><div class="occasion-emoji">💍</div><div class="occasion-label">Weddings</div></div>
+    <div class="occasion-card"><div class="occasion-emoji">🎉</div><div class="occasion-label">Small Celebrations</div></div>
+    <div class="occasion-card"><div class="occasion-emoji">💼</div><div class="occasion-label">Office Meetings</div></div>
+    <div class="occasion-card"><div class="occasion-emoji">👋</div><div class="occasion-label">Hangouts</div></div>
+    <div class="occasion-card"><div class="occasion-emoji">🏠</div><div class="occasion-label">House Parties</div></div>
+    <div class="occasion-card"><div class="occasion-emoji">✨</div><div class="occasion-label">Other Gatherings</div></div>
+    <div class="occasion-card"><div class="occasion-emoji">🍽️</div><div class="occasion-label">And More</div></div>
   </div>
 
-  <div class="stat-row">
-    <div><div class="stat-num">500+</div><div class="stat-label">Orders Served</div></div>
-    <div><div class="stat-num">15+</div><div class="stat-label">Menu Items</div></div>
-    <div><div class="stat-num">4.9★</div><div class="stat-label">Customer Rating</div></div>
+  <div class="how-it-works">
+    <div class="how-step">
+      <div class="how-step-num">1</div>
+      <div class="how-step-title">Tell us about it</div>
+      <div class="how-step-body">How many people, what kind of gathering, and when.</div>
+    </div>
+    <div class="how-step">
+      <div class="how-step-num">2</div>
+      <div class="how-step-title">We put a plan together</div>
+      <div class="how-step-body">We'll suggest packs and platters sized right for your crowd.</div>
+    </div>
+    <div class="how-step">
+      <div class="how-step-num">3</div>
+      <div class="how-step-title">We show up ready</div>
+      <div class="how-step-body">Freshly made, on time, so all you have to do is host.</div>
+    </div>
   </div>
-</section>
 
-<section class="story-wrap" style="padding-top:0">
-  <div class="story-body">
-    <p style="font-family:'Fraunces',serif;font-style:italic;font-size:20px;color:var(--green);font-weight:600;margin-bottom:1rem">Why Ogijo?</p>
-    <p>Because this is home. Ogijo is where Olatorera's kitchen actually lives, and it felt right to build Rera's Treat here first — for the people who are already our neighbours, before we ever think about anywhere else. From Ogijo to Itaoluwo, Shimawa, Odonguyan, and Lukosi, our finger foods, small chops, pasta, and drinks show up wherever people are gathering.</p>
+  <div class="catering-cta">
+    <h2>Ready to plan your order?</h2>
+    <p>Tell us the headcount and the occasion — we'll take it from there.</p>
+    <a class="btn btn-primary" href="https://wa.me/2349124800610?text=Hi%20Rera's%20Treat%2C%20I'd%20like%20to%20plan%20an%20order%20for%20an%20event." target="_blank" rel="noreferrer">Plan Your Order</a>
   </div>
-
-  <p style="font-family:'Fraunces',serif;font-style:italic;font-size:20px;color:var(--green);font-weight:600;margin:2rem 0 1rem;text-align:center">What we believe</p>
-  <div class="believe-row">
-    <div class="believe-card"><p>Quick food can still be thoughtful.</p></div>
-    <div class="believe-card"><p>A treat can still be made with care.</p></div>
-    <div class="believe-card"><p>Food can make people feel special.</p></div>
-  </div>
-</section>
-
-<section class="closing-cta">
-  <h2>Ready for a little Rera?</h2>
-  <a href="menu.html" class="btn btn-primary">Order Now</a>
 </section>
 
 <footer>
@@ -229,18 +204,6 @@
 </div>
 
 <script>
-  // Auto-swap the story visual placeholder for a real photo once one is
-  // added to /images (e.g. images/olatorera.jpg).
-  document.querySelectorAll('.story-visual[data-photo]').forEach(el => {
-    const img = new Image();
-    img.onload = () => {
-      el.style.backgroundImage = `url('${el.dataset.photo}')`;
-      el.style.backgroundSize = 'cover';
-      el.style.backgroundPosition = 'center';
-    };
-    img.src = el.dataset.photo;
-  });
-
   const COMMUNITY_API_ORIGIN = 'https://reraos.onrender.com';
 
   const communityOverlay = document.getElementById('communityOverlay');
@@ -312,6 +275,6 @@
   });
 </script>
 
-<script src="nav-events.js" defer></script>
+<script src="/nav-events.js" defer></script>
 </body>
 </html>
