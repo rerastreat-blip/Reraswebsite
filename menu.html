@@ -140,7 +140,7 @@
   .detail-added{display:none;text-align:center;color:var(--green);font-weight:600;margin-top:.75rem}
 
   /* Drink nudge */
-  .drink-nudge{position:fixed;bottom:96px;left:50%;transform:translateX(-50%) translateY(150%);width:min(92%,480px);background:#fff;border:1px solid var(--border);border-radius:16px;padding:16px 18px;box-shadow:0 16px 40px -12px rgba(43,36,32,.3);transition:transform .3s ease;z-index:65}
+  .drink-nudge{position:fixed;bottom:96px;left:50%;transform:translateX(-50%) translateY(150%);width:min(92%,480px);background:#fff;border:1px solid var(--border);border-radius:16px;padding:16px 18px;box-shadow:0 16px 40px -12px rgba(43,36,32,.3);transition:transform .3s ease;z-index:110}
   .drink-nudge.show{transform:translateX(-50%) translateY(0)}
   .drink-nudge-title{font-family:'Fraunces',serif;font-size:16px;color:var(--green);margin-bottom:2px}
   .drink-nudge-sub{font-size:12px;color:var(--muted)}
@@ -733,7 +733,6 @@
     card.querySelector('.menu-add-btn').addEventListener('click', (e) => {
       e.stopPropagation();
       addToCart(item, 1);
-      maybeShowDrinkNudge(item);
     });
 
     return card;
@@ -952,10 +951,8 @@
     setCartQty(detailItem, detailQty);
     detailAddBtn.style.display = 'none';
     detailAdded.style.display = 'block';
-    const addedItem = detailItem;
     setTimeout(() => {
       closeDetail();
-      maybeShowDrinkNudge(addedItem);
     }, 900);
   });
 
@@ -964,25 +961,28 @@
   const drinkNudgeItems = document.getElementById('drinkNudgeItems');
   const drinkNudgeDismiss = document.getElementById('drinkNudgeDismiss');
   let drinkNudgeShown = false;
+  let pendingDrinkNudgeContinue = null;
 
   function findDrinksCategory(){
     return categories.find(c => c.name.trim().toLowerCase() === 'drinks');
   }
 
-  function maybeShowDrinkNudge(justAddedItem){
-    if (drinkNudgeShown) return;
+  // Shown once, right before checkout (not on every add-to-cart) - a single
+  // nudge to grab a drink, easily dismissed if they don't want one.
+  function maybeShowDrinkNudge(onContinue){
+    if (drinkNudgeShown) { onContinue(); return; }
 
     const drinksCategory = findDrinksCategory();
-    if (!drinksCategory) return;
-    if (justAddedItem.categoryId === drinksCategory.id) return;
+    if (!drinksCategory) { onContinue(); return; }
 
     const hasDrinkInCart = [...selected.values()].some(i => i.categoryId === drinksCategory.id);
-    if (hasDrinkInCart) return;
+    if (hasDrinkInCart) { onContinue(); return; }
 
     const drinkItems = allItems.filter(i => i.categoryId === drinksCategory.id).slice(0, 4);
-    if (drinkItems.length === 0) return;
+    if (drinkItems.length === 0) { onContinue(); return; }
 
     drinkNudgeShown = true;
+    pendingDrinkNudgeContinue = onContinue;
     drinkNudgeItems.innerHTML = '';
     drinkItems.forEach(item => {
       const row = document.createElement('div');
@@ -1010,6 +1010,11 @@
 
   function dismissDrinkNudge(){
     drinkNudge.classList.remove('show');
+    if (pendingDrinkNudgeContinue) {
+      const cont = pendingDrinkNudgeContinue;
+      pendingDrinkNudgeContinue = null;
+      cont();
+    }
   }
 
   drinkNudgeDismiss.addEventListener('click', dismissDrinkNudge);
@@ -1116,7 +1121,9 @@
 
   trayBtn.addEventListener('click', openCheckout);
   checkoutClose.addEventListener('click', closeCheckout);
-  cartContinueBtn.addEventListener('click', () => showStep(stepDetails));
+  cartContinueBtn.addEventListener('click', () => {
+    maybeShowDrinkNudge(() => showStep(stepDetails));
+  });
   detailsBack.addEventListener('click', () => showStep(stepCart));
 
   document.querySelectorAll('.order-type-btn').forEach(btn => {
