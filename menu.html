@@ -22,6 +22,10 @@
   .menu-hero-title{font-size:clamp(36px,6vw,56px);font-weight:700;color:var(--green)}
 
   .menu-filter{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;max-width:1100px;margin:0 auto;padding:2rem 1.5rem 0}
+  .menu-empty-state{max-width:420px;margin:3rem auto 6rem;padding:0 1.5rem;text-align:center}
+  .menu-empty-icon{width:110px;height:110px;margin:0 auto 1.5rem;border-radius:50%;background:linear-gradient(160deg,var(--pale-o),var(--pale-g));display:flex;align-items:center;justify-content:center;font-size:52px}
+  .menu-empty-title{font-family:'Fraunces',serif;font-size:24px;font-weight:600;color:var(--green);margin-bottom:.5rem}
+  .menu-empty-sub{font-size:14px;color:var(--muted)}
   .serves-banner{max-width:1100px;margin:1.5rem auto 0;padding:0 1.5rem;display:flex;align-items:center;justify-content:center;gap:14px;font-size:13px;color:var(--green)}
   .serves-banner-clear{color:var(--orange);font-weight:600;text-decoration:underline}
   .filter-pill{padding:9px 20px;border-radius:999px;border:1.5px solid var(--border);background:#fff;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;color:var(--muted);cursor:pointer;transition:.15s}
@@ -195,7 +199,7 @@
   <div class="eyebrow">The Menu</div>
   <h1 class="menu-hero-title">What are you having?</h1>
   <p style="color:var(--muted);font-size:14px;margin-top:.75rem;max-width:480px;margin-left:auto;margin-right:auto">Fresh finger foods, small chops, pasta and treats made for everyday cravings, hangouts and celebrations in Ogijo.</p>
-  <p style="color:var(--muted);font-size:13px;margin-top:.5rem">Tap anything for a closer look, or add it straight to your order.</p>
+  <p style="color:var(--muted);font-size:13px;margin-top:.5rem" id="menuTapHint">Tap anything for a closer look, or add it straight to your order.</p>
 </section>
 
 <div class="serves-banner" id="servesBanner" style="display:none">
@@ -759,6 +763,21 @@
   }
 
   function renderMenu(){
+    if (allItems.length === 0) {
+      menuFilter.innerHTML = '';
+      document.getElementById('servesBanner').style.display = 'none';
+      const tapHint = document.getElementById('menuTapHint');
+      if (tapHint) tapHint.style.display = 'none';
+      menuSections.innerHTML = `
+        <div class="menu-empty-state">
+          <div class="menu-empty-icon">🥣</div>
+          <h2 class="menu-empty-title">We're simmering our menu.</h2>
+          <p class="menu-empty-sub">Check back soon!</p>
+        </div>
+      `;
+      return;
+    }
+
     renderFilterPills();
     menuSections.innerHTML = '';
 
