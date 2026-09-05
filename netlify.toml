@@ -13,3 +13,13 @@
   from = "/events/*"
   to = "/events.html"
   status = 200
+
+[[redirects]]
+  from = "/journal"
+  to = "/journal.html"
+  status = 200
+
+[[redirects]]
+  from = "/journal/*"
+  to = "/journal.html"
+  status = 200

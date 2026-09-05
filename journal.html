@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MVVD33NMMS"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-MVVD33NMMS');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="pageTitle">Journal — Rera's Treat</title>
+<meta name="description" id="pageDescription" content="Tips, guides and stories from the Rera's Treat kitchen — planning food for a party, portioning finger foods and small chops, and more.">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+<style>
+  .journal-hero{padding:4rem 1.5rem 2rem;text-align:center}
+  .journal-hero-title{font-size:clamp(34px,6vw,54px);font-weight:700;color:var(--green)}
+  .journal-hero-sub{max-width:480px;margin:.75rem auto 0;color:var(--muted);font-size:14px}
+
+  .journal-list-wrap{max-width:900px;margin:0 auto;padding:1rem 1.5rem 6rem}
+  .journal-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem}
+  @media(max-width:720px){.journal-grid{grid-template-columns:1fr}}
+  .journal-card{display:block;background:#fff;border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:.2s}
+  .journal-card:hover{border-color:var(--orange);transform:translateY(-3px)}
+  .journal-card-thumb{height:170px;background:linear-gradient(135deg,var(--pale-o),var(--pale-g));background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;font-size:36px}
+  .journal-card-body{padding:1.25rem}
+  .journal-card-date{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);font-weight:600;margin-bottom:6px}
+  .journal-card-title{font-family:'Fraunces',serif;font-size:19px;font-weight:600;color:var(--green);margin-bottom:6px}
+  .journal-card-excerpt{font-size:13px;color:var(--muted);line-height:1.6}
+
+  .journal-post-wrap{max-width:680px;margin:0 auto;padding:1rem 1.5rem 6rem}
+  .journal-post-date{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);font-weight:600;text-align:center;margin-bottom:.5rem}
+  .journal-post-title{font-family:'Fraunces',serif;font-size:clamp(28px,5vw,40px);font-weight:700;color:var(--green);text-align:center;margin-bottom:1.5rem}
+  .journal-post-cover{width:100%;border-radius:16px;margin-bottom:2rem;display:block;background:linear-gradient(135deg,var(--pale-o),var(--pale-g));min-height:220px;background-size:cover;background-position:center}
+  .journal-post-body{font-size:15px;color:var(--black);line-height:1.85;font-weight:300}
+  .journal-post-body p{margin-bottom:1.25rem}
+  .journal-back-link{display:inline-block;margin-bottom:1.5rem;font-size:13px;color:var(--muted)}
+  .journal-back-link:hover{color:var(--orange)}
+
+  .journal-empty{text-align:center;color:var(--muted);padding:3rem 1.5rem;font-size:14px}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="/index.html" class="logo">
+      <svg viewBox="0 0 220 62" height="40" role="img" aria-label="Rera's Treat">
+        <path d="M108 5 C108 2.3 110.5 0.6 112.8 2.4 C115.1 0.6 117.6 2.3 117.6 5 C117.6 8.2 112.8 12.5 112.8 12.5 C112.8 12.5 108 8.2 108 5Z" fill="#D94A32"/>
+        <text x="0" y="40" font-family="'Fraunces', Georgia, serif" font-size="30" font-weight="600" letter-spacing="0.3"><tspan fill="#3B2118">Rera&#8217;s </tspan><tspan fill="#D94A32">Treat</tspan></text>
+        <rect x="0" y="48" width="170" height="3" rx="1.5" fill="#E9A83B"/>
+      </svg>
+    </a>
+    <div class="nav-links">
+      <a href="/menu.html">Menu</a>
+      <a href="/about.html">Our Story</a>
+      <a href="/catering.html">Catering</a>
+      <a href="/track-order.html">Track Order</a>
+    </div>
+    <a href="/menu.html" class="btn btn-primary" style="padding:10px 18px">Order Now</a>
+  </div>
+</nav>
+
+<div id="listView">
+  <section class="journal-hero">
+    <div class="eyebrow">Journal</div>
+    <h1 class="journal-hero-title">From the Rera's Treat kitchen</h1>
+    <p class="journal-hero-sub">Guides, tips and stories on finger foods, small chops and feeding a crowd in Ogijo.</p>
+  </section>
+
+  <section class="journal-list-wrap">
+    <div id="journalGrid">
+      <p class="journal-empty">Loading posts…</p>
+    </div>
+  </section>
+</div>
+
+<div id="postView" style="display:none">
+  <section class="journal-post-wrap" style="padding-top:3rem">
+    <a href="/journal" class="journal-back-link">← Back to Journal</a>
+    <div id="postNotFound" style="display:none">
+      <p class="journal-empty">We couldn't find this post. It may have been moved or unpublished.</p>
+    </div>
+    <div id="postContent" style="display:none">
+      <div class="journal-post-date" id="postDate"></div>
+      <h1 class="journal-post-title" id="postTitle"></h1>
+      <div class="journal-post-cover" id="postCover" style="display:none"></div>
+      <div class="journal-post-body" id="postBody"></div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">Rera's <span style="color:var(--orange)">Treat</span></div>
+      <div class="footer-slogan">Love, served generously.</div>
+      <p class="footer-desc">Finger foods, small chops, pasta &amp; treats in Ogijo.</p>
+      <div class="footer-socials">
+        <a class="footer-social-btn" href="https://www.instagram.com/rerastreats" target="_blank" title="Instagram">IG</a>
+        <a class="footer-social-btn" href="https://wa.me/2349124800610" target="_blank" title="WhatsApp">WA</a>
+        <a class="footer-social-btn" href="https://www.tiktok.com/@fingerfoodinogijo" target="_blank" title="TikTok">TT</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Order</div>
+      <a class="footer-line" href="/menu.html">Order Now →</a>
+    </div>
+    <div>
+      <div class="footer-col-title">Contact</div>
+      <div class="footer-line">0912 480 0610</div>
+      <div class="footer-line">orders@rerastreat.com.ng</div>
+    </div>
+    <div>
+      <div class="footer-col-title">Find Us</div>
+      <div class="footer-line">Ogijo, Ogun State, Nigeria</div>
+      <div class="footer-line">Serving Ogijo, Itaoluwo, Shimawa, Odonguyan &amp; Lukosi</div>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2026 Rera's Treat. All rights reserved.</div>
+</footer>
+
+<script>
+  const API_ORIGIN = 'https://reraos.onrender.com';
+
+  const listView = document.getElementById('listView');
+  const postView = document.getElementById('postView');
+  const journalGrid = document.getElementById('journalGrid');
+  const postNotFound = document.getElementById('postNotFound');
+  const postContent = document.getElementById('postContent');
+  const postDate = document.getElementById('postDate');
+  const postTitle = document.getElementById('postTitle');
+  const postCover = document.getElementById('postCover');
+  const postBody = document.getElementById('postBody');
+
+  function resolveImageUrl(path) {
+    if (!path) return null;
+    return /^https?:\/\//.test(path) ? path : `${API_ORIGIN}${path}`;
+  }
+
+  function formatDate(iso) {
+    if (!iso) return '';
+    return new Date(iso).toLocaleDateString('en-NG', { dateStyle: 'long' });
+  }
+
+  function bodyToHtml(text) {
+    return text
+      .trim()
+      .split(/\n\n+/)
+      .map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`)
+      .join('');
+  }
+
+  const segments = window.location.pathname.split('/').filter(Boolean);
+  const slug = segments[0] === 'journal' && segments[1] ? segments[1] : null;
+
+  if (slug) {
+    listView.style.display = 'none';
+    postView.style.display = 'block';
+
+    fetch(`${API_ORIGIN}/public/journal/${encodeURIComponent(slug)}`)
+      .then(res => (res.ok ? res.json() : null))
+      .then(post => {
+        if (!post) {
+          postNotFound.style.display = 'block';
+          return;
+        }
+
+        document.getElementById('pageTitle').textContent = `${post.title} — Rera's Treat`;
+        if (post.excerpt) document.getElementById('pageDescription').setAttribute('content', post.excerpt);
+
+        postDate.textContent = formatDate(post.publishedAt);
+        postTitle.textContent = post.title;
+
+        const image = resolveImageUrl(post.coverImage);
+        if (image) {
+          postCover.style.backgroundImage = `url('${image}')`;
+          postCover.style.display = 'block';
+        }
+
+        postBody.innerHTML = bodyToHtml(post.body);
+        postContent.style.display = 'block';
+      })
+      .catch(() => {
+        postNotFound.style.display = 'block';
+      });
+  } else {
+    fetch(`${API_ORIGIN}/public/journal`)
+      .then(res => (res.ok ? res.json() : []))
+      .then(posts => {
+        if (!Array.isArray(posts) || posts.length === 0) {
+          journalGrid.innerHTML = '<p class="journal-empty">Nothing here yet — check back soon.</p>';
+          return;
+        }
+
+        journalGrid.innerHTML = `<div class="journal-grid">${posts.map(post => {
+          const image = resolveImageUrl(post.coverImage);
+          return `
+            <a href="/journal/${post.slug}" class="journal-card">
+              <div class="journal-card-thumb" style="${image ? `background-image:url('${image}')` : ''}">${image ? '' : '📝'}</div>
+              <div class="journal-card-body">
+                <div class="journal-card-date">${formatDate(post.publishedAt)}</div>
+                <div class="journal-card-title">${post.title}</div>
+                <div class="journal-card-excerpt">${post.excerpt || ''}</div>
+              </div>
+            </a>
+          `;
+        }).join('')}</div>`;
+      })
+      .catch(() => {
+        journalGrid.innerHTML = '<p class="journal-empty">Journal is temporarily unavailable. Please check back soon.</p>';
+      });
+  }
+</script>
+
+<script src="/nav-events.js" defer></script>
+</body>
+</html>
