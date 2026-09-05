@@ -12,7 +12,8 @@
       var link = document.createElement('a');
       link.href = '/events/' + event.slug;
       link.className = 'nav-event-link';
-      link.innerHTML = '&#127881; ' + event.title;
+      link.title = event.title;
+      link.innerHTML = '&#127881; Event';
       navLinks.appendChild(link);
     })
     .catch(function () {});

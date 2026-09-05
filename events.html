@@ -69,6 +69,7 @@
       <a href="/journal">Journal</a>
       <a href="/track-order.html">Track Order</a>
     </div>
+    <button type="button" class="nav-toggle" aria-label="Menu" aria-expanded="false">&#9776;</button>
     <a href="/menu.html" class="btn btn-primary" style="padding:10px 18px">Order Now</a>
   </div>
 </nav>
@@ -120,7 +121,7 @@
             <span class="qty-value" id="rsvpQtyValue">1</span>
             <button type="button" class="qty-btn" id="rsvpQtyInc" aria-label="Increase">+</button>
           </div>
-          <p class="rsvp-hint">Up to 2 people per RSVP</p>
+          <p class="rsvp-hint">Let us know how many are coming</p>
         </div>
         <div class="checkout-form-group">
           <label class="checkout-label">Dietary / allergy note (optional)</label>
@@ -197,7 +198,6 @@
   const rsvpError = document.getElementById('rsvpError');
   const rsvpSubmit = document.getElementById('rsvpSubmit');
 
-  const MAX_ATTENDING = 2;
   const rsvpQtyValue = document.getElementById('rsvpQtyValue');
   const rsvpQtyDec = document.getElementById('rsvpQtyDec');
   const rsvpQtyInc = document.getElementById('rsvpQtyInc');
@@ -208,7 +208,7 @@
     rsvpQtyValue.textContent = numberAttending;
   });
   rsvpQtyInc.addEventListener('click', () => {
-    numberAttending = Math.min(MAX_ATTENDING, numberAttending + 1);
+    numberAttending = numberAttending + 1;
     rsvpQtyValue.textContent = numberAttending;
   });
 
@@ -335,6 +335,7 @@
   loadEvent();
 </script>
 
+<script src="/nav-toggle.js" defer></script>
 <script src="/nav-events.js" defer></script>
 </body>
 </html>
