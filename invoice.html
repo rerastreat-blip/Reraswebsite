@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MVVD33NMMS"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-MVVD33NMMS');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Invoice — Rera's Treat</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+<style>
+  .inv-wrap{max-width:640px;margin:2.5rem auto 6rem;padding:0 1.5rem}
+  .inv-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:2.5rem}
+  .inv-top{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;margin-bottom:2rem;flex-wrap:wrap}
+  .inv-brand{font-family:'Fraunces',serif;font-size:22px;font-weight:600;color:var(--black)}
+  .inv-brand span{color:var(--orange)}
+  .inv-meta{text-align:right;font-size:12px;color:var(--muted);line-height:1.7}
+  .inv-status{display:inline-block;margin-top:6px;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+  .inv-status.settled{background:#DCFCE7;color:#166534}
+  .inv-status.due{background:#FEF3C7;color:#92400E}
+  .inv-bill-to{font-size:13px;color:var(--muted);margin-bottom:2rem}
+  .inv-bill-to strong{color:var(--black);display:block;font-size:15px;margin-bottom:2px}
+  .inv-table{width:100%;border-collapse:collapse;margin-bottom:1.5rem;font-size:13px}
+  .inv-table th{text-align:left;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:0 0 10px;border-bottom:1px solid var(--border)}
+  .inv-table th:last-child,.inv-table td:last-child{text-align:right}
+  .inv-table td{padding:10px 0;border-bottom:1px solid var(--border)}
+  .inv-totals{max-width:280px;margin-left:auto;font-size:13px}
+  .inv-totals-row{display:flex;justify-content:space-between;padding:5px 0}
+  .inv-totals-row.grand{font-weight:700;font-size:15px;border-top:1px solid var(--border);margin-top:6px;padding-top:10px}
+  .inv-totals-row.balance{color:var(--orange);font-weight:700}
+  .inv-payments{margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+  .inv-payments h3{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+  .inv-payment-line{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);padding:3px 0}
+  .inv-footer-note{text-align:center;font-size:12px;color:var(--muted);margin-top:2rem}
+  @media print{nav,footer,.inv-footer-note{display:none}.inv-wrap{margin:0;max-width:none}.inv-card{border:none;padding:0}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="/index.html" class="logo">
+      <svg viewBox="0 0 220 62" height="40" role="img" aria-label="Rera's Treat">
+        <path d="M108 5 C108 2.3 110.5 0.6 112.8 2.4 C115.1 0.6 117.6 2.3 117.6 5 C117.6 8.2 112.8 12.5 112.8 12.5 C112.8 12.5 108 8.2 108 5Z" fill="#D94A32"/>
+        <text x="0" y="40" font-family="'Fraunces', Georgia, serif" font-size="30" font-weight="600" letter-spacing="0.3"><tspan fill="#3B2118">Rera&#8217;s </tspan><tspan fill="#D94A32">Treat</tspan></text>
+        <rect x="0" y="48" width="170" height="3" rx="1.5" fill="#E9A83B"/>
+      </svg>
+    </a>
+    <div class="nav-links">
+      <a href="/menu.html">Menu</a>
+      <a href="/about.html">Our Story</a>
+      <a href="/catering.html">Catering</a>
+      <a href="/journal">Journal</a>
+      <a href="/track-order.html">Track Order</a>
+    </div>
+    <button type="button" class="nav-toggle" aria-label="Menu" aria-expanded="false">&#9776;</button>
+    <a href="/menu.html" class="btn btn-primary" style="padding:10px 18px">Order Now</a>
+  </div>
+</nav>
+
+<div class="inv-wrap">
+  <div id="loadingState" style="text-align:center;color:var(--muted);font-size:13px;padding:3rem 0">Loading invoice…</div>
+  <div id="notFoundState" style="display:none;text-align:center;color:#A23B3B;font-size:13px;padding:3rem 0">We couldn't find this invoice.</div>
+
+  <div id="invoiceCard" class="inv-card" style="display:none">
+    <div class="inv-top">
+      <div>
+        <div class="inv-brand">Rera's <span>Treat</span></div>
+        <div style="font-size:12px;color:var(--muted);margin-top:4px">Ogijo, Ogun State, Nigeria</div>
+      </div>
+      <div class="inv-meta">
+        <div>Invoice #<span id="invOrderNumber"></span></div>
+        <div id="invDate"></div>
+        <div id="invStatus"></div>
+      </div>
+    </div>
+
+    <div class="inv-bill-to">
+      Billed to
+      <strong id="invCustomerName"></strong>
+      <span id="invFulfillment"></span>
+    </div>
+
+    <table class="inv-table">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Qty</th>
+          <th>Price</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody id="invItemsBody"></tbody>
+    </table>
+
+    <div class="inv-totals">
+      <div class="inv-totals-row"><span>Subtotal</span><span id="invSubtotal"></span></div>
+      <div class="inv-totals-row" id="invDiscountRow" style="display:none"><span>Discount</span><span id="invDiscount"></span></div>
+      <div class="inv-totals-row grand"><span>Total</span><span id="invTotal"></span></div>
+      <div class="inv-totals-row"><span>Amount Paid</span><span id="invPaid"></span></div>
+      <div class="inv-totals-row balance"><span>Balance Due</span><span id="invBalance"></span></div>
+    </div>
+
+    <div class="inv-payments" id="invPaymentsSection" style="display:none">
+      <h3>Payment History</h3>
+      <div id="invPaymentsList"></div>
+    </div>
+  </div>
+
+  <p class="inv-footer-note">Questions about this invoice? Reach us at 0912 480 0610 or orders@rerastreat.com.ng.</p>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">Rera's <span style="color:var(--orange)">Treat</span></div>
+      <div class="footer-slogan">Love, served generously.</div>
+      <p class="footer-desc">Finger foods, small chops, pasta &amp; treats in Ogijo.</p>
+      <div class="footer-socials">
+        <a class="footer-social-btn" href="https://www.instagram.com/rerastreats" target="_blank" title="Instagram">IG</a>
+        <a class="footer-social-btn" href="https://wa.me/2349124800610" target="_blank" title="WhatsApp">WA</a>
+        <a class="footer-social-btn" href="https://www.tiktok.com/@fingerfoodinogijo" target="_blank" title="TikTok">TT</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Order</div>
+      <a class="footer-line" href="/menu.html">Order Now →</a>
+    </div>
+    <div>
+      <div class="footer-col-title">Contact</div>
+      <div class="footer-line">0912 480 0610</div>
+      <div class="footer-line">orders@rerastreat.com.ng</div>
+    </div>
+    <div>
+      <div class="footer-col-title">Find Us</div>
+      <div class="footer-line">Ogijo, Ogun State, Nigeria</div>
+      <div class="footer-line">Serving Ogijo, Itaoluwo, Shimawa, Odonguyan &amp; Lukosi</div>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2026 Rera's Treat. All rights reserved.</div>
+</footer>
+
+<script>
+  const API_ORIGIN = 'https://reraos.onrender.com';
+
+  const params = new URLSearchParams(window.location.search);
+  const orderId = params.get('order');
+
+  const loadingState = document.getElementById('loadingState');
+  const notFoundState = document.getElementById('notFoundState');
+  const invoiceCard = document.getElementById('invoiceCard');
+
+  function naira(value) {
+    return `₦${Number(value).toLocaleString()}`;
+  }
+
+  function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  async function loadInvoice() {
+    if (!orderId) {
+      loadingState.style.display = 'none';
+      notFoundState.style.display = 'block';
+      return;
+    }
+
+    try {
+      const res = await fetch(`${API_ORIGIN}/public/orders/${encodeURIComponent(orderId)}/invoice`);
+      if (!res.ok) throw new Error('not found');
+      const inv = await res.json();
+
+      loadingState.style.display = 'none';
+
+      document.getElementById('invOrderNumber').textContent = inv.orderNumber;
+      document.getElementById('invDate').textContent = new Date(inv.createdAt).toLocaleDateString('en-NG', { dateStyle: 'long' });
+
+      const statusEl = document.getElementById('invStatus');
+      statusEl.innerHTML = inv.isSettled
+        ? '<span class="inv-status settled">Settled</span>'
+        : '<span class="inv-status due">Balance Due</span>';
+
+      document.getElementById('invCustomerName').textContent = inv.customerName;
+      document.getElementById('invFulfillment').textContent =
+        inv.orderType === 'DELIVERY' ? (inv.deliveryAddress || 'Delivery') :
+        inv.orderType === 'DINE_IN' ? `Table ${inv.tableNumber || '-'}` : 'Pickup';
+
+      document.getElementById('invItemsBody').innerHTML = inv.items.map((item) => `
+        <tr>
+          <td>${escapeHtml(item.name)}</td>
+          <td>${item.quantity}</td>
+          <td>${naira(item.unitPrice)}</td>
+          <td>${naira(item.lineTotal)}</td>
+        </tr>
+      `).join('');
+
+      document.getElementById('invSubtotal').textContent = naira(inv.subtotal);
+      document.getElementById('invTotal').textContent = naira(inv.totalAmount);
+      document.getElementById('invPaid').textContent = naira(inv.amountPaid);
+      document.getElementById('invBalance').textContent = naira(inv.balance);
+
+      if (Number(inv.discountAmount) > 0) {
+        document.getElementById('invDiscountRow').style.display = 'flex';
+        document.getElementById('invDiscount').textContent = `−${naira(inv.discountAmount)}`;
+      }
+
+      if (inv.payments && inv.payments.length > 0) {
+        document.getElementById('invPaymentsSection').style.display = 'block';
+        document.getElementById('invPaymentsList').innerHTML = inv.payments.map((p) => `
+          <div class="inv-payment-line">
+            <span>${new Date(p.recordedAt).toLocaleDateString('en-NG', { dateStyle: 'medium' })}</span>
+            <span>${naira(p.amount)}</span>
+          </div>
+        `).join('');
+      }
+
+      invoiceCard.style.display = 'block';
+    } catch (err) {
+      loadingState.style.display = 'none';
+      notFoundState.style.display = 'block';
+    }
+  }
+
+  loadInvoice();
+</script>
+
+<script src="/nav-toggle.js" defer></script>
+</body>
+</html>
