@@ -212,10 +212,13 @@
 
 <div class="menu-filter" id="menuFilter"></div>
 <div id="menuSections">
+  <p id="menuLoadingState" style="text-align:center;color:var(--muted);font-size:13px;padding:2rem 1.5rem 6rem">Loading menu…</p>
   <!-- Static fallback so dish names/prices are visible in the raw HTML for
-       search engines and no-JS clients. Overwritten by loadMenu() below once
-       JS runs, so real visitors always see the live, interactive menu.
+       search engines and no-JS clients. Wrapped in <noscript> so real,
+       JS-enabled visitors never see this stale content flash before
+       loadMenu() below replaces it with the live menu.
        Regenerate this block whenever the menu changes meaningfully. -->
+  <noscript>
   <section class="category-section">
     <h2 class="category-title">Packs</h2>
     <div class="menu-grid">
@@ -433,6 +436,7 @@
       </div>
     </div>
   </section>
+  </noscript>
 </div>
 
 <div class="tray" id="tray">

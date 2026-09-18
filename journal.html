@@ -17,6 +17,7 @@
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/style.css">
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
 <style>
   .journal-hero{padding:4rem 1.5rem 2rem;text-align:center}
   .journal-hero-title{font-size:clamp(34px,6vw,54px);font-weight:700;color:var(--green)}
@@ -39,6 +40,17 @@
   .journal-post-cover{width:100%;border-radius:16px;margin-bottom:2rem;display:block;background:linear-gradient(135deg,var(--pale-o),var(--pale-g));min-height:220px;background-size:cover;background-position:center}
   .journal-post-body{font-size:15px;color:var(--black);line-height:1.85;font-weight:300}
   .journal-post-body p{margin-bottom:1.25rem}
+  .journal-post-body strong{font-weight:600;color:var(--black)}
+  .journal-post-body h2,.journal-post-body h3{font-family:'Fraunces',serif;color:var(--green);font-weight:600;line-height:1.3;margin:2rem 0 1rem}
+  .journal-post-body h2{font-size:24px}
+  .journal-post-body h3{font-size:19px}
+  .journal-post-body ul,.journal-post-body ol{margin:0 0 1.25rem 1.25rem;padding:0}
+  .journal-post-body li{margin-bottom:.4rem}
+  .journal-post-body blockquote{margin:0 0 1.25rem;padding:.25rem 0 .25rem 1rem;border-left:3px solid var(--orange);color:var(--muted);font-style:italic}
+  .journal-post-body table{width:100%;border-collapse:collapse;margin:0 0 1.5rem;font-size:14px}
+  .journal-post-body th,.journal-post-body td{border:1px solid var(--border);padding:8px 12px;text-align:left}
+  .journal-post-body th{background:var(--pale-g);font-weight:600;color:var(--green)}
+  .journal-post-body a{color:var(--orange)}
   .journal-back-link{display:inline-block;margin-bottom:1.5rem;font-size:13px;color:var(--muted)}
   .journal-back-link:hover{color:var(--orange)}
 
@@ -151,11 +163,17 @@
   }
 
   function bodyToHtml(text) {
+    return window.marked ? marked.parse(text) : `<p>${text}</p>`;
+  }
+
+  function stripMarkdown(text) {
+    if (!text) return '';
     return text
-      .trim()
-      .split(/\n\n+/)
-      .map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`)
-      .join('');
+      .replace(/^#{1,6}\s+/gm, '')
+      .replace(/\*\*(.+?)\*\*/g, '$1')
+      .replace(/\*(.+?)\*/g, '$1')
+      .replace(/\r?\n+/g, ' ')
+      .trim();
   }
 
   const segments = window.location.pathname.split('/').filter(Boolean);
@@ -174,7 +192,7 @@
         }
 
         document.getElementById('pageTitle').textContent = `${post.title} — Rera's Treat`;
-        if (post.excerpt) document.getElementById('pageDescription').setAttribute('content', post.excerpt);
+        if (post.excerpt) document.getElementById('pageDescription').setAttribute('content', stripMarkdown(post.excerpt));
 
         postDate.textContent = formatDate(post.publishedAt);
         postTitle.textContent = post.title;
@@ -208,7 +226,7 @@
               <div class="journal-card-body">
                 <div class="journal-card-date">${formatDate(post.publishedAt)}</div>
                 <div class="journal-card-title">${post.title}</div>
-                <div class="journal-card-excerpt">${post.excerpt || ''}</div>
+                <div class="journal-card-excerpt">${stripMarkdown(post.excerpt)}</div>
               </div>
             </a>
           `;

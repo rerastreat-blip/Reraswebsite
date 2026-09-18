@@ -91,6 +91,14 @@
   .event-promo-cta{display:block;width:100%;background:var(--orange);color:#fff;border:none;border-radius:8px;padding:14px;font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;cursor:pointer;transition:.2s;text-align:center;text-decoration:none}
   .event-promo-cta:hover{background:var(--orange-dark);transform:translateY(-1px)}
   .event-promo-later{display:block;text-align:center;margin-top:.85rem;font-size:12px;color:var(--muted);cursor:pointer;background:none;border:none;text-decoration:underline}
+
+  .reviews-section{padding:1rem 1.5rem 3rem;text-align:center}
+  .reviews-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;max-width:960px;margin:2rem auto 0}
+  @media(max-width:820px){.reviews-grid{grid-template-columns:1fr}}
+  .review-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:1.5rem;text-align:left}
+  .review-stars{color:var(--gold,#D9A441);font-size:15px;letter-spacing:2px;margin-bottom:.6rem}
+  .review-comment{font-size:13px;color:var(--black);line-height:1.7;margin-bottom:.9rem}
+  .review-name{font-size:12px;color:var(--muted);font-weight:600}
 </style>
 </head>
 <body>
@@ -165,6 +173,12 @@
       <a href="about.html" class="btn btn-outline">Meet Rera →</a>
     </div>
   </div>
+</section>
+
+<section class="reviews-section" id="reviewsSection" style="display:none">
+  <span class="eyebrow">Reviews</span>
+  <h2 class="section-title">What our customers say</h2>
+  <div class="reviews-grid" id="reviewsGrid"></div>
 </section>
 
 <p style="max-width:560px;margin:0 auto 2rem;padding:0 1.5rem;color:var(--muted);font-size:12px;line-height:1.6;text-align:center">Serving finger foods, small chops, pasta, and drinks for parties, date nights, and everyday cravings across Ogijo, Itaoluwo, Shimawa, Odonguyan, and Lukosi.</p>
@@ -422,6 +436,32 @@
           notSure.innerHTML = `Not sure? <a href="menu.html">Start with ${igbadun.name}</a> — it's a favourite for a reason.`;
           notSure.style.display = 'block';
         }
+      })
+      .catch(() => {});
+  })();
+
+  // Published customer reviews
+  (function () {
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    fetch(`${COMMUNITY_API_ORIGIN}/public/reviews`)
+      .then((res) => (res.ok ? res.json() : []))
+      .then((reviews) => {
+        if (!Array.isArray(reviews) || reviews.length === 0) return;
+
+        const grid = document.getElementById('reviewsGrid');
+        grid.innerHTML = reviews.slice(0, 6).map((r) => `
+          <div class="review-card">
+            <div class="review-stars">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</div>
+            ${r.comment ? `<p class="review-comment">&ldquo;${escapeHtml(r.comment)}&rdquo;</p>` : ''}
+            <div class="review-name">${escapeHtml(r.customerName)}</div>
+          </div>
+        `).join('');
+        document.getElementById('reviewsSection').style.display = 'block';
       })
       .catch(() => {});
   })();
