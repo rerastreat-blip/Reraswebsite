@@ -15,6 +15,12 @@
 <title>Catering &amp; Events — Rera's Treat</title>
 <meta name="description" content="Planning a birthday, wedding, office meeting or house party in Ogijo? Rera's Treat makes finger foods and food packs for groups of any size. Plan your order today.">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#3B2118">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Rera's Treat">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <style>
@@ -280,5 +286,10 @@
 
 <script src="/nav-toggle.js" defer></script>
 <script src="/nav-events.js" defer></script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
+  }
+</script>
 </body>
 </html>
