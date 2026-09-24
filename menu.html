@@ -1371,36 +1371,6 @@
     window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
   }
 </script>
-
-<style>
-  .install-pill{position:fixed;left:50%;bottom:20px;transform:translate(-50%,140%);display:flex;align-items:center;gap:8px;background:var(--black,#1A1A1A);color:#fff;border:none;border-radius:999px;padding:12px 20px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.25);z-index:120;transition:transform .3s ease}
-  .install-pill.show{transform:translate(-50%,0)}
-</style>
-<button type="button" class="install-pill" id="installPill">📲 Add Rera's Treat to Home Screen</button>
-<script>
-  (function () {
-    let deferredPrompt = null;
-    const pill = document.getElementById('installPill');
-
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      pill.classList.add('show');
-    });
-
-    pill.addEventListener('click', async () => {
-      if (!deferredPrompt) return;
-      pill.classList.remove('show');
-      deferredPrompt.prompt();
-      await deferredPrompt.userChoice;
-      deferredPrompt = null;
-    });
-
-    window.addEventListener('appinstalled', () => {
-      pill.classList.remove('show');
-      deferredPrompt = null;
-    });
-  })();
-</script>
+<script src="/install-nudge.js" defer></script>
 </body>
 </html>
