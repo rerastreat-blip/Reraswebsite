@@ -54,7 +54,7 @@
   .menu-card{border:1px solid var(--border);border-radius:14px;padding:1.25rem;position:relative;cursor:pointer;transition:.2s;background:#fff;flex:0 0 230px;scroll-snap-align:start}
   .menu-card:hover{border-color:var(--orange);transform:translateY(-3px)}
   .menu-card.selected{border-color:var(--orange);background:var(--pale-o)}
-  .menu-thumb{width:100%;height:130px;border-radius:10px;margin-bottom:1rem;background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;font-size:36px}
+  .menu-thumb{width:100%;height:130px;border-radius:10px;margin-bottom:1rem;background-size:contain;background-repeat:no-repeat;background-position:center;display:flex;align-items:center;justify-content:center;font-size:36px}
   .menu-card:nth-child(6n+1) .menu-thumb{background:linear-gradient(135deg,var(--pale-g),var(--leaf))}
   .menu-card:nth-child(6n+2) .menu-thumb{background:linear-gradient(135deg,var(--pale-o),#EFA98F)}
   .menu-card:nth-child(6n+3) .menu-thumb{background:linear-gradient(135deg,#FBEACB,var(--pale-o))}
@@ -140,7 +140,7 @@
   .detail-overlay.show{display:flex}
   .detail-modal{background:#fff;border-radius:16px;padding:2rem;width:min(92%,420px);max-height:88vh;overflow-y:auto;position:relative}
   .detail-close{position:absolute;top:14px;right:16px;background:none;border:none;font-size:20px;color:var(--muted);cursor:pointer;line-height:1}
-  .detail-thumb{width:100%;height:180px;border-radius:12px;margin-bottom:1.25rem;background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;font-size:48px;background-color:var(--pale-g)}
+  .detail-thumb{width:100%;height:180px;border-radius:12px;margin-bottom:1.25rem;background-size:contain;background-repeat:no-repeat;background-position:center;display:flex;align-items:center;justify-content:center;font-size:48px;background-color:var(--pale-g)}
   .detail-name{font-family:'Fraunces',serif;font-size:24px;font-weight:600;color:var(--green);margin-bottom:.5rem}
   .detail-desc{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:1rem}
   .detail-servings{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);font-weight:600;margin:-0.5rem 0 1rem}
@@ -736,7 +736,9 @@
       </div>
     `;
     if (item.image) {
-      card.querySelector('.menu-thumb').style.backgroundImage = `url('${item.image}')`;
+      const thumb = card.querySelector('.menu-thumb');
+      thumb.style.backgroundImage = `url('${item.image}')`;
+      thumb.style.backgroundColor = 'var(--pale-g)';
     }
 
     const existing = selected.get(item.id);
@@ -1209,7 +1211,10 @@
           ...(email ? { customerEmail: email } : {}),
         }),
       });
-      if (!sessionRes.ok) throw new Error('Could not start your order session.');
+      if (!sessionRes.ok) {
+        const body = await sessionRes.json().catch(() => null);
+        throw new Error(body?.message || 'Could not start your order session.');
+      }
       const session = await sessionRes.json();
 
       const updateRes = await fetch(`${API_ORIGIN}/whatsapp-sessions/${session.id}`, {
@@ -1222,7 +1227,10 @@
           ...(checkoutOrderType === 'DINE_IN' ? { tableNumber } : {}),
         }),
       });
-      if (!updateRes.ok) throw new Error('Could not update your cart.');
+      if (!updateRes.ok) {
+        const body = await updateRes.json().catch(() => null);
+        throw new Error(body?.message || 'Could not update your cart.');
+      }
 
       const checkoutRes = await fetch(`${API_ORIGIN}/whatsapp-sessions/${session.id}/checkout`, {
         method: 'POST',
