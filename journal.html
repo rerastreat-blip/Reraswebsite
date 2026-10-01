@@ -61,6 +61,34 @@
   .journal-back-link:hover{color:var(--orange)}
 
   .journal-empty{text-align:center;color:var(--muted);padding:3rem 1.5rem;font-size:14px}
+
+  .journal-reactions{display:flex;justify-content:center;margin:2rem 0}
+  .journal-like-btn{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--border);border-radius:999px;padding:10px 20px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;color:var(--black);cursor:pointer;transition:.2s}
+  .journal-like-btn:hover{border-color:var(--orange)}
+  .journal-like-btn.liked{border-color:var(--orange);background:var(--pale-o)}
+
+  .journal-comments{max-width:560px;margin:2rem auto 0;padding-top:2rem;border-top:1px solid var(--border)}
+  .journal-comments-title{font-family:'Fraunces',serif;font-size:20px;font-weight:600;color:var(--green);margin-bottom:1.25rem}
+  .journal-comment-item{padding:1rem 0;border-bottom:1px solid var(--border)}
+  .journal-comment-item:last-child{border-bottom:none}
+  .journal-comment-author{font-size:13px;font-weight:600;color:var(--black);margin-bottom:4px}
+  .journal-comment-date{font-size:11px;color:var(--muted);font-weight:400;margin-left:8px}
+  .journal-comment-body{font-size:14px;color:var(--black);line-height:1.7;font-weight:300;white-space:pre-wrap}
+  .journal-no-comments{font-size:13px;color:var(--muted);margin-bottom:1.5rem}
+
+  .journal-comment-form{margin-top:1.5rem}
+  .journal-comment-field{margin-bottom:1rem}
+  .journal-comment-label{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:6px}
+  .journal-comment-input{width:100%;background:#fff;border:1px solid var(--border);border-radius:8px;padding:11px 14px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--black);outline:none;transition:border-color .2s;box-sizing:border-box}
+  .journal-comment-input:focus{border-color:var(--orange)}
+  .journal-comment-textarea{resize:vertical;min-height:90px}
+  .journal-comment-submit{background:var(--orange);color:#fff;border:none;border-radius:8px;padding:12px 24px;font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;cursor:pointer;transition:.2s}
+  .journal-comment-submit:hover{background:var(--orange-dark)}
+  .journal-comment-submit:disabled{opacity:.6;cursor:not-allowed}
+  .journal-comment-hint{font-size:12px;color:var(--muted);margin-top:10px}
+  .journal-comment-error{background:#FCEAEA;border:1px solid #E7A9A9;color:#A23B3B;font-size:12px;border-radius:8px;padding:10px 12px;margin-bottom:1rem;display:none}
+  .journal-comment-error.show{display:block}
+  .journal-comment-success{font-size:13px;color:var(--green);font-weight:500}
 </style>
 </head>
 <body>
@@ -111,6 +139,35 @@
       <h1 class="journal-post-title" id="postTitle"></h1>
       <div class="journal-post-cover" id="postCover" style="display:none"></div>
       <div class="journal-post-body" id="postBody"></div>
+
+      <div class="journal-reactions">
+        <button type="button" class="journal-like-btn" id="likeBtn">
+          <span id="likeIcon">🤍</span> <span id="likeCount">0</span>
+        </button>
+      </div>
+
+      <div class="journal-comments">
+        <h3 class="journal-comments-title" id="commentsTitle">Comments</h3>
+        <div id="commentsList"></div>
+
+        <form id="commentForm" class="journal-comment-form">
+          <div class="journal-comment-error" id="commentError"></div>
+          <div class="journal-comment-field">
+            <label class="journal-comment-label">Your name</label>
+            <input class="journal-comment-input" id="commentAuthor" maxlength="80" placeholder="Ada Johnson">
+          </div>
+          <div class="journal-comment-field">
+            <label class="journal-comment-label">Comment</label>
+            <textarea class="journal-comment-input journal-comment-textarea" id="commentBody" maxlength="1000" placeholder="What did you think?"></textarea>
+          </div>
+          <button type="submit" class="journal-comment-submit" id="commentSubmit">Post Comment</button>
+          <p class="journal-comment-hint">No account needed. Comments are reviewed before they appear publicly.</p>
+        </form>
+
+        <div id="commentSuccess" style="display:none">
+          <p class="journal-comment-success">Thanks! Your comment is awaiting review and will appear here once approved.</p>
+        </div>
+      </div>
     </div>
   </section>
 </div>
@@ -182,6 +239,41 @@
       .trim();
   }
 
+  function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  function getAnonymousId() {
+    try {
+      let id = localStorage.getItem('rera_anon_id');
+      if (!id) {
+        id = 'anon-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2);
+        localStorage.setItem('rera_anon_id', id);
+      }
+      return id;
+    } catch (e) {
+      return 'anon-' + Date.now();
+    }
+  }
+
+  function getLikedPosts() {
+    try {
+      return new Set(JSON.parse(localStorage.getItem('rera_liked_posts') || '[]'));
+    } catch (e) {
+      return new Set();
+    }
+  }
+
+  function setPostLiked(postSlug, liked) {
+    try {
+      const set = getLikedPosts();
+      if (liked) set.add(postSlug); else set.delete(postSlug);
+      localStorage.setItem('rera_liked_posts', JSON.stringify([...set]));
+    } catch (e) {}
+  }
+
   const segments = window.location.pathname.split('/').filter(Boolean);
   const slug = segments[0] === 'journal' && segments[1] ? segments[1] : null;
 
@@ -211,6 +303,8 @@
 
         postBody.innerHTML = bodyToHtml(post.body);
         postContent.style.display = 'block';
+
+        initReactions(slug, post);
       })
       .catch(() => {
         postNotFound.style.display = 'block';
@@ -241,6 +335,87 @@
       .catch(() => {
         journalGrid.innerHTML = '<p class="journal-empty">Journal is temporarily unavailable. Please check back soon.</p>';
       });
+  }
+
+  function initReactions(postSlug, post) {
+    const likeBtn = document.getElementById('likeBtn');
+    const likeIcon = document.getElementById('likeIcon');
+    const likeCountEl = document.getElementById('likeCount');
+
+    let isLiked = getLikedPosts().has(postSlug);
+    likeCountEl.textContent = post.likeCount || 0;
+    likeIcon.textContent = isLiked ? '❤️' : '🤍';
+    likeBtn.classList.toggle('liked', isLiked);
+
+    likeBtn.addEventListener('click', async () => {
+      likeBtn.disabled = true;
+      try {
+        const res = await fetch(`${API_ORIGIN}/public/journal/${encodeURIComponent(postSlug)}/like`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ anonymousId: getAnonymousId() }),
+        });
+        if (res.ok) {
+          const data = await res.json();
+          isLiked = data.liked;
+          likeCountEl.textContent = data.likeCount;
+          likeIcon.textContent = isLiked ? '❤️' : '🤍';
+          likeBtn.classList.toggle('liked', isLiked);
+          setPostLiked(postSlug, isLiked);
+        }
+      } catch (e) {}
+      likeBtn.disabled = false;
+    });
+
+    const commentsList = document.getElementById('commentsList');
+    const comments = post.comments || [];
+    commentsList.innerHTML = comments.length
+      ? comments.map(c => `
+          <div class="journal-comment-item">
+            <div class="journal-comment-author">${escapeHtml(c.authorName)}<span class="journal-comment-date">${formatDate(c.createdAt)}</span></div>
+            <div class="journal-comment-body">${escapeHtml(c.body)}</div>
+          </div>
+        `).join('')
+      : '<p class="journal-no-comments">No comments yet — be the first to share your thoughts.</p>';
+
+    const commentForm = document.getElementById('commentForm');
+    const commentError = document.getElementById('commentError');
+    const commentSubmit = document.getElementById('commentSubmit');
+
+    commentForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      commentError.classList.remove('show');
+
+      const authorName = document.getElementById('commentAuthor').value.trim();
+      const body = document.getElementById('commentBody').value.trim();
+
+      if (!authorName || !body) {
+        commentError.textContent = 'Please fill in your name and comment.';
+        commentError.classList.add('show');
+        return;
+      }
+
+      commentSubmit.disabled = true;
+      commentSubmit.textContent = 'Posting…';
+
+      try {
+        const res = await fetch(`${API_ORIGIN}/public/journal/${encodeURIComponent(postSlug)}/comments`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ authorName, body }),
+        });
+        if (!res.ok) throw new Error('Something went wrong. Please try again.');
+
+        commentForm.style.display = 'none';
+        document.getElementById('commentSuccess').style.display = 'block';
+      } catch (err) {
+        commentError.textContent = err.message || 'Something went wrong. Please try again.';
+        commentError.classList.add('show');
+      } finally {
+        commentSubmit.disabled = false;
+        commentSubmit.textContent = 'Post Comment';
+      }
+    });
   }
 </script>
 
