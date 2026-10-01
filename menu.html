@@ -739,6 +739,9 @@
       const thumb = card.querySelector('.menu-thumb');
       thumb.style.backgroundImage = `url('${item.image}')`;
       thumb.style.backgroundColor = 'var(--pale-g)';
+      thumb.style.backgroundSize = 'contain';
+      thumb.style.backgroundRepeat = 'no-repeat';
+      thumb.style.backgroundPosition = 'center';
     }
 
     const existing = selected.get(item.id);

@@ -424,7 +424,7 @@
             const image = resolveImageUrl(Array.isArray(p.images) && p.images.length ? p.images[0] : null);
             return `
               <a href="menu.html" class="featured-card">
-                <div class="featured-thumb" style="${image ? `background-image:url('${image}');background-color:var(--pale-g)` : ''}">${image ? '' : '🍽️'}</div>
+                <div class="featured-thumb" style="${image ? `background-image:url('${image}');background-color:var(--pale-g);background-size:contain;background-repeat:no-repeat;background-position:center` : ''}">${image ? '' : '🍽️'}</div>
                 <div class="featured-body">
                   <div class="featured-name">${p.name}</div>
                   <div class="featured-desc">${p.description || ''}</div>
