@@ -96,6 +96,10 @@
   .order-type-btn{flex:1;padding:1.1rem .75rem;border:1.5px solid var(--border);border-radius:10px;background:#fff;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;color:var(--black);cursor:pointer;transition:.15s;text-align:center}
   .order-type-btn:hover{border-color:var(--orange)}
   .order-type-btn.selected{border-color:var(--orange);background:var(--pale-o);color:var(--orange-dark)}
+  .pay-method-options{display:flex;gap:10px}
+  .pay-method-btn{flex:1;padding:.85rem .5rem;border:1.5px solid var(--border);border-radius:10px;background:#fff;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;color:var(--black);cursor:pointer;transition:.15s;text-align:center}
+  .pay-method-btn:hover{border-color:var(--orange)}
+  .pay-method-btn.selected{border-color:var(--orange);background:var(--pale-o);color:var(--orange-dark)}
 
   .checkout-form-group{margin-bottom:1.1rem}
   .checkout-label{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:6px}
@@ -527,6 +531,13 @@
       <div class="checkout-form-group" id="tableNumberGroup" style="display:none">
         <label class="checkout-label">Table Number</label>
         <input class="checkout-input" id="checkoutTableNumber" type="text" placeholder="e.g. 4">
+      </div>
+      <div class="checkout-form-group">
+        <span class="checkout-label">How will you pay?</span>
+        <div class="pay-method-options" role="radiogroup" aria-label="Payment method">
+          <button class="pay-method-btn selected" type="button" role="radio" aria-checked="true" data-method="TRANSFER">Bank transfer</button>
+          <button class="pay-method-btn" type="button" role="radio" aria-checked="false" data-method="CASH">Cash at the kitchen</button>
+        </div>
       </div>
       <button class="checkout-next-btn" id="detailsNext">Continue →</button>
       <button class="checkout-back-btn" id="detailsBack" type="button">← Back</button>
@@ -1080,6 +1091,7 @@
   const tableNumberGroup = document.getElementById('tableNumberGroup');
   const checkoutTableNumber = document.getElementById('checkoutTableNumber');
 
+  let checkoutPaymentMethod = 'TRANSFER';
   let checkoutOrderType = null;
   let checkoutSessionId = null;
 
@@ -1140,6 +1152,7 @@
     // Pickup is the only order type for now (Dine In disabled above) —
     // skip the order-type step and go straight from cart review to details.
     checkoutOrderType = 'PICKUP';
+    setPaymentMethod('TRANSFER');
     checkoutSessionId = null;
     checkoutName.value = '';
     checkoutPhone.value = '';
@@ -1171,6 +1184,31 @@
       orderTypeNext.disabled = false;
     });
   });
+
+  function setPaymentMethod(method){
+    checkoutPaymentMethod = method;
+    document.querySelectorAll('.pay-method-btn').forEach(b => {
+      const isSelected = b.dataset.method === method;
+      b.classList.toggle('selected', isSelected);
+      b.setAttribute('aria-checked', String(isSelected));
+    });
+  }
+
+  document.querySelectorAll('.pay-method-btn').forEach(btn => {
+    btn.addEventListener('click', () => setPaymentMethod(btn.dataset.method));
+  });
+
+  // Shared by both payment paths: show the confirmation screen and empty the cart.
+  function finishOrder(orderNumber, message){
+    document.getElementById('ackMessage').textContent = message;
+    document.getElementById('trackThisOrderLink').href = `track-order.html?order=${encodeURIComponent(orderNumber)}`;
+
+    selected.clear();
+    document.querySelectorAll('.menu-card.selected').forEach(c => c.classList.remove('selected'));
+    updateTray();
+
+    showStep(stepDone);
+  }
 
   orderTypeNext.addEventListener('click', () => {
     tableNumberGroup.style.display = checkoutOrderType === 'DINE_IN' ? 'block' : 'none';
@@ -1235,8 +1273,12 @@
         throw new Error(body?.message || 'Could not update your cart.');
       }
 
+      // Cash is paid in person, so it's only offered for orders collected at the kitchen.
+      const paymentMethod = checkoutOrderType === 'DELIVERY' ? 'TRANSFER' : checkoutPaymentMethod;
       const checkoutRes = await fetch(`${API_ORIGIN}/whatsapp-sessions/${session.id}/checkout`, {
         method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ paymentMethod }),
       });
       if (!checkoutRes.ok) {
         const body = await checkoutRes.json().catch(() => null);
@@ -1245,6 +1287,17 @@
       const { order, paymentAccount } = await checkoutRes.json();
 
       checkoutSessionId = session.id;
+
+      // Cash orders (or an API that returns no account) have nothing to
+      // transfer, so skip the bank-details step.
+      if (paymentMethod === 'CASH' || !paymentAccount) {
+        finishOrder(
+          order.orderNumber,
+          `Order #${order.orderNumber} — please pay ${fmt(Number(order.totalAmount))} in cash at the kitchen when you pick up.`,
+        );
+        return;
+      }
+
       document.getElementById('payOrderNumber').textContent = order.orderNumber;
       document.getElementById('payBank').textContent = paymentAccount.bankName;
       document.getElementById('payAccountName').textContent = paymentAccount.accountName;
@@ -1286,15 +1339,10 @@
       if (!res.ok) throw new Error('Could not confirm your payment. Please try again.');
       const order = await res.json();
 
-      document.getElementById('ackMessage').textContent =
-        `Order #${order.orderNumber} — we've received your payment notification and are confirming your order.`;
-      document.getElementById('trackThisOrderLink').href = `track-order.html?order=${encodeURIComponent(order.orderNumber)}`;
-
-      selected.clear();
-      document.querySelectorAll('.menu-card.selected').forEach(c => c.classList.remove('selected'));
-      updateTray();
-
-      showStep(stepDone);
+      finishOrder(
+        order.orderNumber,
+        `Order #${order.orderNumber} — we've received your payment notification and are confirming your order.`,
+      );
     } catch (err) {
       console.error(err);
       showError(paymentError, err.message || 'Something went wrong. Please try again.');
