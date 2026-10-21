@@ -1,3 +1,8 @@
+[build]
+  # Pre-renders the live menu into menu.html (see scripts/build-menu-snapshot.mjs).
+  command = "node scripts/build-menu-snapshot.mjs"
+  publish = "."
+
 [[redirects]]
   from = "/admin/*"
   to = "https://rera-os-admin-web-rerastreat.vercel.app/admin/:splat"
